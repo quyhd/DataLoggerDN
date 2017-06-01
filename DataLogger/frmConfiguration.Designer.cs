@@ -465,6 +465,7 @@
             // 
             // txtCleaningOFF
             // 
+            this.txtCleaningOFF.Enabled = false;
             this.txtCleaningOFF.Location = new System.Drawing.Point(328, 367);
             this.txtCleaningOFF.Name = "txtCleaningOFF";
             this.txtCleaningOFF.Size = new System.Drawing.Size(63, 20);
@@ -473,6 +474,7 @@
             // 
             // txtCleaningON
             // 
+            this.txtCleaningON.Enabled = false;
             this.txtCleaningON.Location = new System.Drawing.Point(251, 366);
             this.txtCleaningON.Name = "txtCleaningON";
             this.txtCleaningON.Size = new System.Drawing.Size(63, 20);
@@ -509,6 +511,7 @@
             // 
             // txtAir2OFF
             // 
+            this.txtAir2OFF.Enabled = false;
             this.txtAir2OFF.Location = new System.Drawing.Point(328, 340);
             this.txtAir2OFF.Name = "txtAir2OFF";
             this.txtAir2OFF.Size = new System.Drawing.Size(63, 20);
@@ -516,6 +519,7 @@
             // 
             // txtAir2ON
             // 
+            this.txtAir2ON.Enabled = false;
             this.txtAir2ON.Location = new System.Drawing.Point(251, 339);
             this.txtAir2ON.Name = "txtAir2ON";
             this.txtAir2ON.Size = new System.Drawing.Size(63, 20);
@@ -538,6 +542,7 @@
             // 
             // txtAir1OFF
             // 
+            this.txtAir1OFF.Enabled = false;
             this.txtAir1OFF.Location = new System.Drawing.Point(328, 314);
             this.txtAir1OFF.Name = "txtAir1OFF";
             this.txtAir1OFF.Size = new System.Drawing.Size(63, 20);
@@ -545,6 +550,7 @@
             // 
             // txtAir1ON
             // 
+            this.txtAir1ON.Enabled = false;
             this.txtAir1ON.Location = new System.Drawing.Point(251, 313);
             this.txtAir1ON.Name = "txtAir1ON";
             this.txtAir1ON.Size = new System.Drawing.Size(63, 20);
@@ -585,6 +591,7 @@
             // 
             // txtPumpRFLTOFF
             // 
+            this.txtPumpRFLTOFF.Enabled = false;
             this.txtPumpRFLTOFF.Location = new System.Drawing.Point(328, 286);
             this.txtPumpRFLTOFF.Name = "txtPumpRFLTOFF";
             this.txtPumpRFLTOFF.Size = new System.Drawing.Size(63, 20);
@@ -592,6 +599,7 @@
             // 
             // txtPumpRFLTON
             // 
+            this.txtPumpRFLTON.Enabled = false;
             this.txtPumpRFLTON.Location = new System.Drawing.Point(251, 285);
             this.txtPumpRFLTON.Name = "txtPumpRFLTON";
             this.txtPumpRFLTON.Size = new System.Drawing.Size(63, 20);
@@ -614,6 +622,7 @@
             // 
             // txtPumpRRSOFF
             // 
+            this.txtPumpRRSOFF.Enabled = false;
             this.txtPumpRRSOFF.Location = new System.Drawing.Point(328, 262);
             this.txtPumpRRSOFF.Name = "txtPumpRRSOFF";
             this.txtPumpRRSOFF.Size = new System.Drawing.Size(63, 20);
@@ -621,6 +630,7 @@
             // 
             // txtPumpRRSON
             // 
+            this.txtPumpRRSON.Enabled = false;
             this.txtPumpRRSON.Location = new System.Drawing.Point(251, 261);
             this.txtPumpRRSON.Name = "txtPumpRRSON";
             this.txtPumpRRSON.Size = new System.Drawing.Size(63, 20);
@@ -643,6 +653,7 @@
             // 
             // txtPumpRAMOFF
             // 
+            this.txtPumpRAMOFF.Enabled = false;
             this.txtPumpRAMOFF.Location = new System.Drawing.Point(328, 237);
             this.txtPumpRAMOFF.Name = "txtPumpRAMOFF";
             this.txtPumpRAMOFF.Size = new System.Drawing.Size(63, 20);
@@ -650,6 +661,7 @@
             // 
             // txtPumpRAMON
             // 
+            this.txtPumpRAMON.Enabled = false;
             this.txtPumpRAMON.Location = new System.Drawing.Point(251, 236);
             this.txtPumpRAMON.Name = "txtPumpRAMON";
             this.txtPumpRAMON.Size = new System.Drawing.Size(63, 20);
@@ -672,6 +684,7 @@
             // 
             // txtPumpLFLTOFF
             // 
+            this.txtPumpLFLTOFF.Enabled = false;
             this.txtPumpLFLTOFF.Location = new System.Drawing.Point(328, 212);
             this.txtPumpLFLTOFF.Name = "txtPumpLFLTOFF";
             this.txtPumpLFLTOFF.Size = new System.Drawing.Size(63, 20);
@@ -679,6 +692,7 @@
             // 
             // txtPumpLFLTON
             // 
+            this.txtPumpLFLTON.Enabled = false;
             this.txtPumpLFLTON.Location = new System.Drawing.Point(251, 211);
             this.txtPumpLFLTON.Name = "txtPumpLFLTON";
             this.txtPumpLFLTON.Size = new System.Drawing.Size(63, 20);
@@ -701,6 +715,7 @@
             // 
             // txtPumpLRSOFF
             // 
+            this.txtPumpLRSOFF.Enabled = false;
             this.txtPumpLRSOFF.Location = new System.Drawing.Point(328, 187);
             this.txtPumpLRSOFF.Name = "txtPumpLRSOFF";
             this.txtPumpLRSOFF.Size = new System.Drawing.Size(63, 20);
@@ -708,6 +723,7 @@
             // 
             // txtPumpLRSON
             // 
+            this.txtPumpLRSON.Enabled = false;
             this.txtPumpLRSON.Location = new System.Drawing.Point(251, 186);
             this.txtPumpLRSON.Name = "txtPumpLRSON";
             this.txtPumpLRSON.Size = new System.Drawing.Size(63, 20);
@@ -730,6 +746,7 @@
             // 
             // txtPumpLAMOFF
             // 
+            this.txtPumpLAMOFF.Enabled = false;
             this.txtPumpLAMOFF.Location = new System.Drawing.Point(328, 162);
             this.txtPumpLAMOFF.Name = "txtPumpLAMOFF";
             this.txtPumpLAMOFF.Size = new System.Drawing.Size(63, 20);
@@ -737,6 +754,7 @@
             // 
             // txtPumpLAMON
             // 
+            this.txtPumpLAMON.Enabled = false;
             this.txtPumpLAMON.Location = new System.Drawing.Point(251, 161);
             this.txtPumpLAMON.Name = "txtPumpLAMON";
             this.txtPumpLAMON.Size = new System.Drawing.Size(63, 20);
@@ -759,6 +777,7 @@
             // 
             // txtFlowOFF
             // 
+            this.txtFlowOFF.Enabled = false;
             this.txtFlowOFF.Location = new System.Drawing.Point(328, 133);
             this.txtFlowOFF.Name = "txtFlowOFF";
             this.txtFlowOFF.Size = new System.Drawing.Size(63, 20);
@@ -766,6 +785,7 @@
             // 
             // txtFlowON
             // 
+            this.txtFlowON.Enabled = false;
             this.txtFlowON.Location = new System.Drawing.Point(251, 132);
             this.txtFlowON.Name = "txtFlowON";
             this.txtFlowON.Size = new System.Drawing.Size(63, 20);
@@ -788,6 +808,7 @@
             // 
             // txtFireOFF
             // 
+            this.txtFireOFF.Enabled = false;
             this.txtFireOFF.Location = new System.Drawing.Point(328, 108);
             this.txtFireOFF.Name = "txtFireOFF";
             this.txtFireOFF.Size = new System.Drawing.Size(63, 20);
@@ -795,6 +816,7 @@
             // 
             // txtFireON
             // 
+            this.txtFireON.Enabled = false;
             this.txtFireON.Location = new System.Drawing.Point(251, 107);
             this.txtFireON.Name = "txtFireON";
             this.txtFireON.Size = new System.Drawing.Size(63, 20);
@@ -817,6 +839,7 @@
             // 
             // txtDoorOFF
             // 
+            this.txtDoorOFF.Enabled = false;
             this.txtDoorOFF.Location = new System.Drawing.Point(328, 83);
             this.txtDoorOFF.Name = "txtDoorOFF";
             this.txtDoorOFF.Size = new System.Drawing.Size(63, 20);
@@ -824,6 +847,7 @@
             // 
             // txtDoorON
             // 
+            this.txtDoorON.Enabled = false;
             this.txtDoorON.Location = new System.Drawing.Point(251, 82);
             this.txtDoorON.Name = "txtDoorON";
             this.txtDoorON.Size = new System.Drawing.Size(63, 20);
@@ -846,6 +870,7 @@
             // 
             // txtUPSOFF
             // 
+            this.txtUPSOFF.Enabled = false;
             this.txtUPSOFF.Location = new System.Drawing.Point(328, 58);
             this.txtUPSOFF.Name = "txtUPSOFF";
             this.txtUPSOFF.Size = new System.Drawing.Size(63, 20);
@@ -853,6 +878,7 @@
             // 
             // txtUPSON
             // 
+            this.txtUPSON.Enabled = false;
             this.txtUPSON.Location = new System.Drawing.Point(251, 57);
             this.txtUPSON.Name = "txtUPSON";
             this.txtUPSON.Size = new System.Drawing.Size(63, 20);
@@ -875,6 +901,7 @@
             // 
             // txtPowerOFF
             // 
+            this.txtPowerOFF.Enabled = false;
             this.txtPowerOFF.Location = new System.Drawing.Point(328, 33);
             this.txtPowerOFF.Name = "txtPowerOFF";
             this.txtPowerOFF.Size = new System.Drawing.Size(63, 20);
@@ -882,6 +909,7 @@
             // 
             // txtPowerON
             // 
+            this.txtPowerON.Enabled = false;
             this.txtPowerON.Location = new System.Drawing.Point(251, 32);
             this.txtPowerON.Name = "txtPowerON";
             this.txtPowerON.Size = new System.Drawing.Size(63, 20);

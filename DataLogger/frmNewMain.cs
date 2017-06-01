@@ -2980,18 +2980,32 @@ namespace DataLogger
                         this.picDrainValue.BackgroundImage = global::DataLogger.Properties.Resources.Valve_Close;
                     }
                 }
+                ///
                 if (obj.module_PumpLAM > -1)
                 {
                     //dgvDoControl["CurrentData", 5].Value = (obj.module_PumpLAM == 1) ? "MANUAL" : "AUTO";
                     if (obj.module_PumpLAM == 1)
                     {
-                        this.picPump1_RunningType.Image = global::DataLogger.Properties.Resources.Auto_56x56;
+                        this.picPump1_RunningType.Image = global::DataLogger.Properties.Resources.Manual_56x56;
                     }
                     else
                     {
-                        this.picPump1_RunningType.Image = global::DataLogger.Properties.Resources.Manual_56x56;
+                        this.picPump1_RunningType.Image = global::DataLogger.Properties.Resources.Auto_56x56;
                     }
                 }
+                if (obj.module_PumpRAM > -1)
+                {
+                    //dgvDoControl["CurrentData", 8].Value = (obj.module_PumpRAM == 1) ? "AUTO" : "RUN";
+                    if (obj.module_PumpRAM == 1)
+                    {
+                        this.picPump2_RunningType.Image = global::DataLogger.Properties.Resources.Manual_56x56;
+                    }
+                    else
+                    {
+                        this.picPump2_RunningType.Image = global::DataLogger.Properties.Resources.Auto_56x56;
+                    }
+                }
+                ///
                 if (obj.module_PumpLRS > -1)
                 {
                     //dgvDoControl["CurrentData", 6].Value = (obj.module_PumpLRS == 1) ? "STOP" : "RUN";
@@ -3008,35 +3022,6 @@ namespace DataLogger
                         this.lblPumpLRS.Text = lang.getText("pumping_system_left_run");
                         //this.picPumpingSystemLFLT.Image = global::DataLogger.Properties.Resources.Run_42x42;
                         //this.lblPumpLFLT.Text = lang.getText("pumping_system_left_run");
-                    }
-                }
-                if (obj.module_PumpLFLT > -1)
-                {
-                    //dgvDoControl["CurrentData", 7].Value = (obj.module_PumpLFLT == 1) ? "FAULT" : "NORMAL";
-                    if (obj.module_PumpLFLT == 1)
-                    {
-                        this.picPumpingSystemLFLT.Image = global::DataLogger.Properties.Resources.Run_42x42;
-                        this.lblPumpLFLT.Text = lang.getText("pumping_system_left_run");
-                    }
-                    else if (obj.module_PumpLFLT == 0)
-                    {
-                        this.picPumpingSystemLFLT.Image = global::DataLogger.Properties.Resources.Stop_42x42;
-                        this.lblPumpLFLT.Text = lang.getText("pumping_system_left_stop");
-                        //this.picPumpingSystemLFLT.Image = global::DataLogger.Properties.Resources.Run_42x42;
-                        //this.lblPumpLFLT.Text = "Normal";
-                    }
-                }
-
-                if (obj.module_PumpRAM > -1)
-                {
-                    //dgvDoControl["CurrentData", 8].Value = (obj.module_PumpRAM == 1) ? "AUTO" : "RUN";
-                    if (obj.module_PumpRAM == 1)
-                    {
-                        this.picPump2_RunningType.Image = global::DataLogger.Properties.Resources.Auto_56x56;
-                    }
-                    else
-                    {
-                        this.picPump2_RunningType.Image = global::DataLogger.Properties.Resources.Manual_56x56;
                     }
                 }
                 if (obj.module_PumpRRS > -1)
@@ -3057,22 +3042,56 @@ namespace DataLogger
                         //this.lblPumpRFLT.Text = lang.getText("pumping_system_right_run"); //"Run";
                     }
                 }
+                ////////////////
+                if (obj.module_PumpLFLT > -1)
+                {
+                    //dgvDoControl["CurrentData", 7].Value = (obj.module_PumpLFLT == 1) ? "FAULT" : "NORMAL";
+                    if (obj.module_PumpLFLT == 1)
+                    {
+                        this.picPumpingSystemLFLT.Image = global::DataLogger.Properties.Resources.Fault_42x42;
+                        this.lblPumpLFLT.Text = "Fault";
+                    }
+                    else if (obj.module_PumpLFLT == 0)
+                    {
+                        //this.picPumpingSystemLFLT.Image = global::DataLogger.Properties.Resources.Stop_42x42;
+                        //this.lblPumpLFLT.Text = lang.getText("pumping_system_left_stop");
+                        if (obj.module_PumpLRS == 1)
+                        {
+                            this.picPumpingSystemLFLT.Image = global::DataLogger.Properties.Resources.Run_42x42;
+                            this.lblPumpLFLT.Text = "Normal";
+                        }
+                        else
+                        {
+                            this.picPumpingSystemLFLT.Image = global::DataLogger.Properties.Resources.Stop_42x42;
+                            this.lblPumpLFLT.Text = "Stop";
+                        }
+                    }
+                }
                 if (obj.module_PumpRFLT > -1)
                 {
                     //dgvDoControl["CurrentData", 10].Value = (obj.module_PumpRFLT == 1) ? "FAULT" : "NORMAL";
                     if (obj.module_PumpRFLT == 1)
                     {
-                        this.picPumpingSystemRFLT.Image = global::DataLogger.Properties.Resources.Run_42x42;
-                        this.lblPumpRFLT.Text = lang.getText("pumping_system_right_run");
+                        this.picPumpingSystemRFLT.Image = global::DataLogger.Properties.Resources.Fault_42x42;
+                        this.lblPumpRFLT.Text = "Fault";
                     }
                     else if (obj.module_PumpRFLT == 0)
                     {
-                        this.picPumpingSystemRFLT.Image = global::DataLogger.Properties.Resources.Stop_42x42;
-                        this.lblPumpRFLT.Text = lang.getText("pumping_system_right_stop"); //"Stop";
-                        //this.picPumpingSystemRFLT.Image = global::DataLogger.Properties.Resources.Run_42x42;
-                        //this.lblPumpRFLT.Text = "Normal";
+                        //this.picPumpingSystemLFLT.Image = global::DataLogger.Properties.Resources.Stop_42x42;
+                        //this.lblPumpLFLT.Text = lang.getText("pumping_system_left_stop");
+                        if (obj.module_PumpRRS == 1)
+                        {
+                            this.picPumpingSystemRFLT.Image = global::DataLogger.Properties.Resources.Run_42x42;
+                            this.lblPumpRFLT.Text = "Normal";
+                        }
+                        else
+                        {
+                            this.picPumpingSystemRFLT.Image = global::DataLogger.Properties.Resources.Stop_42x42;
+                            this.lblPumpRFLT.Text = "Stop";
+                        }
                     }
                 }
+                ////////////////////////
                 if (obj.module_air1 > -1)
                 {
                     //dgvDoControl["CurrentData", 0].Value = (obj.module_Power == 1) ? "NORMAL" : "NOT NORMAL";
@@ -4947,6 +4966,11 @@ namespace DataLogger
                 //    tt.SetToolTip(this.picAutoSamplerStatus, lang.getText(tooltipSAMP) + " : " + tooltipSAMPInfo + " " + Form1.datetime10);
                 //}
             }
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
     public class CalculationDataValue

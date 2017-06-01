@@ -13,7 +13,7 @@ class TcpClientTest
         TcpClient tcpClient = new TcpClient();
         try
         {
-            tcpClient.Connect("192.168.1.12", portNum);
+            tcpClient.Connect("192.168.1.87", portNum);
 
             //tcpClient.Connect("14.176.54.144", portNum);
             NetworkStream networkStream = tcpClient.GetStream();
@@ -77,7 +77,7 @@ class TcpClientTest
 
 
                     byte[] _CommandSAMP = new byte[57];
-                    _encoder.GetBytes("BLVTRS0002" + "20170523151212" + "DUMPM" + "20170523183012" + "20170523184512").CopyTo(_CommandSAMP, 0);
+                    _encoder.GetBytes("BLVTRS0002" + "20170523151212" + "DUMPM" + "20170523183012" + "20170528184512").CopyTo(_CommandSAMP, 0);
 
                     byte[] _ETX = new byte[1];
                     (new byte[] { 0x03 }).CopyTo(_ETX, 0);
