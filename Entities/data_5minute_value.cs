@@ -7,7 +7,7 @@ namespace DataLogger.Entities
 {
     public class data_5minute_value
     {
-       public int id { get; set; }
+        public int id { get; set; }
         public Double MPS_pH { get; set; }
         public int MPS_pH_status { get; set; }
         public Double MPS_EC { get; set; }
@@ -42,7 +42,7 @@ namespace DataLogger.Entities
         public int module_air2 { get; set; }
         public int module_cleaning { get; set; }
         public Double module_Temperature { get; set; }
-        public Double module_Humidity { get; set; }       
+        public Double module_Humidity { get; set; }
 
         public DateTime created { get; set; }
 
@@ -53,14 +53,16 @@ namespace DataLogger.Entities
         public int MPS_status { get; set; }
 
         // sampler data
-        public Double refrigeration_temperature{ get; set; }
+        public Double refrigeration_temperature { get; set; }
         public int bottle_position { get; set; }
         public int door_status { get; set; } // 0->6; 0: close
         public int equipment_status { get; set; } // 0:normal
         // 0:normal; 6: Maintenance; 7: periodic; 8: incident
         public int pumping_system_status { get; set; }
         // 0:normal; 6: Maintenance; 7: periodic; 8: incident
-        public int station_status { get; set; } 
+        public int station_status { get; set; }
+        public int push { get; set; }
+        public DateTime push_time { get; set; }
         public data_5minute_value()
         {
             id = -1;
@@ -101,7 +103,7 @@ namespace DataLogger.Entities
             module_cleaning = -1000;
 
             module_Temperature = -1000;
-            module_Humidity = -1000;       
+            module_Humidity = -1000;
 
             created = DateTime.Now;
 
@@ -115,6 +117,9 @@ namespace DataLogger.Entities
             equipment_status = -1;
             pumping_system_status = 0;
             station_status = 0;
+
+            push = -1;
+            push_time = new DateTime();
         }
-    }    
+    }
 }

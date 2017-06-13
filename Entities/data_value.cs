@@ -42,7 +42,7 @@ namespace DataLogger.Entities
         public int module_air2 { get; set; }
         public int module_cleaning { get; set; }
         public Double module_Temperature { get; set; }
-        public Double module_Humidity { get; set; }       
+        public Double module_Humidity { get; set; }
 
         public DateTime created { get; set; }
 
@@ -53,15 +53,16 @@ namespace DataLogger.Entities
         public int MPS_status { get; set; }
 
         // sampler data
-        public Double refrigeration_temperature{ get; set; }
+        public Double refrigeration_temperature { get; set; }
         public int bottle_position { get; set; }
         public int door_status { get; set; } // 0->6; 0: close
         public int equipment_status { get; set; } // 0:normal
         // 0:normal; 6: Maintenance; 7: periodic; 8: incident
         public int pumping_system_status { get; set; }
         // 0:normal; 6: Maintenance; 7: periodic; 8: incident
-        public int station_status { get; set; } 
-
+        public int station_status { get; set; }
+        public int push { get; set; }
+        public DateTime push_time { get; set; }
         public data_value()
         {
             id = -1;
@@ -101,7 +102,7 @@ namespace DataLogger.Entities
             module_air2 = -1000;
             module_cleaning = -1000;
             module_Temperature = -1000;
-            module_Humidity = -1000;       
+            module_Humidity = -1000;
 
             created = DateTime.Now;
 
@@ -116,6 +117,9 @@ namespace DataLogger.Entities
 
             pumping_system_status = 0;
             station_status = 0;
+
+            push = -1;
+            push_time = new DateTime();
         }
     }
     public class measured_data
@@ -139,10 +143,11 @@ namespace DataLogger.Entities
         public Double TOC { get; set; }
         public int TOC_status { get; set; }
 
-        public int MPS_status { get; set; }        
+        public int MPS_status { get; set; }
 
         public DateTime created { get; set; }
-
+        public int push { get; set; }
+        public DateTime push_time { get; set; }
         public DateTime latest_update_MPS_communication { get; set; }
         public DateTime latest_update_TN_communication { get; set; }
         public DateTime latest_update_TP_communication { get; set; }
@@ -176,6 +181,9 @@ namespace DataLogger.Entities
             latest_update_TOC_communication = DateTime.Now;
             latest_update_TN_communication = DateTime.Now;
             latest_update_TP_communication = DateTime.Now;
+
+            push = -1;
+            push_time = new DateTime();
         }
     }
     public class station_status
@@ -248,7 +256,7 @@ namespace DataLogger.Entities
 
         public int DO8_status { get; set; }
         public int DO8_cmd { get; set; }
-        
+
         public DateTime created { get; set; }
 
         public relay_io_control()

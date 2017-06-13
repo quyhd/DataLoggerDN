@@ -375,9 +375,14 @@ namespace DataLogger
                     viewrow = dt_view.NewRow();
                     //viewrow["Date"] = row["stored_date"].ToString().Substring(0, 10);
                     //viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString().Substring(0, 10))).ToString("dd/MM/yyyy");
-                    viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString())).ToString("dd/MM/yyyy");
+                    //viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString())).ToString("dd/MM/yyyy");
                     //viewrow["Date"] = (Convert.ToDateTime((row["stored_date"].ToString().Split(' '))[0])).ToString("dd/MM/yyyy");
-                    viewrow["Time"] = ((int)row["stored_hour"]).ToString("00") + ":" + ((int)row["stored_minute"]).ToString("00") + ":00";
+                    //viewrow["Time"] = ((int)row["stored_hour"]).ToString("00") + ":" + ((int)row["stored_minute"]).ToString("00") + ":00";
+
+                    string created = (Convert.ToDateTime(row["created"].ToString())).ToString("yyyyMMddHHmmss");
+                    string time = created.Substring(8, 2) + ":" + created.Substring(10, 2) + ":" + created.Substring(12, 2);
+                    viewrow["Date"] = (Convert.ToDateTime(row["created"].ToString())).ToString("dd/MM/yyyy");
+                    viewrow["Time"] = time;
 
                     viewrow["Refrigeration_Temperature"] = row["refrigeration_temperature"];
                     viewrow["Bottle_Position"] = row["bottle_position"];
@@ -464,7 +469,7 @@ namespace DataLogger
                 }
 
                 DataTable dt_view = new DataTable();
-                dt_view.Columns.Add("StoredDate");
+                dt_view.Columns.Add("CreatedDate");
                 dt_view.Columns.Add("Refrigeration_Temperature");
                 dt_view.Columns.Add("Bottle_Position");
                 dt_view.Columns.Add("Door_Status");
@@ -483,12 +488,15 @@ namespace DataLogger
                     if (_status == 0)
                     {
                         viewrow = dt_view.NewRow();
-                        DateTime _date = (DateTime)row["stored_date"];
-                        int _hour = (int)row["stored_hour"];
-                        int _minute = (int)row["stored_minute"];
-                        DateTime _rdate = new DateTime(_date.Year, _date.Month, _date.Day, _hour, _minute, 0);
+                        //DateTime _date = (DateTime)row["stored_date"];
+                        //int _hour = (int)row["stored_hour"];
+                        //int _minute = (int)row["stored_minute"];
+                        //DateTime _rdate = new DateTime(_date.Year, _date.Month, _date.Day, _hour, _minute, 0);
 
-                        viewrow["StoredDate"] = _rdate;
+                        string created = (Convert.ToDateTime(row["created"].ToString())).ToString("yyyyMMddHHmmss");
+                        DateTime _rdate = new DateTime(Int32.Parse(created.Substring(0, 4)), Int32.Parse(created.Substring(4, 2)), Int32.Parse(created.Substring(6, 2)), Int32.Parse(created.Substring(8, 2)), Int32.Parse(created.Substring(10, 2)), Int32.Parse(created.Substring(12, 2)));
+
+                        viewrow["CreatedDate"] = _rdate;
                         viewrow["Refrigeration_Temperature"] = row["refrigeration_temperature"];
                         viewrow["Bottle_Position"] = row["bottle_position"];
                         viewrow["Door_Status"] = row["door_status"];
@@ -502,14 +510,14 @@ namespace DataLogger
 
                 // tạo biểu đồ mới
                 chtData.Series.Add("Refrigeration_Temperature");
-                chtData.Series["Refrigeration_Temperature"].XValueMember = "StoredDate";
+                chtData.Series["Refrigeration_Temperature"].XValueMember = "CreatedDate";
                 chtData.Series["Refrigeration_Temperature"].YValueMembers = "Refrigeration_Temperature";
                 chtData.Series["Refrigeration_Temperature"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["Refrigeration_Temperature"].Color = Color.Blue;
                 chtData.Series["Refrigeration_Temperature"].BorderWidth = 3;
 
                 chtData.Series.Add("Bottle_Position");
-                chtData.Series["Bottle_Position"].XValueMember = "StoredDate";
+                chtData.Series["Bottle_Position"].XValueMember = "CreatedDate";
                 chtData.Series["Bottle_Position"].YValueMembers = "Bottle_Position";
                 chtData.Series["Bottle_Position"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["Bottle_Position"].Color = Color.Red;
@@ -565,7 +573,7 @@ namespace DataLogger
                 dt_view.Columns.Add("MPS_pH");
                 dt_view.Columns.Add("MPS_EC");
                 dt_view.Columns.Add("MPS_DO");
-                dt_view.Columns.Add("MPS_Turbidity");
+                dt_view.Columns.Add("MPS_TSS");
                 dt_view.Columns.Add("MPS_ORP");
                 dt_view.Columns.Add("MPS_Temp");
 
@@ -583,16 +591,23 @@ namespace DataLogger
                     //viewrow["Date"] = row["stored_date"].ToString().Substring(0, 10);
                     //viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString().Substring(0, 10))).ToString("dd/MM/yyyy");
                     //viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString().Substring(0, 10))).ToString("dd/MM/yyyy");
-                    viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString())).ToString("dd/MM/yyyy");
+                    //viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString())).ToString("dd/MM/yyyy");
                     //viewrow["Date"] = (Convert.ToDateTime((row["stored_date"].ToString().Split(' '))[0])).ToString("dd/MM/yyyy");
-                    viewrow["Time"] = ((int)row["stored_hour"]).ToString("00") + ":" + ((int)row["stored_minute"]).ToString("00") + ":00";
+                    //viewrow["Time"] = ((int)row["stored_hour"]).ToString("00") + ":" + ((int)row["stored_minute"]).ToString("00") + ":00";
 
-                    viewrow["MPS_pH"] = row["mps_ph"];
-                    viewrow["MPS_EC"] = row["mps_ec"];
-                    viewrow["MPS_DO"] = row["mps_do"];
-                    viewrow["MPS_Turbidity"] = row["mps_turbidity"];
-                    viewrow["MPS_ORP"] = row["mps_orp"];
-                    viewrow["MPS_Temp"] = row["mps_temp"];
+                    string created = (Convert.ToDateTime(row["created"].ToString())).ToString("yyyyMMddHHmmss");
+                    string time = created.Substring(8, 2) + ":" + created.Substring(10, 2) + ":" + created.Substring(12, 2);
+                    viewrow["Date"] = (Convert.ToDateTime(row["created"].ToString())).ToString("dd/MM/yyyy");
+                    viewrow["Time"] = time;
+
+                    //string.Format("{0:0.00}", 1002.1);
+
+                    viewrow["MPS_pH"] = Convert.ToDouble(string.Format("{0:0.00}", row["mps_ph"]));
+                    viewrow["MPS_EC"] = Convert.ToDouble(string.Format("{0:0.00}", row["mps_ec"]));
+                    viewrow["MPS_DO"] = Convert.ToDouble(string.Format("{0:0.00}", row["mps_do"]));
+                    viewrow["MPS_TSS"] = Convert.ToDouble(string.Format("{0:0.00}", row["mps_turbidity"]));
+                    viewrow["MPS_ORP"] = Convert.ToDouble(string.Format("{0:0.00}", row["mps_orp"]));
+                    viewrow["MPS_Temp"] = Convert.ToDouble(string.Format("{0:0.00}", row["mps_temp"]));
 
                     viewrow["Status_Val"] = row["mps_status"];
 
@@ -647,11 +662,11 @@ namespace DataLogger
                             row.Cells["MPS_DO"].Value = "---";
                         }
                     }
-                    if (row.Cells["MPS_Turbidity"].Value != null)
+                    if (row.Cells["MPS_TSS"].Value != null)
                     {
-                        if (Convert.ToDouble(row.Cells["MPS_Turbidity"].Value) < 0)
+                        if (Convert.ToDouble(row.Cells["MPS_TSS"].Value) < 0)
                         {
-                            row.Cells["MPS_Turbidity"].Value = "---";
+                            row.Cells["MPS_TSS"].Value = "---";
                         }
                     }
                     if (row.Cells["MPS_ORP"].Value != null)
@@ -688,11 +703,11 @@ namespace DataLogger
                 }
 
                 DataTable dt_view = new DataTable();
-                dt_view.Columns.Add("StoredDate");
+                dt_view.Columns.Add("CreatedDate");
                 dt_view.Columns.Add("MPS_pH");
                 dt_view.Columns.Add("MPS_EC");
                 dt_view.Columns.Add("MPS_DO");
-                dt_view.Columns.Add("MPS_Turbidity");
+                dt_view.Columns.Add("MPS_TSS");
                 dt_view.Columns.Add("MPS_ORP");
                 dt_view.Columns.Add("MPS_Temp");
 
@@ -708,62 +723,65 @@ namespace DataLogger
                     int _status = (int)row["mps_status"];
                     //if (_status == 0)
                     //{
-                        viewrow = dt_view.NewRow();
-                        DateTime _date = (DateTime)row["stored_date"];
-                        int _hour = (int)row["stored_hour"];
-                        int _minute = (int)row["stored_minute"];
-                        DateTime _rdate = new DateTime(_date.Year, _date.Month, _date.Day, _hour, _minute, 0);
+                    viewrow = dt_view.NewRow();
+                    //DateTime _date = (DateTime)row["stored_date"];
+                    //int _hour = (int)row["stored_hour"];
+                    //int _minute = (int)row["stored_minute"];
+                    //DateTime _rdate = new DateTime(_date.Year, _date.Month, _date.Day, _hour, _minute, 0);
 
-                        viewrow["StoredDate"] = _rdate;
-                        viewrow["MPS_pH"] = row["mps_ph"];
-                        viewrow["MPS_EC"] = row["mps_ec"];
-                        viewrow["MPS_DO"] = row["mps_do"];
-                        viewrow["MPS_Turbidity"] = row["mps_turbidity"];
-                        viewrow["MPS_ORP"] = row["mps_orp"];
-                        viewrow["MPS_Temp"] = row["mps_temp"];
+                    string created = (Convert.ToDateTime(row["created"].ToString())).ToString("yyyyMMddHHmmss");
+                    DateTime _rdate = new DateTime(Int32.Parse(created.Substring(0, 4)), Int32.Parse(created.Substring(4, 2)), Int32.Parse(created.Substring(6, 2)), Int32.Parse(created.Substring(8, 2)), Int32.Parse(created.Substring(10, 2)), Int32.Parse(created.Substring(12, 2)));
 
-                        dt_view.Rows.Add(viewrow);
+                    viewrow["CreatedDate"] = _rdate;
+                    viewrow["MPS_pH"] = row["mps_ph"];
+                    viewrow["MPS_EC"] = row["mps_ec"];
+                    viewrow["MPS_DO"] = row["mps_do"];
+                    viewrow["MPS_TSS"] = row["mps_turbidity"];
+                    viewrow["MPS_ORP"] = row["mps_orp"];
+                    viewrow["MPS_Temp"] = row["mps_temp"];
+
+                    dt_view.Rows.Add(viewrow);
                     //}
                 }
 
                 // tạo biểu đồ mới
                 chtData.Series.Add("MPS_pH");
-                chtData.Series["MPS_pH"].XValueMember = "StoredDate";
+                chtData.Series["MPS_pH"].XValueMember = "CreatedDate";
                 chtData.Series["MPS_pH"].YValueMembers = "MPS_pH";
                 chtData.Series["MPS_pH"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["MPS_pH"].Color = Color.Blue;
                 chtData.Series["MPS_pH"].BorderWidth = 3;
 
                 chtData.Series.Add("MPS_EC");
-                chtData.Series["MPS_EC"].XValueMember = "StoredDate";
+                chtData.Series["MPS_EC"].XValueMember = "CreatedDate";
                 chtData.Series["MPS_EC"].YValueMembers = "MPS_EC";
                 chtData.Series["MPS_EC"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["MPS_EC"].Color = Color.Red;
                 chtData.Series["MPS_EC"].BorderWidth = 3;
 
                 chtData.Series.Add("MPS_DO");
-                chtData.Series["MPS_DO"].XValueMember = "StoredDate";
+                chtData.Series["MPS_DO"].XValueMember = "CreatedDate";
                 chtData.Series["MPS_DO"].YValueMembers = "MPS_DO";
                 chtData.Series["MPS_DO"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["MPS_DO"].Color = Color.Green;
                 chtData.Series["MPS_DO"].BorderWidth = 3;
 
                 chtData.Series.Add("MPS_ORP");
-                chtData.Series["MPS_ORP"].XValueMember = "StoredDate";
+                chtData.Series["MPS_ORP"].XValueMember = "CreatedDate";
                 chtData.Series["MPS_ORP"].YValueMembers = "MPS_ORP";
                 chtData.Series["MPS_ORP"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["MPS_ORP"].Color = Color.Yellow;
                 chtData.Series["MPS_ORP"].BorderWidth = 3;
 
-                chtData.Series.Add("MPS_Turbidity");
-                chtData.Series["MPS_Turbidity"].XValueMember = "StoredDate";
-                chtData.Series["MPS_Turbidity"].YValueMembers = "MPS_Turbidity";
-                chtData.Series["MPS_Turbidity"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-                chtData.Series["MPS_Turbidity"].Color = Color.Cyan;
-                chtData.Series["MPS_Turbidity"].BorderWidth = 3;
+                chtData.Series.Add("MPS_TSS");
+                chtData.Series["MPS_TSS"].XValueMember = "CreatedDate";
+                chtData.Series["MPS_TSS"].YValueMembers = "MPS_TSS";
+                chtData.Series["MPS_TSS"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+                chtData.Series["MPS_TSS"].Color = Color.Cyan;
+                chtData.Series["MPS_TSS"].BorderWidth = 3;
 
                 chtData.Series.Add("MPS_Temp");
-                chtData.Series["MPS_Temp"].XValueMember = "StoredDate";
+                chtData.Series["MPS_Temp"].XValueMember = "CreatedDate";
                 chtData.Series["MPS_Temp"].YValueMembers = "MPS_Temp";
                 chtData.Series["MPS_Temp"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["MPS_Temp"].Color = Color.DarkViolet;
@@ -844,9 +862,14 @@ namespace DataLogger
                     //viewrow["Date"] = row["stored_date"].ToString().Substring(0, 10);
                     //viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString().Substring(0, 10))).ToString("dd/MM/yyyy");
                     //viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString().Substring(0, 10))).ToString("dd/MM/yyyy");
-                    viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString())).ToString("dd/MM/yyyy");
+                    //viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString())).ToString("dd/MM/yyyy");
                     //viewrow["Date"] = (Convert.ToDateTime((row["stored_date"].ToString().Split(' '))[0])).ToString("dd/MM/yyyy");
-                    viewrow["Time"] = ((int)row["stored_hour"]).ToString("00") + ":" + ((int)row["stored_minute"]).ToString("00") + ":00";
+                    //viewrow["Time"] = ((int)row["stored_hour"]).ToString("00") + ":" + ((int)row["stored_minute"]).ToString("00") + ":00";
+
+                    string created = (Convert.ToDateTime(row["created"].ToString())).ToString("yyyyMMddHHmmss");
+                    string time = created.Substring(8, 2) + ":" + created.Substring(10, 2) + ":" + created.Substring(12, 2);
+                    viewrow["Date"] = (Convert.ToDateTime(row["created"].ToString())).ToString("dd/MM/yyyy");
+                    viewrow["Time"] = time;
 
                     viewrow["TN"] = row["TN"];
                     viewrow["TP"] = row["TP"];
@@ -957,7 +980,7 @@ namespace DataLogger
                 }
 
                 DataTable dt_view = new DataTable();
-                dt_view.Columns.Add("StoredDate");
+                dt_view.Columns.Add("CreatedDate");
                 dt_view.Columns.Add("TN");
                 dt_view.Columns.Add("TN_Status");
                 dt_view.Columns.Add("TP");
@@ -977,12 +1000,15 @@ namespace DataLogger
                     //if (_status == 0)
                     //{
                         viewrow = dt_view.NewRow();
-                        DateTime _date = (DateTime)row["stored_date"];
-                        int _hour = (int)row["stored_hour"];
-                        int _minute = (int)row["stored_minute"];
-                        DateTime _rdate = new DateTime(_date.Year, _date.Month, _date.Day, _hour, _minute, 0);
+                        //DateTime _date = (DateTime)row["stored_date"];
+                        //int _hour = (int)row["stored_hour"];
+                        //int _minute = (int)row["stored_minute"];
+                        //DateTime _rdate = new DateTime(_date.Year, _date.Month, _date.Day, _hour, _minute, 0);
 
-                        viewrow["StoredDate"] = _rdate;
+                        string created = (Convert.ToDateTime(row["created"].ToString())).ToString("yyyyMMddHHmmss");
+                        DateTime _rdate = new DateTime(Int32.Parse(created.Substring(0, 4)), Int32.Parse(created.Substring(4, 2)), Int32.Parse(created.Substring(6, 2)), Int32.Parse(created.Substring(8, 2)), Int32.Parse(created.Substring(10, 2)), Int32.Parse(created.Substring(12, 2)));
+
+                        viewrow["CreatedDate"] = _rdate;
                         viewrow["TN"] = row["TN"];
                         viewrow["TP"] = row["TP"];
                         viewrow["TOC"] = row["TOC"];
@@ -997,19 +1023,19 @@ namespace DataLogger
 
                 // tạo biểu đồ mới
                 chtData.Series.Add("TN");
-                chtData.Series["TN"].XValueMember = "StoredDate";
+                chtData.Series["TN"].XValueMember = "CreatedDate";
                 chtData.Series["TN"].YValueMembers = "TN";
                 chtData.Series["TN"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["TN"].Color = Color.Blue;
 
                 chtData.Series.Add("TOC");
-                chtData.Series["TOC"].XValueMember = "StoredDate";
+                chtData.Series["TOC"].XValueMember = "CreatedDate";
                 chtData.Series["TOC"].YValueMembers = "TOC";
                 chtData.Series["TOC"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["TOC"].Color = Color.Maroon;
 
                 chtData.Series.Add("TP");
-                chtData.Series["TP"].XValueMember = "StoredDate";
+                chtData.Series["TP"].XValueMember = "CreatedDate";
                 chtData.Series["TP"].YValueMembers = "TP";
                 chtData.Series["TP"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["TP"].Color = Color.DarkGreen;
@@ -1063,7 +1089,7 @@ namespace DataLogger
                 dt_view.Columns.Add("Time");
 
                 dt_view.Columns.Add("Power");
-                dt_view.Columns.Add("UPS");
+                dt_view.Columns.Add("Generator");
                 dt_view.Columns.Add("Door");
                 dt_view.Columns.Add("Fire");
                 dt_view.Columns.Add("Flow");
@@ -1094,12 +1120,17 @@ namespace DataLogger
                     //viewrow["Date"] = row["stored_date"].ToString().Substring(0, 10);
                     //viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString())).ToString("dd/MM/yyyy");
                     //viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString().Substring(0, 10))).ToString("dd/MM/yyyy");
-                    viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString())).ToString("dd/MM/yyyy");
+                    //viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString())).ToString("dd/MM/yyyy");
                     //viewrow["Date"] = (Convert.ToDateTime((row["stored_date"].ToString().Split(' '))[0])).ToString("dd/MM/yyyy");
-                    viewrow["Time"] = ((int)row["stored_hour"]).ToString("00") + ":" + ((int)row["stored_minute"]).ToString("00") + ":00";
+                    //viewrow["Time"] = ((int)row["stored_hour"]).ToString("00") + ":" + ((int)row["stored_minute"]).ToString("00") + ":00";
+
+                    string created = (Convert.ToDateTime(row["created"].ToString())).ToString("yyyyMMddHHmmss");
+                    string time = created.Substring(8, 2) + ":" + created.Substring(10, 2) + ":" + created.Substring(12, 2);
+                    viewrow["Date"] = (Convert.ToDateTime(row["created"].ToString())).ToString("dd/MM/yyyy");
+                    viewrow["Time"] = time;
 
                     viewrow["Power"] = row["module_power"];
-                    viewrow["UPS"] = row["module_ups"];
+                    viewrow["Generator"] = row["module_ups"];
                     viewrow["Door"] = row["module_door"];
                     viewrow["Fire"] = row["module_fire"];
                     viewrow["Flow"] = row["module_flow"];
@@ -1168,23 +1199,23 @@ namespace DataLogger
                         row.Cells["Power"].Value = "---";
                     }
 
-                    tempValue = Convert.ToDouble(row.Cells["UPS"].Value);
+                    tempValue = Convert.ToDouble(row.Cells["Generator"].Value);
                     if (tempValue > -1)
                     {
                         if (tempValue == 1)
                         {
-                            row.Cells["UPS"].Value = "ON";
+                            row.Cells["Generator"].Value = "ON";
                             //this.picStationStatusUPS.BackgroundImage = global::DataLogger.Properties.Resources.on_icon_68x68;
                         }
                         else
                         {
-                            row.Cells["UPS"].Value = "OFF";
+                            row.Cells["Generator"].Value = "OFF";
                             //this.picStationStatusUPS.BackgroundImage = global::DataLogger.Properties.Resources.off_icon_68x68;
                         }
                     }
                     else
                     {
-                        row.Cells["UPS"].Value = "---";
+                        row.Cells["Generator"].Value = "---";
                     }
 
                     tempValue = Convert.ToDouble(row.Cells["Door"].Value);
@@ -1447,9 +1478,9 @@ namespace DataLogger
                 }
 
                 DataTable dt_view = new DataTable();
-                dt_view.Columns.Add("StoredDate");
+                dt_view.Columns.Add("CreatedDate");
                 dt_view.Columns.Add("Power");
-                dt_view.Columns.Add("UPS");
+                dt_view.Columns.Add("Generator");
                 dt_view.Columns.Add("Door");
                 dt_view.Columns.Add("Fire");
                 dt_view.Columns.Add("Flow");
@@ -1480,14 +1511,17 @@ namespace DataLogger
                     if (_status >= 0)
                     {
                         viewrow = dt_view.NewRow();
-                        DateTime _date = (DateTime)row["stored_date"];
-                        int _hour = (int)row["stored_hour"];
-                        int _minute = (int)row["stored_minute"];
-                        DateTime _rdate = new DateTime(_date.Year, _date.Month, _date.Day, _hour, _minute, 0);
+                        //DateTime _date = (DateTime)row["stored_date"];
+                        //int _hour = (int)row["stored_hour"];
+                        //int _minute = (int)row["stored_minute"];
+                        //DateTime _rdate = new DateTime(_date.Year, _date.Month, _date.Day, _hour, _minute, 0);
 
-                        viewrow["StoredDate"] = _rdate;
+                        string created = (Convert.ToDateTime(row["created"].ToString())).ToString("yyyyMMddHHmmss");
+                        DateTime _rdate = new DateTime(Int32.Parse(created.Substring(0, 4)), Int32.Parse(created.Substring(4, 2)), Int32.Parse(created.Substring(6, 2)), Int32.Parse(created.Substring(8, 2)), Int32.Parse(created.Substring(10, 2)), Int32.Parse(created.Substring(12, 2)));
+
+                        viewrow["CreatedDate"] = _rdate;
                         viewrow["Power"] = row["module_power"];
-                        viewrow["UPS"] = row["module_ups"];
+                        viewrow["Generator"] = row["module_ups"];
                         viewrow["Door"] = row["module_door"];
                         viewrow["Fire"] = row["module_fire"];
                         viewrow["Flow"] = row["module_flow"];
@@ -1509,98 +1543,98 @@ namespace DataLogger
 
                 // tạo biểu đồ mới
                 chtData.Series.Add("Power");
-                chtData.Series["Power"].XValueMember = "StoredDate";
+                chtData.Series["Power"].XValueMember = "CreatedDate";
                 chtData.Series["Power"].YValueMembers = "Power";
                 chtData.Series["Power"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["Power"].Color = Color.Blue;
                 chtData.Series["Power"].BorderWidth = 3;
 
-                chtData.Series.Add("UPS");
-                chtData.Series["UPS"].XValueMember = "StoredDate";
-                chtData.Series["UPS"].YValueMembers = "UPS";
-                chtData.Series["UPS"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-                chtData.Series["UPS"].Color = Color.Red;
-                chtData.Series["UPS"].BorderWidth = 3;
+                chtData.Series.Add("Generator");
+                chtData.Series["Generator"].XValueMember = "CreatedDate";
+                chtData.Series["Generator"].YValueMembers = "Generator";
+                chtData.Series["Generator"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+                chtData.Series["Generator"].Color = Color.Red;
+                chtData.Series["Generator"].BorderWidth = 3;
 
                 chtData.Series.Add("Door");
-                chtData.Series["Door"].XValueMember = "StoredDate";
+                chtData.Series["Door"].XValueMember = "CreatedDate";
                 chtData.Series["Door"].YValueMembers = "Door";
                 chtData.Series["Door"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["Door"].Color = Color.Green;
                 chtData.Series["Door"].BorderWidth = 3;
 
                 chtData.Series.Add("Fire");
-                chtData.Series["Fire"].XValueMember = "StoredDate";
+                chtData.Series["Fire"].XValueMember = "CreatedDate";
                 chtData.Series["Fire"].YValueMembers = "Fire";
                 chtData.Series["Fire"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["Fire"].Color = Color.Yellow;
                 chtData.Series["Fire"].BorderWidth = 3;
 
                 chtData.Series.Add("Flow");
-                chtData.Series["Flow"].XValueMember = "StoredDate";
+                chtData.Series["Flow"].XValueMember = "CreatedDate";
                 chtData.Series["Flow"].YValueMembers = "Flow";
                 chtData.Series["Flow"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["Flow"].Color = Color.Cyan;
                 chtData.Series["Flow"].BorderWidth = 3;
 
                 chtData.Series.Add("PumpLAM");
-                chtData.Series["PumpLAM"].XValueMember = "StoredDate";
+                chtData.Series["PumpLAM"].XValueMember = "CreatedDate";
                 chtData.Series["PumpLAM"].YValueMembers = "PumpLAM";
                 chtData.Series["PumpLAM"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["PumpLAM"].Color = Color.DarkViolet;
                 chtData.Series["PumpLAM"].BorderWidth = 3;
 
                 chtData.Series.Add("PumpLRS");
-                chtData.Series["PumpLRS"].XValueMember = "StoredDate";
+                chtData.Series["PumpLRS"].XValueMember = "CreatedDate";
                 chtData.Series["PumpLRS"].YValueMembers = "PumpLRS";
                 chtData.Series["PumpLRS"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["PumpLRS"].Color = Color.BlueViolet;
                 chtData.Series["PumpLRS"].BorderWidth = 3;
 
                 chtData.Series.Add("PumpLFLT");
-                chtData.Series["PumpLFLT"].XValueMember = "StoredDate";
+                chtData.Series["PumpLFLT"].XValueMember = "CreatedDate";
                 chtData.Series["PumpLFLT"].YValueMembers = "PumpLFLT";
                 chtData.Series["PumpLFLT"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["PumpLFLT"].Color = Color.ForestGreen;
                 chtData.Series["PumpLFLT"].BorderWidth = 3;
 
                 chtData.Series.Add("PumpRAM");
-                chtData.Series["PumpRAM"].XValueMember = "StoredDate";
+                chtData.Series["PumpRAM"].XValueMember = "CreatedDate";
                 chtData.Series["PumpRAM"].YValueMembers = "PumpRAM";
                 chtData.Series["PumpRAM"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["PumpRAM"].Color = Color.DeepPink;
                 chtData.Series["PumpRAM"].BorderWidth = 3;
 
                 chtData.Series.Add("PumpRRS");
-                chtData.Series["PumpRRS"].XValueMember = "StoredDate";
+                chtData.Series["PumpRRS"].XValueMember = "CreatedDate";
                 chtData.Series["PumpRRS"].YValueMembers = "PumpRRS";
                 chtData.Series["PumpRRS"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["PumpRRS"].Color = Color.Goldenrod;
                 chtData.Series["PumpRRS"].BorderWidth = 3;
 
                 chtData.Series.Add("PumpRFLT");
-                chtData.Series["PumpRFLT"].XValueMember = "StoredDate";
+                chtData.Series["PumpRFLT"].XValueMember = "CreatedDate";
                 chtData.Series["PumpRFLT"].YValueMembers = "PumpRFLT";
                 chtData.Series["PumpRFLT"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["PumpRFLT"].Color = Color.Purple;
                 chtData.Series["PumpRFLT"].BorderWidth = 3;
 
                 chtData.Series.Add("Air1");
-                chtData.Series["Air1"].XValueMember = "StoredDate";
+                chtData.Series["Air1"].XValueMember = "CreatedDate";
                 chtData.Series["Air1"].YValueMembers = "Air1";
                 chtData.Series["Air1"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["Air1"].Color = Color.PowderBlue;
                 chtData.Series["Air1"].BorderWidth = 3;
 
                 chtData.Series.Add("Air2");
-                chtData.Series["Air2"].XValueMember = "StoredDate";
+                chtData.Series["Air2"].XValueMember = "CreatedDate";
                 chtData.Series["Air2"].YValueMembers = "Air2";
                 chtData.Series["Air2"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["Air2"].Color = Color.PaleGreen;
                 chtData.Series["Air2"].BorderWidth = 3;
 
                 chtData.Series.Add("Cleaning");
-                chtData.Series["Cleaning"].XValueMember = "StoredDate";
+                chtData.Series["Cleaning"].XValueMember = "CreatedDate";
                 chtData.Series["Cleaning"].YValueMembers = "Cleaning";
                 chtData.Series["Cleaning"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                 chtData.Series["Cleaning"].Color = Color.DarkRed;
@@ -1697,12 +1731,18 @@ namespace DataLogger
                 {
                     viewrow = dt_view.NewRow();
                     //viewrow["Date"] = row["stored_date"].ToString().Substring(0, 10);
-                    viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString())).ToString("dd/MM/yyyy");
-                    viewrow["Time"] = ((int)row["stored_hour"]).ToString("00") + ":" + ((int)row["stored_minute"]).ToString("00") + ":00";
+                    //viewrow["Date"] = (Convert.ToDateTime(row["stored_date"].ToString())).ToString("dd/MM/yyyy");
+                    //viewrow["Time"] = ((int)row["stored_hour"]).ToString("00") + ":" + ((int)row["stored_minute"]).ToString("00") + ":00";
+
+                    string created = (Convert.ToDateTime(row["created"].ToString())).ToString("yyyyMMddHHmmss");
+                    string time = created.Substring(8, 2) + ":" + created.Substring(10, 2) + ":" + created.Substring(12, 2);
+                    viewrow["Date"] = (Convert.ToDateTime(row["created"].ToString())).ToString("dd/MM/yyyy");
+                    viewrow["Time"] = time;
 
                     foreach (ParamInfo item in DataLoggerParam.PARAMETER_LIST.Where(p => p.Selected))
                     {
-                        viewrow[item.NameDisplay] = row[item.NameDB];
+                        viewrow[item.NameDisplay] = Convert.ToDouble(string.Format("{0:0.00}", row[item.NameDB]));
+
                         if (item.HasStatus)
                             viewrow[item.StatusNameVisible] = row[item.StatusNameDB];
 
@@ -1931,7 +1971,7 @@ namespace DataLogger
                 }
 
                 DataTable dt_view = new DataTable();
-                dt_view.Columns.Add("StoredDate");
+                dt_view.Columns.Add("CreatedDate");
                 foreach (ParamInfo item in DataLoggerParam.PARAMETER_LIST.Where(p => p.Selected))
                 {
                     dt_view.Columns.Add(item.NameDisplay);
@@ -1947,12 +1987,15 @@ namespace DataLogger
                 {
                     bool allowAdd = true;
                     viewrow = dt_view.NewRow();
-                    DateTime _date = (DateTime)row["stored_date"];
-                    int _hour = (int)row["stored_hour"];
-                    int _minute = (int)row["stored_minute"];
-                    DateTime _rdate = new DateTime(_date.Year, _date.Month, _date.Day, _hour, _minute, 0);
+                    //DateTime _date = (DateTime)row["stored_date"];
+                    //int _hour = (int)row["stored_hour"];
+                    //int _minute = (int)row["stored_minute"];
+                    //DateTime _rdate = new DateTime(_date.Year, _date.Month, _date.Day, _hour, _minute, 0);
 
-                    viewrow["StoredDate"] = _rdate;
+                    string created = (Convert.ToDateTime(row["created"].ToString())).ToString("yyyyMMddHHmmss");
+                    DateTime _rdate = new DateTime(Int32.Parse(created.Substring(0, 4)), Int32.Parse(created.Substring(4, 2)), Int32.Parse(created.Substring(6, 2)), Int32.Parse(created.Substring(8, 2)), Int32.Parse(created.Substring(10, 2)), Int32.Parse(created.Substring(12, 2)));
+
+                    viewrow["CreatedDate"] = _rdate;
                     foreach (ParamInfo item in DataLoggerParam.PARAMETER_LIST.Where(p => p.Selected))
                     {
                         if (item.HasStatus)
@@ -1987,7 +2030,7 @@ namespace DataLogger
                 foreach (ParamInfo item in DataLoggerParam.PARAMETER_LIST.Where(p => p.Selected))
                 {
                     chtData.Series.Add(item.NameDisplay);
-                    chtData.Series[item.NameDisplay].XValueMember = "StoredDate";
+                    chtData.Series[item.NameDisplay].XValueMember = "CreatedDate";
                     chtData.Series[item.NameDisplay].YValueMembers = item.NameDisplay;
                     chtData.Series[item.NameDisplay].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
                     chtData.Series[item.NameDisplay].Color = item.GraphColor;// Color.Blue;

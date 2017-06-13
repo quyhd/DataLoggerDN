@@ -9,8 +9,8 @@ using DataLogger.Entities;
 
 namespace DataLogger.Data
 {
-    public class station_repository: NpgsqlDBConnection
-    {     
+    public class station_repository : NpgsqlDBConnection
+    {
         #region Public procedure
 
         /// <summary>
@@ -41,6 +41,9 @@ namespace DataLogger.Data
                                             " do3_caption_vi, do4_caption_vi, " +
                                             " do5_caption_vi, do6_caption_vi, " +
                                             " do7_caption_vi, do8_caption_vi, " +
+                                            " ftpserver, ftpusername, " +
+                                            " ftppassword, ftpfolder, " +
+                                            " ftpflag, " +
                                             " modified)" +
                                             " VALUES (:station_name, " +
                                             " :station_id, :socket_port," +
@@ -55,11 +58,14 @@ namespace DataLogger.Data
                                             " :do3_caption_vi, :do4_caption_vi, " +
                                             " :do5_caption_vi, :do6_caption_vi, " +
                                             " :do7_caption_vi, :do8_caption_vi, " +
+                                            " :ftpserver, :ftpusername, " +
+                                            " :ftppassword, :ftpfolder, " +
+                                            " :ftpflag, " +
                                             " :modified)";
                         sql_command += " RETURNING id;";
 
                         using (NpgsqlCommand cmd = db._conn.CreateCommand())
-                        {   
+                        {
                             cmd.CommandText = sql_command;
 
                             cmd.Parameters.Add(":socket_port", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.socket_port;
@@ -97,6 +103,11 @@ namespace DataLogger.Data
                             cmd.Parameters.Add(":do7_caption_vi", NpgsqlTypes.NpgsqlDbType.Varchar).Value = obj.do7_caption_vi;
                             cmd.Parameters.Add(":do8_caption_vi", NpgsqlTypes.NpgsqlDbType.Varchar).Value = obj.do8_caption_vi;
 
+                            cmd.Parameters.Add(":ftpserver", NpgsqlTypes.NpgsqlDbType.Varchar).Value = obj.ftpserver;
+                            cmd.Parameters.Add(":ftpusername", NpgsqlTypes.NpgsqlDbType.Varchar).Value = obj.ftpusername;
+                            cmd.Parameters.Add(":ftppassword", NpgsqlTypes.NpgsqlDbType.Varchar).Value = obj.ftppassword;
+                            cmd.Parameters.Add(":ftpfolder", NpgsqlTypes.NpgsqlDbType.Varchar).Value = obj.ftpfolder;
+                            cmd.Parameters.Add(":ftpflag", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.ftpflag;
 
                             ID = Convert.ToInt32(cmd.ExecuteScalar());
                             obj.id = ID;
@@ -153,11 +164,16 @@ namespace DataLogger.Data
                                             " do3_caption_vi =:do3_caption_vi, do4_caption_vi=:do4_caption_vi," +
                                             " do5_caption_vi =:do5_caption_vi, do6_caption_vi=:do6_caption_vi," +
                                             " do7_caption_vi =:do7_caption_vi, do8_caption_vi=:do8_caption_vi," +
+
+                                            " ftpserver =:ftpserver, ftpusername=:ftpusername," +
+                                            " ftppassword =:ftppassword, ftpfolder=:ftpfolder," +
+                                            " ftpflag =:ftpflag," +
+
                                             " modified = :modified " +
                                             " where id = :id";
 
                         using (NpgsqlCommand cmd = db._conn.CreateCommand())
-                        {                            
+                        {
                             cmd.CommandText = sql_command;
 
                             cmd.Parameters.Add(":socket_port", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.socket_port;
@@ -194,6 +210,12 @@ namespace DataLogger.Data
                             cmd.Parameters.Add(":do6_caption_vi", NpgsqlTypes.NpgsqlDbType.Varchar).Value = obj.do6_caption_vi;
                             cmd.Parameters.Add(":do7_caption_vi", NpgsqlTypes.NpgsqlDbType.Varchar).Value = obj.do7_caption_vi;
                             cmd.Parameters.Add(":do8_caption_vi", NpgsqlTypes.NpgsqlDbType.Varchar).Value = obj.do8_caption_vi;
+
+                            cmd.Parameters.Add(":ftpserver", NpgsqlTypes.NpgsqlDbType.Varchar).Value = obj.ftpserver;
+                            cmd.Parameters.Add(":ftpusername", NpgsqlTypes.NpgsqlDbType.Varchar).Value = obj.ftpusername;
+                            cmd.Parameters.Add(":ftppassword", NpgsqlTypes.NpgsqlDbType.Varchar).Value = obj.ftppassword;
+                            cmd.Parameters.Add(":ftpfolder", NpgsqlTypes.NpgsqlDbType.Varchar).Value = obj.ftpfolder;
+                            cmd.Parameters.Add(":ftpflag", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.ftpflag;
 
                             cmd.Parameters.Add(":id", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.id;
 
@@ -239,7 +261,7 @@ namespace DataLogger.Data
                         string sql_command = "DELETE from stations where id = " + id;
 
                         using (NpgsqlCommand cmd = db._conn.CreateCommand())
-                        {                            
+                        {
                             cmd.CommandText = sql_command;
                             result = cmd.ExecuteNonQuery() > 0;
                             db.close_connection();
@@ -275,12 +297,12 @@ namespace DataLogger.Data
             using (NpgsqlDBConnection db = new NpgsqlDBConnection())
             {
                 try
-                {   
+                {
                     if (db.open_connection())
                     {
                         string sql_command = "SELECT * FROM stations";
                         using (NpgsqlCommand cmd = db._conn.CreateCommand())
-                        {                            
+                        {
                             cmd.CommandText = sql_command;
                             NpgsqlDataReader reader = cmd.ExecuteReader();
                             while (reader.Read())
@@ -331,7 +353,7 @@ namespace DataLogger.Data
                         string sql_command = "SELECT * FROM stations WHERE id = " + id;
                         sql_command += " LIMIT 1";
                         using (NpgsqlCommand cmd = db._conn.CreateCommand())
-                        {                            
+                        {
                             cmd.CommandText = sql_command;
 
                             NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -381,7 +403,7 @@ namespace DataLogger.Data
                     station obj = null;
                     if (db.open_connection())
                     {
-                        string sql_command = "SELECT * FROM stations LIMIT 1";                        
+                        string sql_command = "SELECT * FROM stations LIMIT 1";
                         using (NpgsqlCommand cmd = db._conn.CreateCommand())
                         {
                             cmd.CommandText = sql_command;
@@ -417,7 +439,7 @@ namespace DataLogger.Data
                 { db.close_connection(); }
             }
         }
-        
+
         #endregion Public procedure
 
         #region private procedure
@@ -470,7 +492,7 @@ namespace DataLogger.Data
                     obj.toc_comport = dataReader["toc_comport"].ToString().Trim();
                 else
                     obj.toc_comport = "";
-////////////////////////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////////////
                 try
                 {
                     if (!DBNull.Value.Equals(dataReader["modified"]))
@@ -563,10 +585,36 @@ namespace DataLogger.Data
                     obj.do8_caption_vi = dataReader["do8_caption_vi"].ToString().Trim();
                 else
                     obj.do8_caption_vi = "";
+                //////////////////////////////////////////////////////////////////////////////////////////////////
+                if (!DBNull.Value.Equals(dataReader["ftpserver"]))
+                    obj.ftpserver = dataReader["ftpserver"].ToString().Trim();
+                else
+                    obj.ftpserver = "";
+
+                if (!DBNull.Value.Equals(dataReader["ftpusername"]))
+                    obj.ftpusername = dataReader["ftpusername"].ToString().Trim();
+                else
+                    obj.ftpusername = "";
+
+                if (!DBNull.Value.Equals(dataReader["ftppassword"]))
+                    obj.ftppassword = dataReader["ftppassword"].ToString().Trim();
+                else
+                    obj.ftppassword = "";
+
+                if (!DBNull.Value.Equals(dataReader["ftpfolder"]))
+                    obj.ftpfolder = dataReader["ftpfolder"].ToString().Trim();
+                else
+                    obj.ftpfolder = "";
+
+                if (!DBNull.Value.Equals(dataReader["ftpflag"]))
+                    obj.ftpflag = Convert.ToInt32(dataReader["ftpflag"].ToString().Trim());
+                else
+                    obj.ftpflag = -1;
+
             }
             catch (Exception ex)
-            {                
-                throw ex;             
+            {
+                throw ex;
             }
             return obj;
         }
