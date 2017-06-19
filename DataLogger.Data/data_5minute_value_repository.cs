@@ -1016,15 +1016,20 @@ namespace DataLogger.Data
                         string sql_command = @"SELECT created, id, stored_date, stored_hour, stored_minute
                                                         {custom_param}
                                                FROM data_5minute_values
-                                               WHERE created BETWEEN :date_from AND :date_to
+                                               WHERE created BETWEEN  :date_from  AND  :date_to 
                                                ORDER BY created ASC
                                                 ";
-
+                        string custom_param = "";
+                        if (custom_param_list != null && custom_param_list.Count > 0)
+                        {
+                            custom_param = " , " + string.Join(",", custom_param_list);
+                        }
+                        sql_command = sql_command.Replace("{custom_param}", custom_param);
                         DateTime d_from = new DateTime(datetime_from.Year, datetime_from.Month, datetime_from.Day); // datetime_from.ToString("yyyy-MM-dd");
                         DateTime d_to = new DateTime(datetime_to.Year, datetime_to.Month, datetime_to.Day); // datetime_to.ToString("yyyy-MM-dd");
 
-                        DateTime date_from = datetime_from;
-                        DateTime date_to = datetime_to;
+                        DateTime date_from = new DateTime(datetime_from.Year, datetime_from.Month, datetime_from.Day, datetime_from.Hour, datetime_from.Minute, datetime_from.Second);
+                        DateTime date_to = new DateTime(datetime_to.Year, datetime_to.Month, datetime_to.Day, datetime_to.Hour, datetime_to.Minute, datetime_to.Second);
 
                         using (NpgsqlCommand cmd = db._conn.CreateCommand())
                         {

@@ -40,6 +40,7 @@ namespace WinformProtocol
         private readonly data_5minute_value_repository db5m = new data_5minute_value_repository();
         ManualResetEvent _requestTermination = new ManualResetEvent(false);
         Thread _threadFTP = null;
+        private System.Threading.Timer threadingTimerFor5Minute;
         // The path to the key where Windows looks for startup applications
         RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
         public Form1(frmNewMain newmain)
@@ -105,6 +106,9 @@ namespace WinformProtocol
             textServerFTP.Text = existedStationsSetting.ftpserver;
             textUserFTP.Text = existedStationsSetting.ftpusername;
             textFolderFTP.Text = existedStationsSetting.ftpfolder;
+            //threadingTimerFor5Minute = new System.Threading.Timer(new TimerCallback(LastedFTP), null, System.Threading.Timeout.Infinite, 1000 * 60 * 5);
+            //threadingTimerFor5Minute.Change(0, 1000 * 60 * 5);
+
             btnListen.PerformClick();
 
             this.WindowState = FormWindowState.Normal;
@@ -113,6 +117,8 @@ namespace WinformProtocol
             //textIP.Enabled = false;
             //textLog2.Text = "test2";
             //textLog.Text = "test1";
+
+
         }
         private void myDataReceived(object sender, ReceivedEventArgs e)
 
@@ -238,117 +244,25 @@ namespace WinformProtocol
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            //control1 = new Control(this);
-            //using (NpgsqlDBConnection db = new NpgsqlDBConnection())
-            //{
-            //    try
-            //    {
-            //        if (db.open_connection())
-            //        {
-            //            string sql_command1 = "SELECT * from " + "databinding";
-            //            using (NpgsqlCommand cmd = db._conn.CreateCommand())
-            //            {
-            //                cmd.CommandText = sql_command1;
-            //                NpgsqlDataReader dr;
-            //                dr = cmd.ExecuteReader();
-            //                DataTable tbcode = new DataTable();
-            //                tbcode.Load(dr); // Load bang chua mapping cac truong
-
-            //                List<string> _paramListForQuery = new List<string>();
-            //                List<string> _valueListForQuery = new List<string>();
-
-            //                foreach (DataRow row2 in tbcode.Rows)
-            //                {
-            //                    string code = Convert.ToString(row2["code"]);
-            //                    _valueListForQuery.Add(code);
-            //                    string clnnamevalue = Convert.ToString(row2["clnnamevalue"]);
-            //                    _paramListForQuery.Add(clnnamevalue);
-            //                }
-
-            //                _valueListForQuery.ToArray();
-            //                _paramListForQuery.ToArray();
-            //                DataTable dt_source = null;
-            //                dt_source = db5m.get_all_custom(dtpDateFrom.Value, dtpDateTo.Value, _paramListForQuery);
-            //                foreach (DataRow row3 in dt_source.Rows)
-            //                {
-            //                    frmNewMain newmain = new frmNewMain();
-            //                    data_value data = new data_value();
-            //                    //Type elementType = Type.GetType(_paramListForQuery[0]);
-            //                    //Type listType = typeof(string).MakeGenericType(new Type[] { elementType });
-            //                    //object list = Activator.CreateInstance(listType);
-            //                    int id = Int32.Parse(Convert.ToString(row3["id"]));
-            //                    DateTime created = (DateTime)row3["created"];
-            //                    for (int i = 0; i < _paramListForQuery.Count; i++)
-            //                    {
-            //                        var variable = Convert.ToDouble(Convert.ToString(row3[_paramListForQuery[i]]));
-            //                        //string code = Convert.ToString(row3[_valueListForQuery[i]]);
-            //                        switch (_valueListForQuery[i])
-            //                        {
-            //                            case "ph":
-            //                                data.MPS_pH = variable;
-            //                                break;
-            //                            case "ec":
-            //                                data.MPS_EC = variable;
-            //                                break;
-            //                            case "do":
-            //                                data.MPS_DO = variable;
-            //                                break;
-            //                            case "turbi":
-            //                                data.MPS_Turbidity = variable;
-            //                                break;
-            //                            case "tss":
-            //                                data.MPS_Turbidity = variable;
-            //                                break;
-            //                            case "orp":
-            //                                data.MPS_ORP = variable;
-            //                                break;
-            //                            case "temp":
-            //                                data.MPS_Temp = variable;
-            //                                break;
-            //                            case "tn":
-            //                                data.TN = variable;
-            //                                break;
-            //                            case "tp":
-            //                                data.TP = variable;
-            //                                break;
-            //                            case "toc":
-            //                                data.TOC = variable;
-            //                                break;
-            //                        }
-            //                    }
-            //                    if (newmain.FTP(data, created))
-            //                    {
-            //                        db5m.updatePush(id, 1, DateTime.Now);
-            //                        //control1.AppendTextLog1Box();
-            //                    }
-            //                    else
-            //                    {
-            //                        db5m.updatePush(id, 0, DateTime.Now);
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Console.WriteLine(ex.StackTrace);
-            //    }
-            //}
-
             _threadFTP = new Thread(() =>
             {
-
                 while (!_requestTermination.WaitOne(0))
                 {
                     // do something usefull
-                    ManualFTP();
+                    ManualFTP(dtpDateFrom.Value,dtpDateTo.Value);
                 }
-
             });
-
             _threadFTP.Start();
         }
-        public void ManualFTP()
+        //public void LastedFTP(object state)
+        public void LastedFTP(object state)
+        {
+            setting_repository s = new setting_repository();
+            int id = s.get_id_by_key("lasted_push");
+            DateTime lastedPush = s.get_datetime_by_id(id);
+            //ManualFTP(lastedPush, DateTime.Now);
+        }
+        public void ManualFTP(DateTime dtpDateFrom,DateTime dtpDateTo)
         {
             using (NpgsqlDBConnection db = new NpgsqlDBConnection())
             {
@@ -379,7 +293,7 @@ namespace WinformProtocol
                             _valueListForQuery.ToArray();
                             _paramListForQuery.ToArray();
                             DataTable dt_source = null;
-                            dt_source = db5m.get_all_custom(dtpDateFrom.Value, dtpDateTo.Value, _paramListForQuery);
+                            dt_source = db5m.get_all_custom(dtpDateFrom, dtpDateTo, _paramListForQuery);
                             foreach (DataRow row3 in dt_source.Rows)
                             {
                                 frmNewMain newmain = new frmNewMain();
@@ -391,7 +305,7 @@ namespace WinformProtocol
                                 DateTime created = (DateTime)row3["created"];
                                 for (int i = 0; i < _paramListForQuery.Count; i++)
                                 {
-                                    var variable = Convert.ToDouble(Convert.ToString(row3[_paramListForQuery[i]]));
+                                    var variable = Convert.ToDouble(String.Format("{0:0.00}", row3[_paramListForQuery[i]]));
                                     //string code = Convert.ToString(row3[_valueListForQuery[i]]);
                                     switch (_valueListForQuery[i])
                                     {
@@ -611,47 +525,87 @@ namespace WinformProtocol
                             foreach (DataRow row2 in tbcode.Rows)
                             {
                                 string code = Convert.ToString(row2["code"]);
+                                int min_value = Convert.ToInt32(row2["min_value"]);
                                 switch (code)
                                 {
                                     case "ph":
-                                        csv.Append(date + "\t" + "ph" + "\t" + data.MPS_pH + "\t" + "");
-                                        csv.AppendLine();
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_pH)) >= min_value)
+                                        {
+                                            csv.Append(date + "\t" + "ph" + "\t" + String.Format("{0:0.00}", data.MPS_pH) + "\t" + "");
+                                            csv.AppendLine();
+                                        }
                                         break;
                                     case "ec":
-                                        csv.Append(date + "\t" + "ec" + "\t" + data.MPS_EC + "\t" + "uS/cm");
-                                        csv.AppendLine();
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_EC)) >= min_value)
+                                        {
+                                            csv.Append(date + "\t" + "ec" + "\t" + String.Format("{0:0.00}", data.MPS_EC) + "\t" + "uS/cm");
+
+                                            csv.AppendLine();
+                                        }
                                         break;
                                     case "do":
-                                        csv.Append(date + "\t" + "do" + "\t" + data.MPS_DO + "\t" + "mg/L");
-                                        csv.AppendLine();
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_DO)) >= min_value)
+                                        {
+                                            csv.Append(date + "\t" + "do" + "\t" + String.Format("{0:0.00}", data.MPS_DO) + "\t" + "mg/L");
+
+                                            csv.AppendLine();
+                                        }
                                         break;
                                     case "tss":
-                                        csv.Append(date + "\t" + "tss" + "\t" + data.MPS_Turbidity + "\t" + "mg/L");
-                                        csv.AppendLine();
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_Turbidity)) >= min_value)
+                                        {
+                                            csv.Append(date + "\t" + "tss" + "\t" + String.Format("{0:0.00}", data.MPS_Turbidity) + "\t" + "mg/L");
+
+                                            csv.AppendLine();
+                                        }
                                         break;
                                     case "orp":
-                                        csv.Append(date + "\t" + "orp" + "\t" + data.MPS_ORP + "\t" + "mV");
-                                        csv.AppendLine();
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_ORP)) >= min_value)
+                                        {
+                                            csv.Append(date + "\t" + "orp" + "\t" + String.Format("{0:0.00}", data.MPS_ORP) + "\t" + "mV");
+
+                                            csv.AppendLine();
+                                        }
                                         break;
                                     case "temp":
-                                        csv.Append(date + "\t" + "temp" + "\t" + data.MPS_Temp + "\t" + "oC");
-                                        csv.AppendLine();
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_Temp)) >= min_value)
+                                        {
+                                            csv.Append(date + "\t" + "temp" + "\t" + String.Format("{0:0.00}", data.MPS_Temp) + "\t" + "oC");
+
+                                            csv.AppendLine();
+                                        }
                                         break;
                                     case "turbi":
-                                        csv.Append(date + "\t" + "turbi" + "\t" + data.MPS_Turbidity + "\t" + "NTU");
-                                        csv.AppendLine();
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_Turbidity)) >= min_value)
+                                        {
+                                            csv.Append(date + "\t" + "turbi" + "\t" + String.Format("{0:0.00}", data.MPS_Turbidity) + "\t" + "NTU");
+
+                                            csv.AppendLine();
+                                        }
                                         break;
                                     case "tn":
-                                        csv.Append(date + "\t" + "tn" + "\t" + data.TN + "\t" + "mg/L");
-                                        csv.AppendLine();
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.TN)) >= min_value)
+                                        {
+                                            csv.Append(date + "\t" + "tn" + "\t" + String.Format("{0:0.00}", data.TN) + "\t" + "mg/L");
+
+                                            csv.AppendLine();
+                                        }
                                         break;
                                     case "tp":
-                                        csv.Append(date + "\t" + "tp" + "\t" + data.TP + "\t" + "mg/L");
-                                        csv.AppendLine();
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.TP)) >= min_value)
+                                        {
+                                            csv.Append(date + "\t" + "tp" + "\t" + String.Format("{0:0.00}", data.TP) + "\t" + "mg/L");
+
+                                            csv.AppendLine();
+                                        }
                                         break;
                                     case "toc":
-                                        csv.Append(date + "\t" + "toc" + "\t" + data.TOC + "\t" + "mg/L");
-                                        csv.AppendLine();
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.TOC)) >= min_value)
+                                        {
+                                            csv.Append(date + "\t" + "toc" + "\t" + String.Format("{0:0.00}", data.TOC) + "\t" + "mg/L");
+
+                                            csv.AppendLine();
+                                        }
                                         break;
                                 }
                             }
@@ -1104,22 +1058,26 @@ namespace WinformProtocol
                         //strvalue = strvalue + DateFormat(Convert.ToString(row1["created"])) + tbcode.Rows.Count.ToString() + "\\";
                         foreach (DataRow row2 in tbcode.Rows)
                         {
+                            int min_value = Convert.ToInt32(row2["min_value"]);
+                            if (Convert.ToDouble(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])])) >= min_value)
+                            {
+                                byte[] _code = _encoder.GetBytes(Convert.ToString(row2["code"]));
+                                //String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])])
+                                byte[] _clnnamevalue = _encoder.GetBytes(ConvertStr(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])]), 10));
+                                //byte[] _clnnamevalue = _encoder.GetBytes(ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamevalue"])]), 10));
+                                byte[] _clnnamestatus = _encoder.GetBytes(ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamestatus"])]), 2));
+                                //strvalue = strvalue + Convert.ToString(row2["code"]);
+                                code = new byte[5];
+                                _code.CopyTo(code, 0);
+                                //strvalue = strvalue + ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamevalue"])]), 10);
+                                clnnamevalue = new byte[10];
+                                _clnnamevalue.CopyTo(clnnamevalue, 10 - _clnnamevalue.Length);
+                                //strvalue = strvalue + ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamestatus"])]), 2);
+                                clnnamestatus = new byte[2];
+                                _clnnamestatus.CopyTo(clnnamestatus, 2 - _clnnamestatus.Length);
 
-                            byte[] _code = _encoder.GetBytes(Convert.ToString(row2["code"]));
-                            byte[] _clnnamevalue = _encoder.GetBytes(ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamevalue"])]), 10));
-                            byte[] _clnnamestatus = _encoder.GetBytes(ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamestatus"])]), 2));
-                            //strvalue = strvalue + Convert.ToString(row2["code"]);
-                            code = new byte[5];
-                            _code.CopyTo(code, 0);
-                            //strvalue = strvalue + ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamevalue"])]), 10);
-                            clnnamevalue = new byte[10];
-                            _clnnamevalue.CopyTo(clnnamevalue, 10 - _clnnamevalue.Length);
-                            //strvalue = strvalue + ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamestatus"])]), 2);
-                            clnnamestatus = new byte[2];
-                            _clnnamestatus.CopyTo(clnnamestatus, 2 - _clnnamestatus.Length);
-
-                            sql = sql.Concat(code).Concat(clnnamevalue).Concat(clnnamestatus).ToArray();
-
+                                sql = sql.Concat(code).Concat(clnnamevalue).Concat(clnnamestatus).ToArray();
+                            }
                         }
                         lstData.Add(sql);
                     }
@@ -1799,9 +1757,9 @@ namespace WinformProtocol
                 byte[] _Analyze = new byte[7];
                 _encoder.GetBytes(data.Substring(j + 19, 7)).CopyTo(_Analyze, 0);
                 byte[] _header = _STX.Concat(_Command).Concat(_StationCode).Concat(_Datetime).Concat(_Analyze).ToArray();
-
+                //String.Format("{0:0.00}", objWaterSamplerGLobal.refrigeration_Temperature)
                 byte[] _Temp = new byte[10];
-                _encoder.GetBytes(objWaterSamplerGLobal.refrigeration_Temperature.ToString("00.00")).CopyTo(_Temp, 0);
+                _encoder.GetBytes(String.Format("{0:0.00}", objWaterSamplerGLobal.refrigeration_Temperature)).CopyTo(_Temp, 0);
 
                 byte[] _Type = new byte[1];
                 _encoder.GetBytes("1").CopyTo(_Type, 0);

@@ -252,7 +252,7 @@
             this.pnHeader.Location = new System.Drawing.Point(0, 0);
             this.pnHeader.Margin = new System.Windows.Forms.Padding(0);
             this.pnHeader.Name = "pnHeader";
-            this.pnHeader.Size = new System.Drawing.Size(1354, 55);
+            this.pnHeader.Size = new System.Drawing.Size(1354, 54);
             this.pnHeader.TabIndex = 0;
             // 
             // label9
@@ -280,7 +280,7 @@
             this.label3.Image = global::DataLogger.Properties.Resources.logo;
             this.label3.Location = new System.Drawing.Point(0, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(56, 55);
+            this.label3.Size = new System.Drawing.Size(56, 54);
             this.label3.TabIndex = 68;
             // 
             // panel18
@@ -291,7 +291,7 @@
             this.panel18.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel18.Location = new System.Drawing.Point(1168, 0);
             this.panel18.Name = "panel18";
-            this.panel18.Size = new System.Drawing.Size(186, 55);
+            this.panel18.Size = new System.Drawing.Size(186, 54);
             this.panel18.TabIndex = 65;
             // 
             // btnLoginLogout
@@ -305,7 +305,7 @@
             this.btnLoginLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoginLogout.Location = new System.Drawing.Point(132, 0);
             this.btnLoginLogout.Name = "btnLoginLogout";
-            this.btnLoginLogout.Size = new System.Drawing.Size(54, 55);
+            this.btnLoginLogout.Size = new System.Drawing.Size(54, 54);
             this.btnLoginLogout.TabIndex = 64;
             this.btnLoginLogout.UseVisualStyleBackColor = false;
             this.btnLoginLogout.Click += new System.EventHandler(this.btnLoginLogout_Click);
@@ -344,11 +344,11 @@
             this.pnLeftSide.Controls.Add(this.btnUsers);
             this.pnLeftSide.Controls.Add(this.btnAllHistory);
             this.pnLeftSide.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnLeftSide.Location = new System.Drawing.Point(0, 55);
+            this.pnLeftSide.Location = new System.Drawing.Point(0, 54);
             this.pnLeftSide.Margin = new System.Windows.Forms.Padding(0);
             this.pnLeftSide.Name = "pnLeftSide";
             this.tableLayoutPanel1.SetRowSpan(this.pnLeftSide, 3);
-            this.pnLeftSide.Size = new System.Drawing.Size(73, 672);
+            this.pnLeftSide.Size = new System.Drawing.Size(73, 673);
             this.pnLeftSide.TabIndex = 1;
             // 
             // vprgMonthlyReport
@@ -378,7 +378,7 @@
             this.btnMaintenance.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(77)))), ((int)(((byte)(95)))), ((int)(((byte)(133)))));
             this.btnMaintenance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMaintenance.Image = global::DataLogger.Properties.Resources.world_clock;
-            this.btnMaintenance.Location = new System.Drawing.Point(0, 416);
+            this.btnMaintenance.Location = new System.Drawing.Point(0, 417);
             this.btnMaintenance.Name = "btnMaintenance";
             this.btnMaintenance.Size = new System.Drawing.Size(73, 64);
             this.btnMaintenance.TabIndex = 50;
@@ -410,7 +410,7 @@
             this.btnSetting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSetting.ForeColor = System.Drawing.SystemColors.WindowText;
             this.btnSetting.Image = global::DataLogger.Properties.Resources.applications_system_60x60;
-            this.btnSetting.Location = new System.Drawing.Point(0, 480);
+            this.btnSetting.Location = new System.Drawing.Point(0, 481);
             this.btnSetting.Name = "btnSetting";
             this.btnSetting.Size = new System.Drawing.Size(73, 64);
             this.btnSetting.TabIndex = 5;
@@ -425,7 +425,7 @@
             this.btnUsers.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(77)))), ((int)(((byte)(95)))), ((int)(((byte)(133)))));
             this.btnUsers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUsers.Image = global::DataLogger.Properties.Resources.user;
-            this.btnUsers.Location = new System.Drawing.Point(0, 544);
+            this.btnUsers.Location = new System.Drawing.Point(0, 545);
             this.btnUsers.Name = "btnUsers";
             this.btnUsers.Size = new System.Drawing.Size(73, 64);
             this.btnUsers.TabIndex = 4;
@@ -440,7 +440,7 @@
             this.btnAllHistory.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(77)))), ((int)(((byte)(95)))), ((int)(((byte)(133)))));
             this.btnAllHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAllHistory.Image = global::DataLogger.Properties.Resources.maintenance;
-            this.btnAllHistory.Location = new System.Drawing.Point(0, 608);
+            this.btnAllHistory.Location = new System.Drawing.Point(0, 609);
             this.btnAllHistory.Name = "btnAllHistory";
             this.btnAllHistory.Size = new System.Drawing.Size(73, 64);
             this.btnAllHistory.TabIndex = 3;
@@ -617,7 +617,7 @@
             this.panel3.Controls.Add(this.picAutoSamplerStatus);
             this.panel3.Controls.Add(this.pnbottlePosition);
             this.panel3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.panel3.Location = new System.Drawing.Point(265, 138);
+            this.panel3.Location = new System.Drawing.Point(263, 136);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(209, 283);
             this.panel3.TabIndex = 0;
@@ -1306,11 +1306,11 @@
             this.panel30.Controls.Add(this.lblDrainValve);
             this.panel30.Controls.Add(this.picDrainValue);
             this.panel30.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel30.Location = new System.Drawing.Point(83, 65);
+            this.panel30.Location = new System.Drawing.Point(83, 64);
             this.panel30.Margin = new System.Windows.Forms.Padding(10);
             this.panel30.Name = "panel30";
             this.tableLayoutPanel1.SetRowSpan(this.panel30, 2);
-            this.panel30.Size = new System.Drawing.Size(769, 554);
+            this.panel30.Size = new System.Drawing.Size(764, 550);
             this.panel30.TabIndex = 65;
             this.panel30.Paint += new System.Windows.Forms.PaintEventHandler(this.panel30_Paint);
             // 
@@ -1647,10 +1647,10 @@
             this.flowLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel1, 2);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(83, 639);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(83, 634);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(10);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1261, 78);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1261, 83);
             this.flowLayoutPanel1.TabIndex = 62;
             // 
             // backgroundWorkerMain
@@ -1662,7 +1662,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8.534489F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 91.46551F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 491F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 496F));
             this.tableLayoutPanel1.Controls.Add(this.panel24, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.pnHeader, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel21, 2, 2);
@@ -1685,9 +1685,9 @@
             this.panel24.Controls.Add(this.panel25);
             this.panel24.Controls.Add(this.pnStationStatus);
             this.panel24.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel24.Location = new System.Drawing.Point(865, 58);
+            this.panel24.Location = new System.Drawing.Point(860, 57);
             this.panel24.Name = "panel24";
-            this.panel24.Size = new System.Drawing.Size(486, 331);
+            this.panel24.Size = new System.Drawing.Size(491, 327);
             this.panel24.TabIndex = 72;
             this.panel24.Paint += new System.Windows.Forms.PaintEventHandler(this.panel24_Paint);
             // 
@@ -1745,9 +1745,9 @@
             this.panel21.Controls.Add(this.panel16);
             this.panel21.Controls.Add(this.panel29);
             this.panel21.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel21.Location = new System.Drawing.Point(865, 395);
+            this.panel21.Location = new System.Drawing.Point(860, 390);
             this.panel21.Name = "panel21";
-            this.panel21.Size = new System.Drawing.Size(486, 231);
+            this.panel21.Size = new System.Drawing.Size(491, 231);
             this.panel21.TabIndex = 71;
             // 
             // panel16

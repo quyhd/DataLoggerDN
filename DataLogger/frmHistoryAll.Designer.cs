@@ -366,7 +366,7 @@
             this.btnMPS.ColorBoderNormal = System.Drawing.Color.Silver;
             this.btnMPS.IsActive = true;
             this.btnMPS.Location = new System.Drawing.Point(76, 8);
-            this.btnMPS.Margin = new System.Windows.Forms.Padding(12, 12, 12, 12);
+            this.btnMPS.Margin = new System.Windows.Forms.Padding(12);
             this.btnMPS.Name = "btnMPS";
             this.btnMPS.Size = new System.Drawing.Size(42, 42);
             this.btnMPS.TabIndex = 5;
@@ -384,7 +384,7 @@
             this.btnAnalyzer.ColorBoderNormal = System.Drawing.Color.Silver;
             this.btnAnalyzer.IsActive = false;
             this.btnAnalyzer.Location = new System.Drawing.Point(8, 75);
-            this.btnAnalyzer.Margin = new System.Windows.Forms.Padding(12, 12, 12, 12);
+            this.btnAnalyzer.Margin = new System.Windows.Forms.Padding(12);
             this.btnAnalyzer.Name = "btnAnalyzer";
             this.btnAnalyzer.Size = new System.Drawing.Size(42, 42);
             this.btnAnalyzer.TabIndex = 5;
@@ -435,6 +435,7 @@
             this.lblSelectAnalyzer.Size = new System.Drawing.Size(52, 15);
             this.lblSelectAnalyzer.TabIndex = 57;
             this.lblSelectAnalyzer.Text = "Analyzer";
+            this.lblSelectAnalyzer.Visible = false;
             // 
             // pnlFooter
             // 

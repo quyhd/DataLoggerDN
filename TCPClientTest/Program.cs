@@ -13,7 +13,7 @@ class TcpClientTest
         TcpClient tcpClient = new TcpClient();
         try
         {
-            tcpClient.Connect("192.168.1.87", portNum);
+            tcpClient.Connect("192.168.1.104", portNum);
 
             //tcpClient.Connect("14.176.54.144", portNum);
             NetworkStream networkStream = tcpClient.GetStream();
@@ -33,7 +33,7 @@ class TcpClientTest
                     byte[] _ACK = new byte[1];
                     (new byte[] { 0x06 }).CopyTo(_ACK, 0);
                     byte[] _Command = new byte[17];
-                    _encoder.GetBytes("\\" + "admin" + "\\" + "BLVTRS0002").CopyTo(_Command, 0);
+                    _encoder.GetBytes("\\" + "admin" + "\\" + "3463BBEF64").CopyTo(_Command, 0);
                     //byte[] _Param = new byte[1];
                     //_encoder.GetBytes(_param).CopyTo(_Param, 0);
                     //byte[] _streamCode = new byte[11];
@@ -77,7 +77,7 @@ class TcpClientTest
 
 
                     byte[] _CommandSAMP = new byte[57];
-                    _encoder.GetBytes("BLVTRS0002" + "20170523151212" + "DUMPM" + "20170523183012" + "20170528184512").CopyTo(_CommandSAMP, 0);
+                    _encoder.GetBytes("3463BBEF64" + "20170523151212" + "DUMPM" + "20170523183012" + "20170528184512").CopyTo(_CommandSAMP, 0);
 
                     byte[] _ETX = new byte[1];
                     (new byte[] { 0x03 }).CopyTo(_ETX, 0);
@@ -97,7 +97,7 @@ class TcpClientTest
                     // Reads the NetworkStream into a byte buffer.
                     bytes = new byte[tcpClient.ReceiveBufferSize];
                     BytesRead = networkStream.Read(bytes, 0, (int)tcpClient.ReceiveBufferSize);
-
+                    var bytetest = bytes.TakeWhile((v, index) => bytes.Skip(index).Any(w => w != 0x00)).ToArray();
                     // Returns the data received from the host to the console.
                     returndata = Encoding.ASCII.GetString(bytes, 0, BytesRead);
                     Console.WriteLine("This is what the host returned to you: \r\n{0}", returndata);
