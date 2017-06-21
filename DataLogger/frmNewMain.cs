@@ -42,6 +42,7 @@ namespace DataLogger
         private System.Threading.Timer tmrThreadingTimerStationStatus;
         private System.Threading.Timer tmrThreadingTimerFor5Minute;
         private System.Threading.Timer tmrThreadingTimerFor60Minute;
+        private System.Threading.Timer tmrThreadingTimerForFTP;
 
         public CalculationDataValue objCalCulationDataValue5Minute = new CalculationDataValue();
         public CalculationDataValue objCalCulationDataValue60Minute = new CalculationDataValue();
@@ -205,6 +206,9 @@ namespace DataLogger
             tmrThreadingTimerFor60Minute = new System.Threading.Timer(new TimerCallback(tmrThreadingTimerFor60Minute_TimerCallback), null, System.Threading.Timeout.Infinite, 2000);
             //tmrThreadingTimerFor60Minute.Change(0, 3000);
             tmrThreadingTimerFor60Minute.Change(0, 240000);
+            tmrThreadingTimerForFTP = new System.Threading.Timer(new TimerCallback(tmrThreadingTimerForFTP_TimerCallback), null, 1000*60, Timeout.Infinite);
+            tmrThreadingTimerForFTP.Change(0, 1000*60*60*2);
+            //tmrThreadingTimerForFTP.Change(0, 1000);
             initConfig(true);
 
         }
@@ -2348,7 +2352,6 @@ namespace DataLogger
                     break;
             }
         }
-
         private void tmrThreadingTimer_HeadingTime_TimerCallback(object state)
         {
             if (is_close_form)
@@ -2378,7 +2381,6 @@ namespace DataLogger
             settingForLoginStatus();
 
         }
-
         public int indexSelectionStation = 0;
         public static string station_status_data_type_4017 = "";
         public static string station_status_data_type_405x = "";
@@ -2435,7 +2437,6 @@ namespace DataLogger
                     break;
             }
         }
-
         public static int countingIndex5Minute = 0;
         private void tmrThreadingTimerFor5Minute_TimerCallback(object state)
         {
@@ -2506,15 +2507,15 @@ namespace DataLogger
 
 
             objDataValue.MPS_DO = System.Math.Round(objMeasuredDataGlobal.MPS_DO, 2);
-            objDataValue.MPS_DO_status = objMeasuredDataGlobal.MPS_status; 
+            objDataValue.MPS_DO_status = objMeasuredDataGlobal.MPS_status;
             objDataValue.MPS_EC = System.Math.Round(objMeasuredDataGlobal.MPS_EC, 2);
-            objDataValue.MPS_EC_status = objMeasuredDataGlobal.MPS_status; 
+            objDataValue.MPS_EC_status = objMeasuredDataGlobal.MPS_status;
             objDataValue.MPS_ORP = System.Math.Round(objMeasuredDataGlobal.MPS_ORP, 2);
-            objDataValue.MPS_ORP_status = objMeasuredDataGlobal.MPS_status; 
+            objDataValue.MPS_ORP_status = objMeasuredDataGlobal.MPS_status;
             objDataValue.MPS_pH = System.Math.Round(objMeasuredDataGlobal.MPS_pH, 2);
             objDataValue.MPS_pH_status = objMeasuredDataGlobal.MPS_status;
             objDataValue.MPS_Temp = System.Math.Round(objMeasuredDataGlobal.MPS_Temp, 2);
-            objDataValue.MPS_Temp_status = objMeasuredDataGlobal.MPS_status; 
+            objDataValue.MPS_Temp_status = objMeasuredDataGlobal.MPS_status;
             objDataValue.MPS_Turbidity = System.Math.Round(objMeasuredDataGlobal.MPS_Turbidity, 2);
             objDataValue.MPS_Turbidity_status = objMeasuredDataGlobal.MPS_status;
             objDataValue.MPS_status = objMeasuredDataGlobal.MPS_status;
@@ -2581,7 +2582,6 @@ namespace DataLogger
 
 
         }
-
         private void tmrThreadingTimerFor60Minute_TimerCallback(object state)
         {
             if (is_close_form)
@@ -2608,7 +2608,48 @@ namespace DataLogger
             }
             // checking, calculating for save ving to data value 10 _minute table from 5 _minute data
         }
+        private void tmrThreadingTimerForFTP_TimerCallback(object state)
+        {
+            try
+            {
+                setting_repository s = new setting_repository();
+                int id = s.get_id_by_key("lasted_push");
+                DateTime lastedPush = s.get_datetime_by_id(id);
+                GlobalVar.stationSettings = new station_repository().get_info();
 
+                /// Send File ftp	
+                if (GlobalVar.stationSettings != null)
+                {
+                    if (GlobalVar.stationSettings.ftpflag == 1)
+                    {
+                        if (Application.OpenForms.OfType<Form1>().Count() == 1)
+                        {
+                            //Application.Exit(Application.OpenForms.OfType<Form1>().First());
+                            //Application.OpenForms.OfType<Form1>().First().;
+                        }
+                        Form1.control1.ClearTextBox(Form1.control1.getForm1fromControl, 1);
+                        //protocol = new Form1(frmConfiguration.newMain);
+                        if (ManualFTP(lastedPush, DateTime.Now))
+                        {
+                        }
+                        //protocol.Show();
+                    }
+                    else
+                    {
+                        Form1.control1.ClearTextBox(Form1.control1.getForm1fromControl, 1);
+                        //if (Application.OpenForms.OfType<Form1>().Count() == 1)
+                        //{
+                        //    Application.OpenForms.OfType<Form1>().First().Close();
+                        //}
+
+                        //protocol = new Form1(frmConfiguration.newMain);
+                        //protocol.Show();
+                    }
+                }
+            }
+            catch (Exception e)
+            { }
+        }
         private static void requestInfor(SerialPort com)
         {
             try
@@ -3169,12 +3210,12 @@ namespace DataLogger
                 //ftpClient.upload("/test/2017/data_report.csv", @"C:\Users\Admin\Desktop\data_report.csv");
                 string filePath = Path.Combine(folderPathD, newFileName);
                 ftpClient.upload(filePath, newFilePath);
-                Form1.control1.AppendTextLog1Box("Manual/Success " + newFileName + Environment.NewLine, Form1.control1.getForm1fromControl);
+                Form1.control1.AppendTextBox("Manual/Success " + newFileName + Environment.NewLine, Form1.control1.getForm1fromControl,1);
                 return true;
             }
             catch (Exception e)
             {
-                Form1.control1.AppendTextLog1Box("Manual/Error " + Environment.NewLine, Form1.control1.getForm1fromControl);
+                Form1.control1.AppendTextBox("Manual/Error " + Environment.NewLine, Form1.control1.getForm1fromControl,1);
                 return false;
             }
         }
@@ -3296,12 +3337,12 @@ namespace DataLogger
                 //ftpClient.upload("/test/2017/data_report.csv", @"C:\Users\Admin\Desktop\data_report.csv");
                 string filePath = Path.Combine(folderPathD, newFileName);
                 ftpClient.upload(filePath, newFilePath);
-                Form1.control1.AppendTextLog1Box("Auto/Success " + newFileName + Environment.NewLine, Form1.control1.getForm1fromControl);
+                Form1.control1.AppendTextBox("Auto/Success " + newFileName + Environment.NewLine, Form1.control1.getForm1fromControl,1);
                 return true;
             }
             catch (Exception e)
             {
-                Form1.control1.AppendTextLog1Box("Auto/Error" + Environment.NewLine, Form1.control1.getForm1fromControl);
+                Form1.control1.AppendTextBox("Auto/Error" + Environment.NewLine, Form1.control1.getForm1fromControl,1);
                 return false;
             }
         }
@@ -3410,7 +3451,7 @@ namespace DataLogger
 
                             }
                         }
-                        Form1.control1.AppendTextLog1Box("Lasted/Success " + "END" + Environment.NewLine, Form1.control1.getForm1fromControl);
+                        Form1.control1.AppendTextBox("Lasted/Success " + "END" + Environment.NewLine, Form1.control1.getForm1fromControl,1);
                     }
                     return true;
                 }
@@ -5502,514 +5543,523 @@ namespace DataLogger
         }
         public data_value addNewObjFor5Minute(data_value obj, bool isImmediatelyCalculation = false)
         {
-            // checking execute transaction
-            int tempHour = 0;
-            if (obj != null)
+            try
             {
-                tempHour = obj.created.Hour;
-            }
-            else
-            {
-                tempHour = DateTime.Now.Hour;
-
-                if (DateTime.Compare(latestCalculate5Minute, DateTime.Now.AddSeconds(-40)) < 0)
+                // checking execute transaction
+                int tempHour = 0;
+                if (obj != null)
                 {
-                    return null;
+                    tempHour = obj.created.Hour;
                 }
-            }
-
-            int tempMinute = 0;
-            if (obj != null)
-            {
-                tempMinute = obj.created.Minute;
-            }
-            else
-            {
-                tempMinute = DateTime.Now.Minute;
-            }
-
-            data_value objDataValue = null;
-            data_value objLatest = null;
-            int status = 0;
-            if (listDataValue.Count > 0)
-            {
-                if ((tempHour != hour) || ((tempMinute - min_minute) > 1) || isImmediatelyCalculation)
+                else
                 {
-                    if (tempMinute % 5 == 0 || isImmediatelyCalculation)
+                    tempHour = DateTime.Now.Hour;
+
+                    if (DateTime.Compare(latestCalculate5Minute, DateTime.Now.AddSeconds(-40)) < 0)
                     {
-                        // ok
-                        // calculate and add to database
-                        objDataValue = new data_value();
-                        // station status
-                        objDataValue.module_Door = listDataValue[0].module_Door;
-                        objDataValue.module_Fire = listDataValue[0].module_Fire;
-                        objDataValue.module_Flow = listDataValue[0].module_Flow;
-                        objDataValue.module_Humidity = listDataValue[0].module_Humidity;
-                        objDataValue.module_Power = listDataValue[0].module_Power;
-                        objDataValue.module_PumpLAM = listDataValue[0].module_PumpLAM;
-                        objDataValue.module_PumpLFLT = listDataValue[0].module_PumpLFLT;
-                        objDataValue.module_PumpLRS = listDataValue[0].module_PumpLRS;
-                        objDataValue.module_PumpRAM = listDataValue[0].module_PumpRAM;
-                        objDataValue.module_PumpRFLT = listDataValue[0].module_PumpRFLT;
-                        objDataValue.module_PumpRRS = listDataValue[0].module_PumpRRS;
-                        objDataValue.module_air1 = listDataValue[0].module_air1;
-                        objDataValue.module_air2 = listDataValue[0].module_air2;
-                        objDataValue.module_cleaning = listDataValue[0].module_cleaning;
+                        return null;
+                    }
+                }
 
-                        objDataValue.module_Temperature = listDataValue[0].module_Temperature;
-                        objDataValue.module_UPS = listDataValue[0].module_UPS;
-                        // MPS
-                        objDataValue.MPS_DO = listDataValue[0].MPS_DO;
-                        objDataValue.MPS_DO_status = listDataValue[0].MPS_status;
-                        objDataValue.MPS_EC = listDataValue[0].MPS_EC;
-                        objDataValue.MPS_EC_status = listDataValue[0].MPS_status;
-                        objDataValue.MPS_ORP = listDataValue[0].MPS_ORP;
-                        objDataValue.MPS_ORP_status = listDataValue[0].MPS_status;
-                        objDataValue.MPS_pH = listDataValue[0].MPS_pH;
-                        objDataValue.MPS_pH_status = listDataValue[0].MPS_status;
-                        objDataValue.MPS_Temp = listDataValue[0].MPS_Temp;
-                        objDataValue.MPS_Temp_status = listDataValue[0].MPS_status;
-                        objDataValue.MPS_Turbidity = listDataValue[0].MPS_Turbidity;
-                        objDataValue.MPS_Turbidity_status = listDataValue[0].MPS_status;
-                        objDataValue.MPS_status = listDataValue[0].MPS_status;
-                        // TN, TOC, TP
-                        objDataValue.TN = listDataValue[0].TN;
-                        objDataValue.TN_status = listDataValue[0].TN_status;
-                        objDataValue.TOC = listDataValue[0].TOC;
-                        objDataValue.TOC_status = listDataValue[0].TOC_status;
-                        objDataValue.TP = listDataValue[0].TP;
-                        objDataValue.TP_status = listDataValue[0].TP_status;
+                int tempMinute = 0;
+                if (obj != null)
+                {
+                    tempMinute = obj.created.Minute;
+                }
+                else
+                {
+                    tempMinute = DateTime.Now.Minute;
+                }
 
-                        // water sampler
-                        objDataValue.bottle_position = listDataValue[0].bottle_position;
-                        objDataValue.door_status = listDataValue[0].door_status;
-                        objDataValue.equipment_status = listDataValue[0].equipment_status;
-                        objDataValue.refrigeration_temperature = listDataValue[0].refrigeration_temperature;
-
-                        // Time
-                        objDataValue.stored_date = listDataValue[0].stored_date;
-                        objDataValue.stored_hour = hour;
-                        objDataValue.stored_minute = (min_minute / 5) * 5;
-                        int count = listDataValue.Count;
-
-                        bool updateMPSFlag = true;
-                        bool updateTNFlag = true;
-                        bool updateTPFlag = true;
-                        bool updateTOCFlag = true;
-                        //bool updateStationStatus = true;
-                        bool updateWaterSampler = true;
-                        int countingMPSCal = 1;
-                        int countingStationStatusCal = 1;
-                        int countingTNCal = 1;
-                        int countingTPCal = 1;
-                        int countingTOCCal = 1;
-                        int countingWaterSampler = 1;
-
-                        for (int i = 1; i < count; i++)
+                data_value objDataValue = null;
+                data_value objLatest = null;
+                int status = 0;
+                if (listDataValue.Count > 0)
+                {
+                    if ((tempHour != hour) || ((tempMinute - min_minute) > 1) || isImmediatelyCalculation)
+                    {
+                        if (tempMinute % 5 == 0 || isImmediatelyCalculation)
                         {
+                            // ok
+                            // calculate and add to database
+                            objDataValue = new data_value();
+                            // station status
+                            objDataValue.module_Door = listDataValue[0].module_Door;
+                            objDataValue.module_Fire = listDataValue[0].module_Fire;
+                            objDataValue.module_Flow = listDataValue[0].module_Flow;
+                            objDataValue.module_Humidity = listDataValue[0].module_Humidity;
+                            objDataValue.module_Power = listDataValue[0].module_Power;
+                            objDataValue.module_PumpLAM = listDataValue[0].module_PumpLAM;
+                            objDataValue.module_PumpLFLT = listDataValue[0].module_PumpLFLT;
+                            objDataValue.module_PumpLRS = listDataValue[0].module_PumpLRS;
+                            objDataValue.module_PumpRAM = listDataValue[0].module_PumpRAM;
+                            objDataValue.module_PumpRFLT = listDataValue[0].module_PumpRFLT;
+                            objDataValue.module_PumpRRS = listDataValue[0].module_PumpRRS;
+                            objDataValue.module_air1 = listDataValue[0].module_air1;
+                            objDataValue.module_air2 = listDataValue[0].module_air2;
+                            objDataValue.module_cleaning = listDataValue[0].module_cleaning;
+
+                            objDataValue.module_Temperature = listDataValue[0].module_Temperature;
+                            objDataValue.module_UPS = listDataValue[0].module_UPS;
                             // MPS
+                            objDataValue.MPS_DO = listDataValue[0].MPS_DO;
+                            objDataValue.MPS_DO_status = listDataValue[0].MPS_status;
+                            objDataValue.MPS_EC = listDataValue[0].MPS_EC;
+                            objDataValue.MPS_EC_status = listDataValue[0].MPS_status;
+                            objDataValue.MPS_ORP = listDataValue[0].MPS_ORP;
+                            objDataValue.MPS_ORP_status = listDataValue[0].MPS_status;
+                            objDataValue.MPS_pH = listDataValue[0].MPS_pH;
+                            objDataValue.MPS_pH_status = listDataValue[0].MPS_status;
+                            objDataValue.MPS_Temp = listDataValue[0].MPS_Temp;
+                            objDataValue.MPS_Temp_status = listDataValue[0].MPS_status;
+                            objDataValue.MPS_Turbidity = listDataValue[0].MPS_Turbidity;
+                            objDataValue.MPS_Turbidity_status = listDataValue[0].MPS_status;
+                            objDataValue.MPS_status = listDataValue[0].MPS_status;
+                            // TN, TOC, TP
+                            objDataValue.TN = listDataValue[0].TN;
+                            objDataValue.TN_status = listDataValue[0].TN_status;
+                            objDataValue.TOC = listDataValue[0].TOC;
+                            objDataValue.TOC_status = listDataValue[0].TOC_status;
+                            objDataValue.TP = listDataValue[0].TP;
+                            objDataValue.TP_status = listDataValue[0].TP_status;
+
+                            // water sampler
+                            objDataValue.bottle_position = listDataValue[0].bottle_position;
+                            objDataValue.door_status = listDataValue[0].door_status;
+                            objDataValue.equipment_status = listDataValue[0].equipment_status;
+                            objDataValue.refrigeration_temperature = listDataValue[0].refrigeration_temperature;
+
+                            // Time
+                            objDataValue.stored_date = listDataValue[0].stored_date;
+                            objDataValue.stored_hour = hour;
+                            objDataValue.stored_minute = (min_minute / 5) * 5;
+                            int count = listDataValue.Count;
+
+                            bool updateMPSFlag = true;
+                            bool updateTNFlag = true;
+                            bool updateTPFlag = true;
+                            bool updateTOCFlag = true;
+                            //bool updateStationStatus = true;
+                            bool updateWaterSampler = true;
+                            int countingMPSCal = 1;
+                            int countingStationStatusCal = 1;
+                            int countingTNCal = 1;
+                            int countingTPCal = 1;
+                            int countingTOCCal = 1;
+                            int countingWaterSampler = 1;
+
+                            for (int i = 1; i < count; i++)
+                            {
+                                // MPS
+                                if (updateMPSFlag)
+                                {
+                                    if (listDataValue[i].MPS_status == CommonInfo.INT_STATUS_NORMAL)
+                                    {
+                                        objDataValue.MPS_DO = objDataValue.MPS_DO + listDataValue[i].MPS_DO;
+                                        objDataValue.MPS_DO_status = listDataValue[i].MPS_status;
+                                        objDataValue.MPS_EC = objDataValue.MPS_EC + listDataValue[i].MPS_EC;
+                                        objDataValue.MPS_EC_status = listDataValue[i].MPS_status;
+                                        objDataValue.MPS_ORP = objDataValue.MPS_ORP + listDataValue[i].MPS_ORP;
+                                        objDataValue.MPS_ORP_status = listDataValue[i].MPS_status;
+                                        objDataValue.MPS_pH = objDataValue.MPS_pH + listDataValue[i].MPS_pH;
+                                        objDataValue.MPS_pH_status = listDataValue[i].MPS_status;
+                                        objDataValue.MPS_Temp = objDataValue.MPS_Temp + listDataValue[i].MPS_Temp;
+                                        objDataValue.MPS_Temp_status = listDataValue[i].MPS_status;
+                                        objDataValue.MPS_Turbidity = objDataValue.MPS_Turbidity + listDataValue[i].MPS_Turbidity;
+                                        objDataValue.MPS_Turbidity_status = listDataValue[i].MPS_status;
+                                        objDataValue.MPS_status = listDataValue[i].MPS_status;
+                                        countingMPSCal++;
+                                    }
+                                    else
+                                    {
+                                        objDataValue.MPS_DO = -1;
+                                        objDataValue.MPS_DO_status = listDataValue[i].MPS_status;
+                                        objDataValue.MPS_EC = -1;
+                                        objDataValue.MPS_EC_status = listDataValue[i].MPS_status;
+                                        objDataValue.MPS_ORP = -1;
+                                        objDataValue.MPS_ORP_status = listDataValue[i].MPS_status;
+                                        objDataValue.MPS_pH = -1;
+                                        objDataValue.MPS_pH_status = listDataValue[i].MPS_status;
+                                        objDataValue.MPS_Temp = -1;
+                                        objDataValue.MPS_Temp_status = listDataValue[i].MPS_status;
+                                        objDataValue.MPS_Turbidity = -1;
+                                        objDataValue.MPS_Turbidity_status = listDataValue[i].MPS_status;
+                                        objDataValue.MPS_status = listDataValue[i].MPS_status;
+                                        updateMPSFlag = false;
+                                    }
+                                }
+
+                                // TN
+                                if (updateTNFlag)
+                                {
+                                    objDataValue.TN_status = listDataValue[i].TN_status;
+                                    if (objDataValue.TN_status == CommonInfo.INT_STATUS_NORMAL)
+                                    {
+                                        objDataValue.TN = objDataValue.TN + listDataValue[i].TN;
+                                        countingTNCal++;
+                                    }
+                                    else
+                                    {
+                                        objDataValue.TN = -1;
+                                        updateTNFlag = false;
+                                    }
+                                }
+
+                                // TP
+                                if (updateTPFlag)
+                                {
+                                    objDataValue.TP_status = listDataValue[i].TP_status;
+                                    if (objDataValue.TP_status == CommonInfo.INT_STATUS_NORMAL)
+                                    {
+                                        objDataValue.TP = objDataValue.TP + listDataValue[i].TP;
+                                        countingTPCal++;
+                                    }
+                                    else
+                                    {
+                                        objDataValue.TP = -1;
+                                        updateTPFlag = false;
+                                    }
+                                }
+                                // TOC
+                                if (updateTOCFlag)
+                                {
+                                    objDataValue.TOC_status = listDataValue[i].TOC_status;
+                                    if (objDataValue.TOC_status == CommonInfo.INT_STATUS_NORMAL)
+                                    {
+                                        objDataValue.TOC = objDataValue.TOC + listDataValue[i].TOC;
+                                        countingTOCCal++;
+                                    }
+                                    else
+                                    {
+                                        objDataValue.TOC = -1;
+                                        updateTOCFlag = false;
+                                    }
+                                }
+
+                                // Station status
+                                if (listDataValue[i].module_Temperature > 0)
+                                {
+                                    objDataValue.module_Temperature = objDataValue.module_Temperature
+                                        + listDataValue[i].module_Temperature;
+                                    objDataValue.module_Humidity = objDataValue.module_Humidity
+                                            + listDataValue[i].module_Humidity;
+                                    countingStationStatusCal++;
+                                }
+                                // Water sampler
+                                if (updateWaterSampler)
+                                {
+                                    objDataValue.equipment_status = listDataValue[i].equipment_status;
+                                    if (objDataValue.equipment_status == CommonInfo.INT_STATUS_NORMAL)
+                                    {
+                                        objDataValue.refrigeration_temperature = objDataValue.refrigeration_temperature
+                                            + listDataValue[i].refrigeration_temperature;
+                                        objDataValue.bottle_position = objDataValue.bottle_position
+                                           + listDataValue[i].bottle_position;
+                                        countingWaterSampler++;
+                                    }
+                                    else
+                                    {
+                                        objDataValue.refrigeration_temperature = -1;
+                                        objDataValue.bottle_position = -1;
+                                        updateWaterSampler = false;
+                                    }
+                                }
+                            }
                             if (updateMPSFlag)
                             {
-                                if (listDataValue[i].MPS_status == CommonInfo.INT_STATUS_NORMAL)
-                                {
-                                    objDataValue.MPS_DO = objDataValue.MPS_DO + listDataValue[i].MPS_DO;
-                                    objDataValue.MPS_DO_status = listDataValue[i].MPS_status;
-                                    objDataValue.MPS_EC = objDataValue.MPS_EC + listDataValue[i].MPS_EC;
-                                    objDataValue.MPS_EC_status = listDataValue[i].MPS_status;
-                                    objDataValue.MPS_ORP = objDataValue.MPS_ORP + listDataValue[i].MPS_ORP;
-                                    objDataValue.MPS_ORP_status = listDataValue[i].MPS_status;
-                                    objDataValue.MPS_pH = objDataValue.MPS_pH + listDataValue[i].MPS_pH;
-                                    objDataValue.MPS_pH_status = listDataValue[i].MPS_status;
-                                    objDataValue.MPS_Temp = objDataValue.MPS_Temp + listDataValue[i].MPS_Temp;
-                                    objDataValue.MPS_Temp_status = listDataValue[i].MPS_status;
-                                    objDataValue.MPS_Turbidity = objDataValue.MPS_Turbidity + listDataValue[i].MPS_Turbidity;
-                                    objDataValue.MPS_Turbidity_status = listDataValue[i].MPS_status;
-                                    objDataValue.MPS_status = listDataValue[i].MPS_status;
-                                    countingMPSCal++;
-                                }
-                                else
-                                {
-                                    objDataValue.MPS_DO = -1;
-                                    objDataValue.MPS_DO_status = listDataValue[i].MPS_status;
-                                    objDataValue.MPS_EC = -1;
-                                    objDataValue.MPS_EC_status = listDataValue[i].MPS_status;
-                                    objDataValue.MPS_ORP = -1;
-                                    objDataValue.MPS_ORP_status = listDataValue[i].MPS_status;
-                                    objDataValue.MPS_pH = -1;
-                                    objDataValue.MPS_pH_status = listDataValue[i].MPS_status;
-                                    objDataValue.MPS_Temp = -1;
-                                    objDataValue.MPS_Temp_status = listDataValue[i].MPS_status;
-                                    objDataValue.MPS_Turbidity = -1;
-                                    objDataValue.MPS_Turbidity_status = listDataValue[i].MPS_status;
-                                    objDataValue.MPS_status = listDataValue[i].MPS_status;
-                                    updateMPSFlag = false;
-                                }
+                                objDataValue.MPS_DO = (double)objDataValue.MPS_DO / (double)countingMPSCal;
+                                objDataValue.MPS_EC = (double)objDataValue.MPS_EC / (double)countingMPSCal;
+                                objDataValue.MPS_ORP = (double)objDataValue.MPS_ORP / (double)countingMPSCal;
+                                objDataValue.MPS_pH = (double)objDataValue.MPS_pH / (double)countingMPSCal;
+                                objDataValue.MPS_Temp = (double)objDataValue.MPS_Temp / (double)countingMPSCal;
+                                objDataValue.MPS_Turbidity = (double)objDataValue.MPS_Turbidity / (double)countingMPSCal;
                             }
-
-                            // TN
                             if (updateTNFlag)
                             {
-                                objDataValue.TN_status = listDataValue[i].TN_status;
-                                if (objDataValue.TN_status == CommonInfo.INT_STATUS_NORMAL)
-                                {
-                                    objDataValue.TN = objDataValue.TN + listDataValue[i].TN;
-                                    countingTNCal++;
-                                }
-                                else
-                                {
-                                    objDataValue.TN = -1;
-                                    updateTNFlag = false;
-                                }
+                                objDataValue.TN = (double)objDataValue.TN / (double)countingTNCal;
                             }
-
-                            // TP
                             if (updateTPFlag)
                             {
-                                objDataValue.TP_status = listDataValue[i].TP_status;
-                                if (objDataValue.TP_status == CommonInfo.INT_STATUS_NORMAL)
-                                {
-                                    objDataValue.TP = objDataValue.TP + listDataValue[i].TP;
-                                    countingTPCal++;
-                                }
-                                else
-                                {
-                                    objDataValue.TP = -1;
-                                    updateTPFlag = false;
-                                }
+                                objDataValue.TP = (double)objDataValue.TP / (double)countingTPCal;
                             }
-                            // TOC
                             if (updateTOCFlag)
                             {
-                                objDataValue.TOC_status = listDataValue[i].TOC_status;
-                                if (objDataValue.TOC_status == CommonInfo.INT_STATUS_NORMAL)
-                                {
-                                    objDataValue.TOC = objDataValue.TOC + listDataValue[i].TOC;
-                                    countingTOCCal++;
-                                }
-                                else
-                                {
-                                    objDataValue.TOC = -1;
-                                    updateTOCFlag = false;
-                                }
-                            }
-
-                            // Station status
-                            if (listDataValue[i].module_Temperature > 0)
+                                objDataValue.TOC = (double)objDataValue.TOC / (double)countingTOCCal;
+                            }// Station status
+                            if (objDataValue.module_Temperature > 0)
                             {
-                                objDataValue.module_Temperature = objDataValue.module_Temperature
-                                    + listDataValue[i].module_Temperature;
-                                objDataValue.module_Humidity = objDataValue.module_Humidity
-                                        + listDataValue[i].module_Humidity;
-                                countingStationStatusCal++;
+                                objDataValue.module_Temperature = (double)objDataValue.module_Temperature / (double)countingStationStatusCal;
+                                objDataValue.module_Humidity = (double)objDataValue.module_Humidity / (double)countingStationStatusCal;
                             }
-                            // Water sampler
                             if (updateWaterSampler)
                             {
-                                objDataValue.equipment_status = listDataValue[i].equipment_status;
-                                if (objDataValue.equipment_status == CommonInfo.INT_STATUS_NORMAL)
-                                {
-                                    objDataValue.refrigeration_temperature = objDataValue.refrigeration_temperature
-                                        + listDataValue[i].refrigeration_temperature;
-                                    objDataValue.bottle_position = objDataValue.bottle_position
-                                       + listDataValue[i].bottle_position;
-                                    countingWaterSampler++;
-                                }
-                                else
-                                {
-                                    objDataValue.refrigeration_temperature = -1;
-                                    objDataValue.bottle_position = -1;
-                                    updateWaterSampler = false;
-                                }
+                                objDataValue.refrigeration_temperature = (double)objDataValue.refrigeration_temperature
+                                         / (double)countingWaterSampler;
+                                objDataValue.bottle_position = objDataValue.bottle_position
+                                   / countingWaterSampler;
                             }
-                        }
-                        if (updateMPSFlag)
-                        {
-                            objDataValue.MPS_DO = (double)objDataValue.MPS_DO / (double)countingMPSCal;
-                            objDataValue.MPS_EC = (double)objDataValue.MPS_EC / (double)countingMPSCal;
-                            objDataValue.MPS_ORP = (double)objDataValue.MPS_ORP / (double)countingMPSCal;
-                            objDataValue.MPS_pH = (double)objDataValue.MPS_pH / (double)countingMPSCal;
-                            objDataValue.MPS_Temp = (double)objDataValue.MPS_Temp / (double)countingMPSCal;
-                            objDataValue.MPS_Turbidity = (double)objDataValue.MPS_Turbidity / (double)countingMPSCal;
-                        }
-                        if (updateTNFlag)
-                        {
-                            objDataValue.TN = (double)objDataValue.TN / (double)countingTNCal;
-                        }
-                        if (updateTPFlag)
-                        {
-                            objDataValue.TP = (double)objDataValue.TP / (double)countingTPCal;
-                        }
-                        if (updateTOCFlag)
-                        {
-                            objDataValue.TOC = (double)objDataValue.TOC / (double)countingTOCCal;
-                        }// Station status
-                        if (objDataValue.module_Temperature > 0)
-                        {
-                            objDataValue.module_Temperature = (double)objDataValue.module_Temperature / (double)countingStationStatusCal;
-                            objDataValue.module_Humidity = (double)objDataValue.module_Humidity / (double)countingStationStatusCal;
-                        }
-                        if (updateWaterSampler)
-                        {
-                            objDataValue.refrigeration_temperature = (double)objDataValue.refrigeration_temperature
-                                     / (double)countingWaterSampler;
-                            objDataValue.bottle_position = objDataValue.bottle_position
-                               / countingWaterSampler;
-                        }
-                        frmNewMain main = new frmNewMain();
-                        // get latest to check before add
-                        objLatest = new data_5minute_value_repository().get_latest_info();
-                        if (objLatest != null &&
-                            objLatest.created.Date == objDataValue.created.Date &&
-                            objLatest.created.Month == objDataValue.created.Month &&
-                            objLatest.created.Year == objDataValue.created.Year &&
-                            objLatest.stored_hour == objDataValue.stored_hour &&
-                            objLatest.stored_minute == objDataValue.stored_minute)
-                        {
-                            // update to
-                            // MPS
+                            frmNewMain main = new frmNewMain();
+                            // get latest to check before add
+                            objLatest = new data_5minute_value_repository().get_latest_info();
+                            if (objLatest != null &&
+                                objLatest.created.Date == objDataValue.created.Date &&
+                                objLatest.created.Month == objDataValue.created.Month &&
+                                objLatest.created.Year == objDataValue.created.Year &&
+                                objLatest.stored_hour == objDataValue.stored_hour &&
+                                objLatest.stored_minute == objDataValue.stored_minute)
+                            {
+                                // update to
+                                // MPS
 
-                            if (objLatest.MPS_status == CommonInfo.INT_STATUS_NORMAL &&
-                                objDataValue.MPS_status == CommonInfo.INT_STATUS_NORMAL)
-                            {
-                                objLatest.MPS_DO = (objLatest.MPS_DO + objDataValue.MPS_DO) / 2;
-                                objLatest.MPS_DO_status = objDataValue.MPS_status;
-                                objLatest.MPS_EC = (objLatest.MPS_EC + objDataValue.MPS_EC) / 2;
-                                objLatest.MPS_EC_status = objDataValue.MPS_status;
-                                objLatest.MPS_ORP = (objLatest.MPS_ORP + objDataValue.MPS_ORP) / 2;
-                                objLatest.MPS_ORP_status = objDataValue.MPS_status;
-                                objLatest.MPS_pH = (objLatest.MPS_pH + objDataValue.MPS_pH) / 2;
-                                objLatest.MPS_pH_status = objDataValue.MPS_status;
-                                objLatest.MPS_Temp = (objLatest.MPS_Temp + objDataValue.MPS_Temp) / 2;
-                                objLatest.MPS_Temp_status = objDataValue.MPS_status;
-                                objLatest.MPS_Turbidity = (objLatest.MPS_Turbidity + objDataValue.MPS_Turbidity) / 2;
-                                objLatest.MPS_Turbidity_status = objDataValue.MPS_status;
-                                objLatest.MPS_status = objDataValue.MPS_status;
-                            }
-                            else
-                            {
-                                objLatest.MPS_DO = -1;
-                                objLatest.MPS_DO_status = objLatest.MPS_status;
-                                objLatest.MPS_EC = -1;
-                                objLatest.MPS_EC_status = objLatest.MPS_status;
-                                objLatest.MPS_ORP = -1;
-                                objLatest.MPS_ORP_status = objLatest.MPS_status;
-                                objLatest.MPS_pH = -1;
-                                objLatest.MPS_pH_status = objLatest.MPS_status;
-                                objLatest.MPS_Temp = -1;
-                                objLatest.MPS_Temp_status = objLatest.MPS_status;
-                                objLatest.MPS_Turbidity = -1;
-                                objLatest.MPS_Turbidity_status = objLatest.MPS_status;
-                                objLatest.MPS_status = objLatest.MPS_status;
-                                if (objDataValue.MPS_status != CommonInfo.INT_STATUS_NORMAL)
+                                if (objLatest.MPS_status == CommonInfo.INT_STATUS_NORMAL &&
+                                    objDataValue.MPS_status == CommonInfo.INT_STATUS_NORMAL)
                                 {
+                                    objLatest.MPS_DO = (objLatest.MPS_DO + objDataValue.MPS_DO) / 2;
                                     objLatest.MPS_DO_status = objDataValue.MPS_status;
+                                    objLatest.MPS_EC = (objLatest.MPS_EC + objDataValue.MPS_EC) / 2;
                                     objLatest.MPS_EC_status = objDataValue.MPS_status;
+                                    objLatest.MPS_ORP = (objLatest.MPS_ORP + objDataValue.MPS_ORP) / 2;
                                     objLatest.MPS_ORP_status = objDataValue.MPS_status;
+                                    objLatest.MPS_pH = (objLatest.MPS_pH + objDataValue.MPS_pH) / 2;
                                     objLatest.MPS_pH_status = objDataValue.MPS_status;
+                                    objLatest.MPS_Temp = (objLatest.MPS_Temp + objDataValue.MPS_Temp) / 2;
                                     objLatest.MPS_Temp_status = objDataValue.MPS_status;
+                                    objLatest.MPS_Turbidity = (objLatest.MPS_Turbidity + objDataValue.MPS_Turbidity) / 2;
                                     objLatest.MPS_Turbidity_status = objDataValue.MPS_status;
                                     objLatest.MPS_status = objDataValue.MPS_status;
                                 }
-
-                            }
-                            // TN
-                            if (objDataValue.TN_status == CommonInfo.INT_STATUS_NORMAL &&
-                                objLatest.TN_status == CommonInfo.INT_STATUS_NORMAL)
-                            {
-                                objLatest.TN = (objDataValue.TN + objLatest.TN) / 2;
-                            }
-                            else
-                            {
-                                objLatest.TN = -1;
-                                if (objDataValue.TN_status != CommonInfo.INT_STATUS_NORMAL)
+                                else
                                 {
-                                    objLatest.TN_status = objDataValue.TN_status;
+                                    objLatest.MPS_DO = -1;
+                                    objLatest.MPS_DO_status = objLatest.MPS_status;
+                                    objLatest.MPS_EC = -1;
+                                    objLatest.MPS_EC_status = objLatest.MPS_status;
+                                    objLatest.MPS_ORP = -1;
+                                    objLatest.MPS_ORP_status = objLatest.MPS_status;
+                                    objLatest.MPS_pH = -1;
+                                    objLatest.MPS_pH_status = objLatest.MPS_status;
+                                    objLatest.MPS_Temp = -1;
+                                    objLatest.MPS_Temp_status = objLatest.MPS_status;
+                                    objLatest.MPS_Turbidity = -1;
+                                    objLatest.MPS_Turbidity_status = objLatest.MPS_status;
+                                    objLatest.MPS_status = objLatest.MPS_status;
+                                    if (objDataValue.MPS_status != CommonInfo.INT_STATUS_NORMAL)
+                                    {
+                                        objLatest.MPS_DO_status = objDataValue.MPS_status;
+                                        objLatest.MPS_EC_status = objDataValue.MPS_status;
+                                        objLatest.MPS_ORP_status = objDataValue.MPS_status;
+                                        objLatest.MPS_pH_status = objDataValue.MPS_status;
+                                        objLatest.MPS_Temp_status = objDataValue.MPS_status;
+                                        objLatest.MPS_Turbidity_status = objDataValue.MPS_status;
+                                        objLatest.MPS_status = objDataValue.MPS_status;
+                                    }
+
                                 }
-                            }
-
-
-                            // TP
-                            if (objDataValue.TP_status == CommonInfo.INT_STATUS_NORMAL &&
-                                objLatest.TP_status == CommonInfo.INT_STATUS_NORMAL)
-                            {
-                                objLatest.TP = (objDataValue.TP + objLatest.TP) / 2;
-                            }
-                            else
-                            {
-                                objLatest.TP = -1;
-                                if (objDataValue.TP_status != CommonInfo.INT_STATUS_NORMAL)
+                                // TN
+                                if (objDataValue.TN_status == CommonInfo.INT_STATUS_NORMAL &&
+                                    objLatest.TN_status == CommonInfo.INT_STATUS_NORMAL)
                                 {
-                                    objLatest.TP_status = objDataValue.TP_status;
+                                    objLatest.TN = (objDataValue.TN + objLatest.TN) / 2;
                                 }
-                            }
-                            // TOC
-                            if (objDataValue.TOC_status == CommonInfo.INT_STATUS_NORMAL &&
-                                objLatest.TOC_status == CommonInfo.INT_STATUS_NORMAL)
-                            {
-                                objLatest.TOC = (objDataValue.TOC + objLatest.TOC) / 2;
-                            }
-                            else
-                            {
-                                objLatest.TOC = -1;
-                                if (objDataValue.TOC_status != CommonInfo.INT_STATUS_NORMAL)
+                                else
                                 {
-                                    objLatest.TOC_status = objDataValue.TOC_status;
-                                }
-                            }
-
-                            // Station status
-                            if (objLatest.module_Temperature > 0 && objDataValue.module_Temperature > 0)
-                            {
-                                objLatest.module_Temperature = (objDataValue.module_Temperature
-                                    + objLatest.module_Temperature) / 2;
-                                objLatest.module_Humidity = (objDataValue.module_Humidity
-                                        + objLatest.module_Humidity) / 2;
-                            }
-                            // Water sampler
-
-
-                            if (objDataValue.equipment_status == CommonInfo.INT_STATUS_NORMAL &&
-                                objLatest.equipment_status == CommonInfo.INT_STATUS_NORMAL)
-                            {
-                                objLatest.refrigeration_temperature = (objDataValue.refrigeration_temperature
-                                    + objLatest.refrigeration_temperature) / 2;
-                                objLatest.bottle_position = (objDataValue.bottle_position
-                                   + objLatest.bottle_position) / 2;
-                            }
-                            else
-                            {
-                                objLatest.refrigeration_temperature = -1;
-                                objLatest.bottle_position = -1;
-                                if (objDataValue.equipment_status != CommonInfo.INT_STATUS_NORMAL)
-                                {
-                                    objLatest.equipment_status = objDataValue.equipment_status;
+                                    objLatest.TN = -1;
+                                    if (objDataValue.TN_status != CommonInfo.INT_STATUS_NORMAL)
+                                    {
+                                        objLatest.TN_status = objDataValue.TN_status;
+                                    }
                                 }
 
-                            }
-                            ///
-                            setting_repository s = new setting_repository();
-                            int id = s.get_id_by_key("lasted_push");
-                            DateTime lastedPush = s.get_datetime_by_id(id);
-                            
-                            /// Send File ftp			
-                            if (main.ManualFTP(lastedPush, DateTime.Now) && main.FTP(objLatest))
-                            {
-                                objLatest.push = 1;
-                                objLatest.push_time = DateTime.Now;
-                                //setting_repository setre = new setting_repository();
-                                setting set = new setting();
-                                set.setting_key = "lasted_push";
-                                set.setting_type = "";
-                                set.setting_value = "";
-                                set.note = "";
-                                set.setting_datetime = objLatest.created;
-                                //int id = setre.get_id_by_key("lasted_push");
-                                s.update_with_id(ref set, id);
+
+                                // TP
+                                if (objDataValue.TP_status == CommonInfo.INT_STATUS_NORMAL &&
+                                    objLatest.TP_status == CommonInfo.INT_STATUS_NORMAL)
+                                {
+                                    objLatest.TP = (objDataValue.TP + objLatest.TP) / 2;
+                                }
+                                else
+                                {
+                                    objLatest.TP = -1;
+                                    if (objDataValue.TP_status != CommonInfo.INT_STATUS_NORMAL)
+                                    {
+                                        objLatest.TP_status = objDataValue.TP_status;
+                                    }
+                                }
+                                // TOC
+                                if (objDataValue.TOC_status == CommonInfo.INT_STATUS_NORMAL &&
+                                    objLatest.TOC_status == CommonInfo.INT_STATUS_NORMAL)
+                                {
+                                    objLatest.TOC = (objDataValue.TOC + objLatest.TOC) / 2;
+                                }
+                                else
+                                {
+                                    objLatest.TOC = -1;
+                                    if (objDataValue.TOC_status != CommonInfo.INT_STATUS_NORMAL)
+                                    {
+                                        objLatest.TOC_status = objDataValue.TOC_status;
+                                    }
+                                }
+
+                                // Station status
+                                if (objLatest.module_Temperature > 0 && objDataValue.module_Temperature > 0)
+                                {
+                                    objLatest.module_Temperature = (objDataValue.module_Temperature
+                                        + objLatest.module_Temperature) / 2;
+                                    objLatest.module_Humidity = (objDataValue.module_Humidity
+                                            + objLatest.module_Humidity) / 2;
+                                }
+                                // Water sampler
+
+
+                                if (objDataValue.equipment_status == CommonInfo.INT_STATUS_NORMAL &&
+                                    objLatest.equipment_status == CommonInfo.INT_STATUS_NORMAL)
+                                {
+                                    objLatest.refrigeration_temperature = (objDataValue.refrigeration_temperature
+                                        + objLatest.refrigeration_temperature) / 2;
+                                    objLatest.bottle_position = (objDataValue.bottle_position
+                                       + objLatest.bottle_position) / 2;
+                                }
+                                else
+                                {
+                                    objLatest.refrigeration_temperature = -1;
+                                    objLatest.bottle_position = -1;
+                                    if (objDataValue.equipment_status != CommonInfo.INT_STATUS_NORMAL)
+                                    {
+                                        objLatest.equipment_status = objDataValue.equipment_status;
+                                    }
+
+                                }
+                                ///
+                                setting_repository s = new setting_repository();
+                                int id = s.get_id_by_key("lasted_push");
+                                DateTime lastedPush = s.get_datetime_by_id(id);
+
+                                /// Send File ftp			
+                                if (
+                                    //main.ManualFTP(lastedPush, DateTime.Now) && 
+                                    main.FTP(objLatest))
+                                {
+                                    objLatest.push = 1;
+                                    objLatest.push_time = DateTime.Now;
+                                    ////setting_repository setre = new setting_repository();
+                                    //setting set = new setting();
+                                    //set.setting_key = "lasted_push";
+                                    //set.setting_type = "";
+                                    //set.setting_value = "";
+                                    //set.note = "";
+                                    //set.setting_datetime = objLatest.created;
+                                    ////int id = setre.get_id_by_key("lasted_push");
+                                    //s.update_with_id(ref set, id);
+                                }
+                                else
+                                {
+                                    objLatest.push = 0;
+                                    objLatest.push_time = DateTime.Now;
+                                }
+                                ///
+                                //// save to data value table
+                                if (new data_5minute_value_repository().update(ref objLatest) > 0)
+                                {
+                                    // ok
+                                }
+                                else
+                                {
+                                    // fail
+                                }
+                                status = 1; // update
                             }
                             else
                             {
-                                objLatest.push = 0;
-                                objLatest.push_time = DateTime.Now;
+                                if (GlobalVar.isMaintenanceStatus && GlobalVar.maintenanceLog.pumping_system == 1)
+                                {
+                                    objDataValue.pumping_system_status = CommonInfo.INT_STATUS_MAINTENANCE;
+                                    //objDataValue.station_status = CommonInfo.INT_STATUS_MAINTENANCE;
+                                }
+                                ///
+                                setting_repository s = new setting_repository();
+                                int id = s.get_id_by_key("lasted_push");
+                                DateTime lastedPush = s.get_datetime_by_id(id);
+
+                                /// Send File ftp			
+                                if (
+                                    //main.ManualFTP(lastedPush, DateTime.Now) && 
+                                    main.FTP(objDataValue))
+                                {
+                                    objDataValue.push = 1;
+                                    objDataValue.push_time = DateTime.Now;
+                                    ////setting_repository setre = new setting_repository();
+                                    //setting set = new setting();
+                                    //set.setting_key = "lasted_push";
+                                    //set.setting_type = "";
+                                    //set.setting_value = "";
+                                    //set.note = "";
+                                    //set.setting_datetime = objDataValue.created;
+                                    ////int id = setre.get_id_by_key("lasted_push");
+                                    //s.update_with_id(ref set, id);
+                                }
+                                else
+                                {
+                                    objDataValue.push = 0;
+                                    objDataValue.push_time = DateTime.Now;
+                                }
+                                ///
+                                //// save to data value table
+                                if (new data_5minute_value_repository().add(ref objDataValue) > 0)
+                                {
+                                    // ok
+                                }
+                                else
+                                {
+                                    // fail
+                                }
+                                status = 2; // add
                             }
-                            ///
-                            //// save to data value table
-                            if (new data_5minute_value_repository().update(ref objLatest) > 0)
-                            {
-                                // ok
-                            }
-                            else
-                            {
-                                // fail
-                            }
-                            status = 1; // update
+                            ////// save to data value table
+                            //if (new data_5minute_value_repository().add(ref objDataValue) > 0)
+                            //{
+                            //    // ok
+                            //}
+                            //else
+                            //{
+                            //    // fail
+                            //}
+                            min_minute = tempMinute;
+                            listDataValue.Clear();
                         }
                         else
                         {
-                            if (GlobalVar.isMaintenanceStatus && GlobalVar.maintenanceLog.pumping_system == 1)
-                            {
-                                objDataValue.pumping_system_status = CommonInfo.INT_STATUS_MAINTENANCE;
-                                //objDataValue.station_status = CommonInfo.INT_STATUS_MAINTENANCE;
-                            }
-                            ///
-                            setting_repository s = new setting_repository();
-                            int id = s.get_id_by_key("lasted_push");
-                            DateTime lastedPush = s.get_datetime_by_id(id);
-
-                            /// Send File ftp			
-                            if (main.ManualFTP(lastedPush, DateTime.Now) && main.FTP(objDataValue))
-                            {
-                                objDataValue.push = 1;
-                                objDataValue.push_time = DateTime.Now;
-                                //setting_repository setre = new setting_repository();
-                                setting set = new setting();
-                                set.setting_key = "lasted_push";
-                                set.setting_type = "";
-                                set.setting_value = "";
-                                set.note = "";
-                                set.setting_datetime = objDataValue.created;
-                                //int id = setre.get_id_by_key("lasted_push");
-                                s.update_with_id(ref set, id);
-                            }
-                            else
-                            {
-                                objDataValue.push = 0;
-                                objDataValue.push_time = DateTime.Now;
-                            }
-                            ///
-                            //// save to data value table
-                            if (new data_5minute_value_repository().add(ref objDataValue) > 0)
-                            {
-                                // ok
-                            }
-                            else
-                            {
-                                // fail
-                            }
-                            status = 2; // add
+                            // add to list
                         }
-                        ////// save to data value table
-                        //if (new data_5minute_value_repository().add(ref objDataValue) > 0)
-                        //{
-                        //    // ok
-                        //}
-                        //else
-                        //{
-                        //    // fail
-                        //}
-                        min_minute = tempMinute;
-                        listDataValue.Clear();
                     }
                     else
                     {
                         // add to list
                     }
                 }
+                latestCalculate5Minute = DateTime.Now;
+                max_minute = tempMinute;
+                hour = tempHour;
+                if (obj != null)
+                {
+                    listDataValue.Add(obj);
+                }
+
+                if (status == 0)
+                {
+                    return null;
+                }
+                else if (status == 1)
+                {
+                    return objLatest;
+                }
                 else
                 {
-                    // add to list
+                    return objDataValue;
                 }
-            }
-            latestCalculate5Minute = DateTime.Now;
-            max_minute = tempMinute;
-            hour = tempHour;
-            if (obj != null)
-            {
-                listDataValue.Add(obj);
-            }
-
-            if (status == 0)
-            {
+            }catch(Exception e){
+                Console.WriteLine();
                 return null;
             }
-            else if (status == 1)
-            {
-                return objLatest;
-            }
-            else
-            {
-                return objDataValue;
-            }
-
         }
         public data_value addNewObjFor60Minute(data_value obj, bool isImmediatelyCalculation = false)
         {

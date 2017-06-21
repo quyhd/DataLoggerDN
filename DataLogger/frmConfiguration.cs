@@ -43,7 +43,7 @@ namespace DataLogger
         DataTable dt = new DataTable();
 
         module_repository _modules = new module_repository();
-        frmNewMain newMain;
+        public static frmNewMain newMain;
         public static Form1 protocol;
         public frmConfiguration()
         {
