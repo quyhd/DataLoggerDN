@@ -244,8 +244,6 @@ namespace DataLogger.Data
                             cmd.Parameters.Add(":equipment_status", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.equipment_status;
                             cmd.Parameters.Add(":created", NpgsqlTypes.NpgsqlDbType.Timestamp).Value = obj.created;
 
-                            cmd.Parameters.Add(":push", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.push;
-                            cmd.Parameters.Add(":push_time", NpgsqlTypes.NpgsqlDbType.Timestamp).Value = obj.push_time;
 
                             cmd.Parameters.Add(new NpgsqlParameter(":id", obj.id));
 

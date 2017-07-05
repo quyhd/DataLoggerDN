@@ -1153,24 +1153,49 @@ namespace WinformProtocol
                         foreach (DataRow row2 in tbcode.Rows)
                         {
                             int min_value = Convert.ToInt32(row2["min_value"]);
-                            if (Convert.ToDouble(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])])) >= min_value)
+                            //if (Convert.ToDouble(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])])) >= min_value)
+                            if(true)
                             {
                                 byte[] _code = _encoder.GetBytes(Convert.ToString(row2["code"]));
-                                //String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])])
-                                byte[] _clnnamevalue = _encoder.GetBytes(ConvertStr(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])]), 10));
-                                //byte[] _clnnamevalue = _encoder.GetBytes(ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamevalue"])]), 10));
+                                byte[] _clnnamevalue;
                                 byte[] _clnnamestatus = _encoder.GetBytes(ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamestatus"])]), 2));
-                                //strvalue = strvalue + Convert.ToString(row2["code"]);
+                                if (Convert.ToDouble(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamestatus"])])) != 0)
+                                {
+                                    _clnnamevalue = null;
+                                }
+                                else
+                                if (Convert.ToDouble(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])])) < min_value)
+                                {
+                                    _clnnamevalue = null;
+                                }
+                                else
+                                {
+                                    _clnnamevalue = _encoder.GetBytes(ConvertStr(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])]), 10));
+                                }
+
+                                //byte[] _clnnamevalue = _encoder.GetBytes(ConvertStr(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])]), 10));
+
+                                //byte[] _clnnamestatus = _encoder.GetBytes(ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamestatus"])]), 2));
+                                _clnnamevalue = null;
+
                                 code = new byte[5];
                                 _code.CopyTo(code, 0);
+
                                 //strvalue = strvalue + ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamevalue"])]), 10);
                                 clnnamevalue = new byte[10];
-                                _clnnamevalue.CopyTo(clnnamevalue, 10 - _clnnamevalue.Length);
+                                if (_clnnamevalue != null)
+                                {
+                                    _clnnamevalue.CopyTo(clnnamevalue, 10 - _clnnamevalue.Length);
+                                }
                                 //strvalue = strvalue + ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamestatus"])]), 2);
                                 clnnamestatus = new byte[2];
                                 _clnnamestatus.CopyTo(clnnamestatus, 2 - _clnnamestatus.Length);
 
                                 sql = sql.Concat(code).Concat(clnnamevalue).Concat(clnnamestatus).ToArray();
+                            }
+                            else
+                            {
+
                             }
                         }
                         lstData.Add(sql);
@@ -1232,6 +1257,10 @@ namespace WinformProtocol
                         byte[] _clnnamestatus = _encoder.GetBytes(ConvertStr(Convert.ToString(data.Rows[0][Convert.ToString(row["clnnamestatus"])]), 2));
                         byte[] _code = _encoder.GetBytes(Convert.ToString(row["code"]));
                         //strvalue = strvalue + Convert.ToString(row["code"]);
+
+
+
+
                         code = new byte[5];
                         _code.CopyTo(code, 0);
                         clnnamevalue = new byte[10];
