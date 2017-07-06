@@ -617,7 +617,7 @@
             this.panel3.Controls.Add(this.picAutoSamplerStatus);
             this.panel3.Controls.Add(this.pnbottlePosition);
             this.panel3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.panel3.Location = new System.Drawing.Point(261, 134);
+            this.panel3.Location = new System.Drawing.Point(260, 133);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(209, 283);
             this.panel3.TabIndex = 0;
@@ -1310,7 +1310,7 @@
             this.panel30.Margin = new System.Windows.Forms.Padding(10);
             this.panel30.Name = "panel30";
             this.tableLayoutPanel1.SetRowSpan(this.panel30, 2);
-            this.panel30.Size = new System.Drawing.Size(760, 546);
+            this.panel30.Size = new System.Drawing.Size(759, 545);
             this.panel30.TabIndex = 65;
             this.panel30.Paint += new System.Windows.Forms.PaintEventHandler(this.panel30_Paint);
             // 
@@ -1647,10 +1647,10 @@
             this.flowLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel1, 2);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(82, 629);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(82, 628);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(10);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1262, 88);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1262, 89);
             this.flowLayoutPanel1.TabIndex = 62;
             // 
             // backgroundWorkerMain
@@ -1662,7 +1662,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8.534489F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 91.46551F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 501F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 502F));
             this.tableLayoutPanel1.Controls.Add(this.panel24, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.pnHeader, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel21, 2, 2);
@@ -1685,9 +1685,9 @@
             this.panel24.Controls.Add(this.panel25);
             this.panel24.Controls.Add(this.pnStationStatus);
             this.panel24.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel24.Location = new System.Drawing.Point(855, 56);
+            this.panel24.Location = new System.Drawing.Point(854, 56);
             this.panel24.Name = "panel24";
-            this.panel24.Size = new System.Drawing.Size(496, 323);
+            this.panel24.Size = new System.Drawing.Size(497, 322);
             this.panel24.TabIndex = 72;
             this.panel24.Paint += new System.Windows.Forms.PaintEventHandler(this.panel24_Paint);
             // 
@@ -1745,9 +1745,9 @@
             this.panel21.Controls.Add(this.panel16);
             this.panel21.Controls.Add(this.panel29);
             this.panel21.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel21.Location = new System.Drawing.Point(855, 385);
+            this.panel21.Location = new System.Drawing.Point(854, 384);
             this.panel21.Name = "panel21";
-            this.panel21.Size = new System.Drawing.Size(496, 231);
+            this.panel21.Size = new System.Drawing.Size(497, 231);
             this.panel21.TabIndex = 71;
             // 
             // panel16

@@ -1094,6 +1094,19 @@ namespace WinformProtocol
                 return "ERROR";
             }
         }
+        public static int getNullNo(DataRow Row, DataTable mindata)
+        {
+            int i = 0;
+            foreach (DataRow data in mindata.Rows)
+            {
+                int min_value = Convert.ToInt32(data["min_value"]);
+                if (Convert.ToDouble(String.Format("{0:0.00}", Row[Convert.ToString(data["clnnamevalue"])])) >= min_value)
+                {
+                    i++;
+                }
+            }
+            return i;
+        }
         public static List<byte[]> DataDUMP(String date1, String date2, String table, String tablebinding)
         {
             DateTime dateValue;
@@ -1124,10 +1137,19 @@ namespace WinformProtocol
                     string[] strvalues = new string[data.Rows.Count];
 
                     byte[] countitem1 = new byte[2];
-                    _encoder.GetBytes(ConvertStr(tbcode.Rows.Count.ToString(), 2)).CopyTo(countitem1, 0);
+                    //_encoder.GetBytes(ConvertStr(tbcode.Rows.Count.ToString(), 2)).CopyTo(countitem1, 0);
 
                     byte[] sql = null;
 
+                    foreach (DataRow delRow in data.Rows)
+                    {
+                        if (getNullNo(delRow, tbcode) == 0)
+                        {
+                            delRow.Delete();
+                            
+                        }
+                    }
+                    data.AcceptChanges();
                     foreach (DataRow row1 in data.Rows)  // lay moi row trong data phu hop voi DUMP command
                     {
                         sql = null;
@@ -1140,6 +1162,9 @@ namespace WinformProtocol
                         measuretime = new byte[14];
                         _measuretime.CopyTo(measuretime, 0);
 
+
+                        //getNullNo(row1,tbcode);
+                        _encoder.GetBytes(ConvertStr(getNullNo(row1, tbcode).ToString(), 2)).CopyTo(countitem1, 0);
 
                         if (sql == null)
                         {
@@ -1154,7 +1179,8 @@ namespace WinformProtocol
                         {
                             int min_value = Convert.ToInt32(row2["min_value"]);
                             //if (Convert.ToDouble(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])])) >= min_value)
-                            if(true)
+                            //------------------------------------------------------------------------------------------------------
+                            if (true)
                             {
                                 byte[] _code = _encoder.GetBytes(Convert.ToString(row2["code"]));
                                 byte[] _clnnamevalue;
@@ -1173,29 +1199,42 @@ namespace WinformProtocol
                                     _clnnamevalue = _encoder.GetBytes(ConvertStr(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])]), 10));
                                 }
 
-                                //byte[] _clnnamevalue = _encoder.GetBytes(ConvertStr(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])]), 10));
-
-                                //byte[] _clnnamestatus = _encoder.GetBytes(ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamestatus"])]), 2));
-                                _clnnamevalue = null;
-
                                 code = new byte[5];
                                 _code.CopyTo(code, 0);
 
-                                //strvalue = strvalue + ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamevalue"])]), 10);
                                 clnnamevalue = new byte[10];
                                 if (_clnnamevalue != null)
                                 {
                                     _clnnamevalue.CopyTo(clnnamevalue, 10 - _clnnamevalue.Length);
                                 }
                                 //strvalue = strvalue + ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamestatus"])]), 2);
+                                //-----------------------------------------------------------
+                                //if (Convert.ToDouble(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])])) >= min_value)
+                                //if (true)
+                                //{
+                                //    byte[] _code = _encoder.GetBytes(Convert.ToString(row2["code"]));
+                                //    byte[] _clnnamevalue;
+                                //    byte[] _clnnamestatus = _encoder.GetBytes(ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamestatus"])]), 2));
+                                //    _clnnamevalue = _encoder.GetBytes(ConvertStr(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])]), 10));
+                                //    //byte[] _clnnamevalue = _encoder.GetBytes(ConvertStr(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])]), 10));
+
+                                //    //byte[] _clnnamestatus = _encoder.GetBytes(ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamestatus"])]), 2));
+                                //    //_clnnamevalue = null;
+
+                                //    code = new byte[5];
+                                //    _code.CopyTo(code, 0);
+                                //    //strvalue = strvalue + ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamevalue"])]), 10);
+                                //    clnnamevalue = new byte[10];
+                                //    if (_clnnamevalue != null)
+                                //    {
+                                //        _clnnamevalue.CopyTo(clnnamevalue, 10 - _clnnamevalue.Length);
+                                //    }
+                                //----------------------------------------------------------------------------
                                 clnnamestatus = new byte[2];
                                 _clnnamestatus.CopyTo(clnnamestatus, 2 - _clnnamestatus.Length);
 
                                 sql = sql.Concat(code).Concat(clnnamevalue).Concat(clnnamestatus).ToArray();
-                            }
-                            else
-                            {
-
+                                //----------------------------------------------------------------------------
                             }
                         }
                         lstData.Add(sql);
