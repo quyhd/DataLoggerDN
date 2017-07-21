@@ -1100,7 +1100,7 @@ namespace WinformProtocol
             foreach (DataRow data in mindata.Rows)
             {
                 int min_value = Convert.ToInt32(data["min_value"]);
-                if (Convert.ToDouble(String.Format("{0:0.00}", Row[Convert.ToString(data["clnnamevalue"])])) >= min_value)
+                if (Convert.ToDouble(String.Format("{0:0.00}", Row[Convert.ToString(data["clnnamevalue"])])) >= min_value && Convert.ToDouble(String.Format("{0:0.00}", Row[Convert.ToString(data["clnnamevalue"])])) != -1)
                 {
                     i++;
                 }
@@ -1141,15 +1141,18 @@ namespace WinformProtocol
 
                     byte[] sql = null;
 
+                    //----------------------------------------------------------------------------------------
                     foreach (DataRow delRow in data.Rows)
                     {
                         if (getNullNo(delRow, tbcode) == 0)
                         {
                             delRow.Delete();
-                            
+
                         }
                     }
                     data.AcceptChanges();
+                    //----------------------------------------------------------------------------------------
+
                     foreach (DataRow row1 in data.Rows)  // lay moi row trong data phu hop voi DUMP command
                     {
                         sql = null;
@@ -1164,7 +1167,8 @@ namespace WinformProtocol
 
 
                         //getNullNo(row1,tbcode);
-                        _encoder.GetBytes(ConvertStr(getNullNo(row1, tbcode).ToString(), 2)).CopyTo(countitem1, 0);
+                        //_encoder.GetBytes(ConvertStr(getNullNo(row1, tbcode).ToString(), 2)).CopyTo(countitem1, 0);
+                        _encoder.GetBytes(ConvertStr(tbcode.Rows.Count.ToString(), 2)).CopyTo(countitem1, 0);
 
                         if (sql == null)
                         {
@@ -1178,7 +1182,8 @@ namespace WinformProtocol
                         foreach (DataRow row2 in tbcode.Rows)
                         {
                             int min_value = Convert.ToInt32(row2["min_value"]);
-                            //if (Convert.ToDouble(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])])) >= min_value)
+                            // dk loai bo gia tri loi
+                            //if (Convert.ToDouble(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])])) >= min_value && Convert.ToDouble(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])])) != -1)
                             //------------------------------------------------------------------------------------------------------
                             if (true)
                             {
@@ -1216,10 +1221,6 @@ namespace WinformProtocol
                                 //    byte[] _clnnamevalue;
                                 //    byte[] _clnnamestatus = _encoder.GetBytes(ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamestatus"])]), 2));
                                 //    _clnnamevalue = _encoder.GetBytes(ConvertStr(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])]), 10));
-                                //    //byte[] _clnnamevalue = _encoder.GetBytes(ConvertStr(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])]), 10));
-
-                                //    //byte[] _clnnamestatus = _encoder.GetBytes(ConvertStr(Convert.ToString(row1[Convert.ToString(row2["clnnamestatus"])]), 2));
-                                //    //_clnnamevalue = null;
 
                                 //    code = new byte[5];
                                 //    _code.CopyTo(code, 0);
@@ -2172,9 +2173,11 @@ namespace WinformProtocol
             ThreadReclaim.Start();
             Int32 Port = port;
             IPAddress LocalAddr = localAddr;
+            string localHost = "0.0.0.0";
+            IPAddress _localHost = IPAddress.Parse(localHost);
             try
             {
-                listener = new TcpListener(LocalAddr, Port);
+                listener = new TcpListener(_localHost, Port);
                 listener.Start();
                 await Task.Run(() =>
                 {
@@ -2673,11 +2676,11 @@ namespace WinformProtocol
 
                                 control.AppendTextBox(Environment.NewLine + "Received: " + data, form1,0);
                                 //buffer.SubArray();
-                                //buffer.SubArray();		1926	                                //buffer.SubArray();
                                 if (((buffer[0] == 5 && datas[2].Remove(datas[2].Length - 1, 1).Equals(stationid)) || (buffer[0] == 5 && datas[2].Remove(datas[2].Length - 2, 2).Equals(stationid)) || (buffer[0] == 5 && datas[2].Equals(stationid)))
                                      || ((buffer[0] == 5 && datas[2].Remove(datas[2].Length - 1, 1).Equals(newstationid)) || (buffer[0] == 5 && datas[2].Remove(datas[2].Length - 2, 2).Equals(newstationid)) || (buffer[0] == 5 && datas[2].Equals(newstationid)))
-                                 )
-                                //if (buffer[0] == 2)
+                                 
+                                     || (true)
+                                 )                               
                                 {
                                     //String msg = "\x06";
                                     byte[] msg = new byte[] { 0x06 };
@@ -2692,12 +2695,12 @@ namespace WinformProtocol
                                     try
                                     {
                                         //buffer = new byte[BUFFER_SIZE];
-                                        control.AppendTextBox(Environment.NewLine + "DataAvailable " + nwStream.DataAvailable, form1,0);
+                                        //control.AppendTextBox(Environment.NewLine + "DataAvailable " + nwStream.DataAvailable, form1,0);
 
                                         BytesRead = nwStream.Read(buffer, 0, buffer.Length);
                                         if (BytesRead != 0)
                                         {
-                                            control.AppendTextBox(Environment.NewLine + "DataAvailable " + nwStream.DataAvailable, form1,0);
+                                            //control.AppendTextBox(Environment.NewLine + "DataAvailable " + nwStream.DataAvailable, form1,0);
                                             data = System.Text.Encoding.ASCII.GetString(buffer, 0, BytesRead);
                                             //Console.WriteLine("Received ENCRYPT : {0}", data);
                                             //sendMsg(nwStream, _privateKey);

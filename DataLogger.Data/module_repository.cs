@@ -9,8 +9,8 @@ using DataLogger.Entities;
 
 namespace DataLogger.Data
 {
-    public class module_repository: NpgsqlDBConnection
-    {     
+    public class module_repository : NpgsqlDBConnection
+    {
         #region Public procedure
 
         /// <summary>
@@ -31,15 +31,17 @@ namespace DataLogger.Data
                         string sql_command = "INSERT INTO modules ( item_name, " +
                                             " on_value, off_value, input_min, input_max," +
                                             " output_min, output_max," +
+                                            " error_min, error_max," +
                                             " module_id, channel_number, :offset)" +
                                             " VALUES (:item_name, " +
                                             " :on_value, :off_value, :input_min, :input_max," +
                                             " :output_min, :output_max," +
+                                            " :error_min, :error_max," +
                                             " :module_id, :channel_number, :off_set)";
                         sql_command += " RETURNING id;";
 
                         using (NpgsqlCommand cmd = db._conn.CreateCommand())
-                        {   
+                        {
                             cmd.CommandText = sql_command;
 
                             cmd.Parameters.Add(":item_name", NpgsqlTypes.NpgsqlDbType.Varchar).Value = obj.item_name;
@@ -53,6 +55,8 @@ namespace DataLogger.Data
                             cmd.Parameters.Add(":input_max", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.input_max;
                             cmd.Parameters.Add(":output_min", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.output_min;
                             cmd.Parameters.Add(":output_max", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.output_max;
+                            cmd.Parameters.Add(":error_min", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.error_min;
+                            cmd.Parameters.Add(":error_max", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.error_max;
                             cmd.Parameters.Add(":off_set", NpgsqlTypes.NpgsqlDbType.Double).Value = obj.off_set;
 
                             ID = Convert.ToInt32(cmd.ExecuteScalar());
@@ -99,11 +103,12 @@ namespace DataLogger.Data
                                             " on_value = :on_value, off_value =:off_value, " +
                                             " input_min = :input_min, input_max =:input_max, " +
                                             " output_min = :output_min, output_max =:output_max, " +
-                                            " channel_number =:channel_number, off_set =:off_set " +                                            
+                                            " error_min = :error_min, error_max =:error_max, " +
+                                            " channel_number =:channel_number, off_set =:off_set " +
                                             " where id = :id";
 
                         using (NpgsqlCommand cmd = db._conn.CreateCommand())
-                        {                            
+                        {
                             cmd.CommandText = sql_command;
 
                             cmd.Parameters.Add(":item_name", NpgsqlTypes.NpgsqlDbType.Varchar).Value = obj.item_name;
@@ -117,6 +122,8 @@ namespace DataLogger.Data
                             cmd.Parameters.Add(":input_max", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.input_max;
                             cmd.Parameters.Add(":output_min", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.output_min;
                             cmd.Parameters.Add(":output_max", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.output_max;
+                            cmd.Parameters.Add(":error_min", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.error_min;
+                            cmd.Parameters.Add(":error_max", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.error_max;
                             cmd.Parameters.Add(":off_set", NpgsqlTypes.NpgsqlDbType.Double).Value = obj.off_set;
                             cmd.Parameters.Add(":id", NpgsqlTypes.NpgsqlDbType.Integer).Value = obj.id;
 
@@ -132,7 +139,7 @@ namespace DataLogger.Data
                         return -1;
                     }
                 }
-                catch(NpgsqlException ex)
+                catch (NpgsqlException ex)
                 {
                     if (db != null)
                     {
@@ -144,7 +151,7 @@ namespace DataLogger.Data
             }
         }
 
-        
+
 
 
         /// <summary>
@@ -165,7 +172,7 @@ namespace DataLogger.Data
                         string sql_command = "DELETE from modules where id = " + id;
 
                         using (NpgsqlCommand cmd = db._conn.CreateCommand())
-                        {                            
+                        {
                             cmd.CommandText = sql_command;
                             result = cmd.ExecuteNonQuery() > 0;
                             db.close_connection();
@@ -201,12 +208,12 @@ namespace DataLogger.Data
             using (NpgsqlDBConnection db = new NpgsqlDBConnection())
             {
                 try
-                {   
+                {
                     if (db.open_connection())
                     {
                         string sql_command = "SELECT * FROM modules";
                         using (NpgsqlCommand cmd = db._conn.CreateCommand())
-                        {                            
+                        {
                             cmd.CommandText = sql_command;
                             NpgsqlDataReader reader = cmd.ExecuteReader();
                             while (reader.Read())
@@ -257,7 +264,7 @@ namespace DataLogger.Data
                         string sql_command = "SELECT * FROM modules WHERE id = " + id;
                         sql_command += " LIMIT 1";
                         using (NpgsqlCommand cmd = db._conn.CreateCommand())
-                        {                            
+                        {
                             cmd.CommandText = sql_command;
 
                             NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -302,7 +309,7 @@ namespace DataLogger.Data
                     module obj = null;
                     if (db.open_connection())
                     {
-                        string sql_command = "SELECT * FROM modules WHERE item_name = '" + item_name + "'";                        
+                        string sql_command = "SELECT * FROM modules WHERE item_name = '" + item_name + "'";
                         using (NpgsqlCommand cmd = db._conn.CreateCommand())
                         {
                             cmd.CommandText = sql_command;
@@ -338,7 +345,7 @@ namespace DataLogger.Data
                 { db.close_connection(); }
             }
         }
-        
+
         #endregion Public procedure
 
         #region private procedure
@@ -390,14 +397,22 @@ namespace DataLogger.Data
                     obj.output_max = Convert.ToInt32(dataReader["output_max"].ToString().Trim());
                 else
                     obj.output_max = 0;
+                if (!DBNull.Value.Equals(dataReader["error_min"]))
+                    obj.error_min = Convert.ToInt32(dataReader["error_min"].ToString().Trim());
+                else
+                    obj.error_min = 0;
+                if (!DBNull.Value.Equals(dataReader["error_max"]))
+                    obj.error_max = Convert.ToInt32(dataReader["error_max"].ToString().Trim());
+                else
+                    obj.error_max = 0;
                 if (!DBNull.Value.Equals(dataReader["off_set"]))
                     obj.off_set = Convert.ToDouble(dataReader["off_set"].ToString().Trim());
                 else
                     obj.off_set = 0;
             }
             catch (Exception ex)
-            {                
-                throw ex;             
+            {
+                throw ex;
             }
             return obj;
         }

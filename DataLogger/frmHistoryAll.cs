@@ -1298,13 +1298,13 @@ namespace DataLogger
                     tempValue = Convert.ToDouble(row.Cells["PumpLRS"].Value);
                     if (tempValue > -1)
                     {
-                        if (tempValue == 1)
+                        if (tempValue == 0)
                         {
                             row.Cells["PumpLRS"].Value = "STOP";
                             //this.picPumpingSystemLRS.Image = global::DataLogger.Properties.Resources.Stop_42x42;
                             //this.lblPumpLRS.Text = "Stop";
                         }
-                        else
+                        else if (tempValue == 1)
                         {
                             row.Cells["PumpLRS"].Value = "RUN";
                             //this.picPumpingSystemLRS.Image = global::DataLogger.Properties.Resources.Run_42x42;
@@ -1359,13 +1359,13 @@ namespace DataLogger
                     tempValue = Convert.ToDouble(row.Cells["PumpRRS"].Value);
                     if (tempValue > -1)
                     {
-                        if (tempValue == 1)
+                        if (tempValue == 0)
                         {
                             row.Cells["PumpRRS"].Value = "STOP";
                             //this.picPumpingSystemRRS.Image = global::DataLogger.Properties.Resources.Stop_42x42;
                             //this.lblPumpRRS.Text = "Stop";
                         }
-                        else
+                        else if (tempValue == 1)
                         {
                             row.Cells["PumpRRS"].Value = "RUN";
                             //this.picPumpingSystemRRS.Image = global::DataLogger.Properties.Resources.Run_42x42;

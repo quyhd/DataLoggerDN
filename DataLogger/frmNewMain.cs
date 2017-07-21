@@ -180,6 +180,16 @@ namespace DataLogger
         public static Form1 protocol;
 
         #region Form event
+        private const int CP_NOCLOSE_BUTTON = 0x200;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams myCp = base.CreateParams;
+                myCp.ClassStyle = myCp.ClassStyle | CP_NOCLOSE_BUTTON;
+                return myCp;
+            }
+        }
         public frmNewMain()
         {
             InitializeComponent();
@@ -1427,8 +1437,140 @@ namespace DataLogger
                             //objMeasuredDataGlobal.MPS_status = INT_STATUS_INSTRUMENT_ERROR;
                         }
                     }
-
+                    #region 1
+                    module_repository _modules = new module_repository();
+                    if (objMeasuredDataGlobal.MPS_status != INT_STATUS_COMMUNICATION_ERROR &&
+                        objMeasuredDataGlobal.MPS_status != INT_STATUS_INSTRUMENT_ERROR &&
+                        objMeasuredDataGlobal.MPS_status != INT_STATUS_EMPTY_SAMPLER_RESERVOIR)
+                    {
+                        int ec = getMinValueFromDatabinding("ec");
+                        if (objMeasuredDataGlobal.MPS_EC >= ec
+                                //getMinValueFromDatabinding("ec")
+                                )
+                        {
+                            module objEC = _modules.get_info_by_name("Cond");
+                            if (objMeasuredDataGlobal.MPS_EC > objEC.error_max || objMeasuredDataGlobal.MPS_EC < objEC.error_min)
+                            {
+                                txtMPSCondValue.ForeColor = Color.Red;
+                                txtEc.ForeColor = Color.Red;
+                            }
+                            else {
+                                txtMPSCondValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(160)))), ((int)(((byte)(186)))));
+                                txtEc.ForeColor = System.Drawing.Color.Black;
+                            }
+                        }
+                        else
+                        {
+                            txtMPSCondValue.Text = "Err";
+                        }
+                        int ph = getMinValueFromDatabinding("ph");
+                        if (objMeasuredDataGlobal.MPS_pH >= ph
+                            //getMinValueFromDatabinding("ph")
+                            )
+                        {
+                            module objpH = _modules.get_info_by_name("pH");
+                            if (objMeasuredDataGlobal.MPS_pH > objpH.error_max || objMeasuredDataGlobal.MPS_pH < objpH.error_min)
+                            {
+                                txtMPSpHValue.ForeColor = Color.Red;
+                                txtpH.ForeColor = Color.Red;
+                            }
+                            else
+                            {
+                                txtMPSpHValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(160)))), ((int)(((byte)(186)))));
+                                txtpH.ForeColor = System.Drawing.Color.Black;
+                            }
+                        }
+                        else
+                        {
+                            txtMPSpHValue.Text = "Err";
+                        }
+                        int Do = getMinValueFromDatabinding("do");
+                        if (objMeasuredDataGlobal.MPS_DO >= Do
+                            //getMinValueFromDatabinding("do")
+                            )
+                        {
+                            module objDo = _modules.get_info_by_name("DO");
+                            if (objMeasuredDataGlobal.MPS_DO > objDo.error_max || objMeasuredDataGlobal.MPS_DO < objDo.error_min)
+                            {
+                                txtMPSDOValue.ForeColor = Color.Red;
+                                txtDo.ForeColor = Color.Red;
+                            }
+                            else
+                            {
+                                txtMPSDOValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(160)))), ((int)(((byte)(186)))));
+                                txtDo.ForeColor = System.Drawing.Color.Black;
+                            }
+                        }
+                        else
+                        {
+                            txtMPSDOValue.Text = "Err";
+                        }
+                        int tss = getMinValueFromDatabinding("tss");
+                        if (objMeasuredDataGlobal.MPS_Turbidity >= tss
+                            //getMinValueFromDatabinding("tss")
+                            )
+                        {
+                            module objTss = _modules.get_info_by_name("Turb");
+                            if (objMeasuredDataGlobal.MPS_Turbidity > objTss.error_max || objMeasuredDataGlobal.MPS_Turbidity < objTss.error_min)
+                            {
+                                txtMPSTurbValue.ForeColor = Color.Red;
+                                txtTss.ForeColor = Color.Red;
+                            }
+                            else
+                            {
+                                txtMPSTurbValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(160)))), ((int)(((byte)(186)))));
+                                txtTss.ForeColor = System.Drawing.Color.Black;
+                            }
+                        }
+                        else
+                        {
+                            txtMPSTurbValue.Text = "Err";
+                        }
+                        int orp = getMinValueFromDatabinding("orp");
+                        if (objMeasuredDataGlobal.MPS_ORP >= orp
+                            //getMinValueFromDatabinding("orp")
+                            )
+                        {
+                            module objOrp = _modules.get_info_by_name("Orp");
+                            if (objMeasuredDataGlobal.MPS_ORP > objOrp.error_max || objMeasuredDataGlobal.MPS_ORP < objOrp.error_min)
+                            {
+                                txtMPSORPValue.ForeColor = Color.Red;
+                                txtOrp.ForeColor = Color.Red;
+                            }
+                            else {
+                                txtMPSORPValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(160)))), ((int)(((byte)(186)))));
+                                txtOrp.ForeColor = System.Drawing.Color.Black;
+                            }
+                        }
+                        else
+                        {
+                            txtMPSORPValue.Text = "Err";
+                        }
+                        int temp = getMinValueFromDatabinding("temp");
+                        if (objMeasuredDataGlobal.MPS_Temp >= temp
+                            //getMinValueFromDatabinding("temp")
+                            )
+                        {
+                            module objTemp = _modules.get_info_by_name("Temp");
+                            if (objMeasuredDataGlobal.MPS_Temp > objTemp.error_max || objMeasuredDataGlobal.MPS_Temp < objTemp.error_min)
+                            {
+                                txtMPSTempValue.ForeColor = Color.Red;
+                                txtTemp.ForeColor = Color.Red;
+                            }
+                            else
+                            {
+                                txtMPSTempValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(160)))), ((int)(((byte)(186)))));
+                                txtTemp.ForeColor = System.Drawing.Color.Black;
+                            }
+                        }
+                        else
+                        {
+                            txtMPSTempValue.Text = "Err";
+                        }
+                    }
+#endregion 1
                     updateMeasuredDataValue(objMeasuredDataGlobal);
+
                     //Reset buffer
                     MPS_buffer_counter = 0;
                     Array.Clear(MPS_receive_buffer, 0, MPS_receive_buffer.Length);
@@ -4137,71 +4279,139 @@ namespace DataLogger
             txtMPSTurbValue.Text = "---";
             txtMPSORPValue.Text = "---";
             txtMPSTempValue.Text = "---";
-            if (obj.MPS_status != INT_STATUS_COMMUNICATION_ERROR &&
-                obj.MPS_status != INT_STATUS_INSTRUMENT_ERROR &&
-                obj.MPS_status != INT_STATUS_EMPTY_SAMPLER_RESERVOIR)
+
+            module_repository _modules = new module_repository();
+            if (objMeasuredDataGlobal.MPS_status != INT_STATUS_COMMUNICATION_ERROR &&
+                objMeasuredDataGlobal.MPS_status != INT_STATUS_INSTRUMENT_ERROR &&
+                objMeasuredDataGlobal.MPS_status != INT_STATUS_EMPTY_SAMPLER_RESERVOIR)
             {
                 int ec = getMinValueFromDatabinding("ec");
-                if (obj.MPS_EC >= ec
+                if (objMeasuredDataGlobal.MPS_EC >= ec
                         //getMinValueFromDatabinding("ec")
                         )
                 {
                     txtMPSCondValue.Text = obj.MPS_EC.ToString("##0.00");
+                    module objEC = _modules.get_info_by_name("Cond");
+                    if (objMeasuredDataGlobal.MPS_EC > objEC.error_max || objMeasuredDataGlobal.MPS_EC < objEC.error_min)
+                    {
+                        txtMPSCondValue.ForeColor = Color.Red;
+                        txtEc.ForeColor = Color.Red;
+                    }
+                    else
+                    {
+                        txtMPSCondValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(160)))), ((int)(((byte)(186)))));
+                        txtEc.ForeColor = System.Drawing.Color.Black;
+                    }
                 }
                 else
                 {
                     txtMPSCondValue.Text = "Err";
                 }
                 int ph = getMinValueFromDatabinding("ph");
-                if (obj.MPS_pH >= ph
+                if (objMeasuredDataGlobal.MPS_pH >= ph
                     //getMinValueFromDatabinding("ph")
                     )
                 {
                     txtMPSpHValue.Text = obj.MPS_pH.ToString("##0.00");
+                    module objpH = _modules.get_info_by_name("pH");
+                    if (objMeasuredDataGlobal.MPS_pH > objpH.error_max || objMeasuredDataGlobal.MPS_pH < objpH.error_min)
+                    {
+                        txtMPSpHValue.ForeColor = Color.Red;
+                        txtpH.ForeColor = Color.Red;
+                    }
+                    else
+                    {
+                        txtMPSpHValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(160)))), ((int)(((byte)(186)))));
+                        txtpH.ForeColor = System.Drawing.Color.Black;
+                    }
                 }
                 else
                 {
                     txtMPSpHValue.Text = "Err";
                 }
                 int Do = getMinValueFromDatabinding("do");
-                if (obj.MPS_DO >= Do
+                if (objMeasuredDataGlobal.MPS_DO >= Do
                     //getMinValueFromDatabinding("do")
                     )
                 {
                     txtMPSDOValue.Text = obj.MPS_DO.ToString("##0.00");
+                    module objDo = _modules.get_info_by_name("DO");
+                    if (objMeasuredDataGlobal.MPS_DO > objDo.error_max || objMeasuredDataGlobal.MPS_DO < objDo.error_min)
+                    {
+                        txtMPSDOValue.ForeColor = Color.Red;
+                        txtDo.ForeColor = Color.Red;
+                    }
+                    else
+                    {
+                        txtMPSDOValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(160)))), ((int)(((byte)(186)))));
+                        txtDo.ForeColor = System.Drawing.Color.Black;
+                    }
                 }
                 else
                 {
                     txtMPSDOValue.Text = "Err";
                 }
                 int tss = getMinValueFromDatabinding("tss");
-                if (obj.MPS_Turbidity >= tss
+                if (objMeasuredDataGlobal.MPS_Turbidity >= tss
                     //getMinValueFromDatabinding("tss")
                     )
                 {
                     txtMPSTurbValue.Text = obj.MPS_Turbidity.ToString("##0.00");
+                    module objTss = _modules.get_info_by_name("Turb");
+                    if (objMeasuredDataGlobal.MPS_Turbidity > objTss.error_max || objMeasuredDataGlobal.MPS_Turbidity < objTss.error_min)
+                    {
+                        txtMPSTurbValue.ForeColor = Color.Red;
+                        txtTss.ForeColor = Color.Red;
+                    }
+                    else
+                    {
+                        txtMPSTurbValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(160)))), ((int)(((byte)(186)))));
+                        txtTss.ForeColor = System.Drawing.Color.Black;
+                    }
                 }
                 else
                 {
                     txtMPSTurbValue.Text = "Err";
                 }
                 int orp = getMinValueFromDatabinding("orp");
-                if (obj.MPS_ORP >= orp
+                if (objMeasuredDataGlobal.MPS_ORP >= orp
                     //getMinValueFromDatabinding("orp")
                     )
                 {
                     txtMPSORPValue.Text = obj.MPS_ORP.ToString("##0.00");
+                    module objOrp = _modules.get_info_by_name("Orp");
+                    if (objMeasuredDataGlobal.MPS_ORP > objOrp.error_max || objMeasuredDataGlobal.MPS_ORP < objOrp.error_min)
+                    {
+                        txtMPSORPValue.ForeColor = Color.Red;
+                        txtOrp.ForeColor = Color.Red;
+                    }
+                    else
+                    {
+                        txtMPSORPValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(160)))), ((int)(((byte)(186)))));
+                        txtOrp.ForeColor = System.Drawing.Color.Black;
+                    }
                 }
                 else
                 {
                     txtMPSORPValue.Text = "Err";
                 }
                 int temp = getMinValueFromDatabinding("temp");
-                if (obj.MPS_Temp >= temp
+                if (objMeasuredDataGlobal.MPS_Temp >= temp
                     //getMinValueFromDatabinding("temp")
                     )
                 {
                     txtMPSTempValue.Text = obj.MPS_Temp.ToString("##0.00");
+                    module objTemp = _modules.get_info_by_name("Temp");
+                    if (objMeasuredDataGlobal.MPS_Temp > objTemp.error_max || objMeasuredDataGlobal.MPS_Temp < objTemp.error_min)
+                    {
+                        txtMPSTempValue.ForeColor = Color.Red;
+                        txtTemp.ForeColor = Color.Red;
+                    }
+                    else
+                    {
+                        txtMPSTempValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(160)))), ((int)(((byte)(186)))));
+                        txtTemp.ForeColor = System.Drawing.Color.Black;
+                    }
                 }
                 else
                 {
@@ -5976,28 +6186,37 @@ namespace DataLogger
                                 setting_repository s = new setting_repository();
                                 int id = s.get_id_by_key("lasted_push");
                                 DateTime lastedPush = s.get_datetime_by_id(id);
-
-                                /// Send File ftp			
-                                if (
-                                    //main.ManualFTP(lastedPush, DateTime.Now) && 
-                                    main.FTP(objLatest))
+                                GlobalVar.stationSettings = new station_repository().get_info();
+                                /// Send File ftp	
+                                /// 
+                                if (GlobalVar.stationSettings.ftpflag == 1)
                                 {
-                                    objLatest.push = 1;
-                                    objLatest.push_time = DateTime.Now;
-                                    ////setting_repository setre = new setting_repository();
-                                    //setting set = new setting();
-                                    //set.setting_key = "lasted_push";
-                                    //set.setting_type = "";
-                                    //set.setting_value = "";
-                                    //set.note = "";
-                                    //set.setting_datetime = objLatest.created;
-                                    ////int id = setre.get_id_by_key("lasted_push");
-                                    //s.update_with_id(ref set, id);
+                                    if (
+                                        //main.ManualFTP(lastedPush, DateTime.Now) && 
+                                        main.FTP(objLatest))
+                                    {
+                                        objLatest.push = 1;
+                                        objLatest.push_time = DateTime.Now;
+                                        ////setting_repository setre = new setting_repository();
+                                        //setting set = new setting();
+                                        //set.setting_key = "lasted_push";
+                                        //set.setting_type = "";
+                                        //set.setting_value = "";
+                                        //set.note = "";
+                                        //set.setting_datetime = objLatest.created;
+                                        ////int id = setre.get_id_by_key("lasted_push");
+                                        //s.update_with_id(ref set, id);
+                                    }
+                                    else
+                                    {
+                                        objLatest.push = 0;
+                                        objLatest.push_time = DateTime.Now;
+                                    }
                                 }
                                 else
                                 {
                                     objLatest.push = 0;
-                                    objLatest.push_time = DateTime.Now;
+                                    objLatest.push_time = new DateTime();
                                 }
                                 ///
                                 //// save to data value table
@@ -6022,28 +6241,39 @@ namespace DataLogger
                                 setting_repository s = new setting_repository();
                                 int id = s.get_id_by_key("lasted_push");
                                 DateTime lastedPush = s.get_datetime_by_id(id);
-
-                                /// Send File ftp			
-                                if (
-                                    //main.ManualFTP(lastedPush, DateTime.Now) && 
-                                    main.FTP(objDataValue))
+                                GlobalVar.stationSettings = new station_repository().get_info();
+                                /// Send File ftp		
+                                /// 
+                                if (GlobalVar.stationSettings.ftpflag == 1)
                                 {
-                                    objDataValue.push = 1;
-                                    objDataValue.push_time = DateTime.Now;
-                                    ////setting_repository setre = new setting_repository();
-                                    //setting set = new setting();
-                                    //set.setting_key = "lasted_push";
-                                    //set.setting_type = "";
-                                    //set.setting_value = "";
-                                    //set.note = "";
-                                    //set.setting_datetime = objDataValue.created;
-                                    ////int id = setre.get_id_by_key("lasted_push");
-                                    //s.update_with_id(ref set, id);
+                                    if (
+                                        //main.ManualFTP(lastedPush, DateTime.Now) && 
+                                        main.FTP(objDataValue))
+                                    {
+                                        objDataValue.push = 1;
+                                        objDataValue.push_time = DateTime.Now;
+                                        ////setting_repository setre = new setting_repository();
+                                        //setting set = new setting();
+                                        //set.setting_key = "lasted_push";
+                                        //set.setting_type = "";
+                                        //set.setting_value = "";
+                                        //set.note = "";
+                                        //set.setting_datetime = objDataValue.created;
+                                        ////int id = setre.get_id_by_key("lasted_push");
+                                        //s.update_with_id(ref set, id);
+                                    }
+                                    else
+                                    {
+                                        objDataValue.push = 0;
+                                        objDataValue.push_time = DateTime.Now;
+                                    }
                                 }
                                 else
                                 {
-                                    objDataValue.push = 0;
-                                    objDataValue.push_time = DateTime.Now;
+                                    {
+                                        objDataValue.push = 0;
+                                        objDataValue.push_time = new DateTime();
+                                    }
                                 }
                                 ///
                                 //// save to data value table

@@ -85,12 +85,12 @@
             this.txtMPSTempValue = new System.Windows.Forms.TextBox();
             this.txtMPSORPValue = new System.Windows.Forms.TextBox();
             this.txtMPSpHValue = new System.Windows.Forms.TextBox();
-            this.label40 = new System.Windows.Forms.Label();
-            this.label41 = new System.Windows.Forms.Label();
-            this.label38 = new System.Windows.Forms.Label();
-            this.label39 = new System.Windows.Forms.Label();
-            this.label37 = new System.Windows.Forms.Label();
-            this.label36 = new System.Windows.Forms.Label();
+            this.txtEc = new System.Windows.Forms.Label();
+            this.txtTss = new System.Windows.Forms.Label();
+            this.txtDo = new System.Windows.Forms.Label();
+            this.txtTemp = new System.Windows.Forms.Label();
+            this.txtOrp = new System.Windows.Forms.Label();
+            this.txtpH = new System.Windows.Forms.Label();
             this.panel22 = new System.Windows.Forms.Panel();
             this.pictureBoxWater = new System.Windows.Forms.PictureBox();
             this.lblSamplerTank = new System.Windows.Forms.Label();
@@ -348,7 +348,7 @@
             this.pnLeftSide.Margin = new System.Windows.Forms.Padding(0);
             this.pnLeftSide.Name = "pnLeftSide";
             this.tableLayoutPanel1.SetRowSpan(this.pnLeftSide, 3);
-            this.pnLeftSide.Size = new System.Drawing.Size(72, 674);
+            this.pnLeftSide.Size = new System.Drawing.Size(74, 674);
             this.pnLeftSide.TabIndex = 1;
             // 
             // vprgMonthlyReport
@@ -362,7 +362,7 @@
             this.vprgMonthlyReport.Maximum = 100;
             this.vprgMonthlyReport.Minimum = 0;
             this.vprgMonthlyReport.Name = "vprgMonthlyReport";
-            this.vprgMonthlyReport.Size = new System.Drawing.Size(72, 218);
+            this.vprgMonthlyReport.Size = new System.Drawing.Size(74, 218);
             this.vprgMonthlyReport.Step = 1;
             this.vprgMonthlyReport.Style = VerticalProgressBar.Styles.Solid;
             this.vprgMonthlyReport.TabIndex = 67;
@@ -380,7 +380,7 @@
             this.btnMaintenance.Image = global::DataLogger.Properties.Resources.world_clock;
             this.btnMaintenance.Location = new System.Drawing.Point(0, 418);
             this.btnMaintenance.Name = "btnMaintenance";
-            this.btnMaintenance.Size = new System.Drawing.Size(72, 64);
+            this.btnMaintenance.Size = new System.Drawing.Size(74, 64);
             this.btnMaintenance.TabIndex = 50;
             this.btnMaintenance.UseVisualStyleBackColor = false;
             this.btnMaintenance.Click += new System.EventHandler(this.btnMaintenance_Click);
@@ -396,7 +396,7 @@
             this.btnMonthlyReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMonthlyReport.Location = new System.Drawing.Point(0, 0);
             this.btnMonthlyReport.Name = "btnMonthlyReport";
-            this.btnMonthlyReport.Size = new System.Drawing.Size(72, 70);
+            this.btnMonthlyReport.Size = new System.Drawing.Size(74, 70);
             this.btnMonthlyReport.TabIndex = 49;
             this.btnMonthlyReport.UseVisualStyleBackColor = false;
             this.btnMonthlyReport.Click += new System.EventHandler(this.btnMonthlyReport_Click);
@@ -412,7 +412,7 @@
             this.btnSetting.Image = global::DataLogger.Properties.Resources.applications_system_60x60;
             this.btnSetting.Location = new System.Drawing.Point(0, 482);
             this.btnSetting.Name = "btnSetting";
-            this.btnSetting.Size = new System.Drawing.Size(72, 64);
+            this.btnSetting.Size = new System.Drawing.Size(74, 64);
             this.btnSetting.TabIndex = 5;
             this.btnSetting.UseVisualStyleBackColor = false;
             this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
@@ -427,7 +427,7 @@
             this.btnUsers.Image = global::DataLogger.Properties.Resources.user;
             this.btnUsers.Location = new System.Drawing.Point(0, 546);
             this.btnUsers.Name = "btnUsers";
-            this.btnUsers.Size = new System.Drawing.Size(72, 64);
+            this.btnUsers.Size = new System.Drawing.Size(74, 64);
             this.btnUsers.TabIndex = 4;
             this.btnUsers.UseVisualStyleBackColor = false;
             this.btnUsers.Click += new System.EventHandler(this.btnUsers_Click);
@@ -442,7 +442,7 @@
             this.btnAllHistory.Image = global::DataLogger.Properties.Resources.maintenance;
             this.btnAllHistory.Location = new System.Drawing.Point(0, 610);
             this.btnAllHistory.Name = "btnAllHistory";
-            this.btnAllHistory.Size = new System.Drawing.Size(72, 64);
+            this.btnAllHistory.Size = new System.Drawing.Size(74, 64);
             this.btnAllHistory.TabIndex = 3;
             this.btnAllHistory.UseVisualStyleBackColor = false;
             this.btnAllHistory.Click += new System.EventHandler(this.btnAllHistory_Click);
@@ -617,7 +617,7 @@
             this.panel3.Controls.Add(this.picAutoSamplerStatus);
             this.panel3.Controls.Add(this.pnbottlePosition);
             this.panel3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.panel3.Location = new System.Drawing.Point(260, 133);
+            this.panel3.Location = new System.Drawing.Point(269, 132);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(209, 283);
             this.panel3.TabIndex = 0;
@@ -736,12 +736,12 @@
             this.panel6.Controls.Add(this.txtMPSTempValue);
             this.panel6.Controls.Add(this.txtMPSORPValue);
             this.panel6.Controls.Add(this.txtMPSpHValue);
-            this.panel6.Controls.Add(this.label40);
-            this.panel6.Controls.Add(this.label41);
-            this.panel6.Controls.Add(this.label38);
-            this.panel6.Controls.Add(this.label39);
-            this.panel6.Controls.Add(this.label37);
-            this.panel6.Controls.Add(this.label36);
+            this.panel6.Controls.Add(this.txtEc);
+            this.panel6.Controls.Add(this.txtTss);
+            this.panel6.Controls.Add(this.txtDo);
+            this.panel6.Controls.Add(this.txtTemp);
+            this.panel6.Controls.Add(this.txtOrp);
+            this.panel6.Controls.Add(this.txtpH);
             this.panel6.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel6.Location = new System.Drawing.Point(508, 46);
             this.panel6.Name = "panel6";
@@ -944,71 +944,71 @@
             this.txtMPSpHValue.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtMPSpHValue.TextChanged += new System.EventHandler(this.txtMPSpHValue_TextChanged);
             // 
-            // label40
+            // txtEc
             // 
-            this.label40.AutoSize = true;
-            this.label40.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label40.ForeColor = System.Drawing.Color.Black;
-            this.label40.Location = new System.Drawing.Point(36, 185);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(35, 19);
-            this.label40.TabIndex = 50;
-            this.label40.Text = "EC:";
+            this.txtEc.AutoSize = true;
+            this.txtEc.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtEc.ForeColor = System.Drawing.Color.Black;
+            this.txtEc.Location = new System.Drawing.Point(36, 185);
+            this.txtEc.Name = "txtEc";
+            this.txtEc.Size = new System.Drawing.Size(35, 19);
+            this.txtEc.TabIndex = 50;
+            this.txtEc.Text = "EC:";
             // 
-            // label41
+            // txtTss
             // 
-            this.label41.AutoSize = true;
-            this.label41.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label41.ForeColor = System.Drawing.Color.Black;
-            this.label41.Location = new System.Drawing.Point(29, 153);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(42, 19);
-            this.label41.TabIndex = 49;
-            this.label41.Text = "TSS:";
+            this.txtTss.AutoSize = true;
+            this.txtTss.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTss.ForeColor = System.Drawing.Color.Black;
+            this.txtTss.Location = new System.Drawing.Point(29, 153);
+            this.txtTss.Name = "txtTss";
+            this.txtTss.Size = new System.Drawing.Size(42, 19);
+            this.txtTss.TabIndex = 49;
+            this.txtTss.Text = "TSS:";
             // 
-            // label38
+            // txtDo
             // 
-            this.label38.AutoSize = true;
-            this.label38.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label38.ForeColor = System.Drawing.Color.Black;
-            this.label38.Location = new System.Drawing.Point(36, 120);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(38, 19);
-            this.label38.TabIndex = 48;
-            this.label38.Text = "DO:";
+            this.txtDo.AutoSize = true;
+            this.txtDo.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDo.ForeColor = System.Drawing.Color.Black;
+            this.txtDo.Location = new System.Drawing.Point(36, 120);
+            this.txtDo.Name = "txtDo";
+            this.txtDo.Size = new System.Drawing.Size(38, 19);
+            this.txtDo.TabIndex = 48;
+            this.txtDo.Text = "DO:";
             // 
-            // label39
+            // txtTemp
             // 
-            this.label39.AutoSize = true;
-            this.label39.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label39.ForeColor = System.Drawing.Color.Black;
-            this.label39.Location = new System.Drawing.Point(23, 88);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(51, 19);
-            this.label39.TabIndex = 47;
-            this.label39.Text = "Temp:";
+            this.txtTemp.AutoSize = true;
+            this.txtTemp.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTemp.ForeColor = System.Drawing.Color.Black;
+            this.txtTemp.Location = new System.Drawing.Point(23, 88);
+            this.txtTemp.Name = "txtTemp";
+            this.txtTemp.Size = new System.Drawing.Size(51, 19);
+            this.txtTemp.TabIndex = 47;
+            this.txtTemp.Text = "Temp:";
             // 
-            // label37
+            // txtOrp
             // 
-            this.label37.AutoSize = true;
-            this.label37.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label37.ForeColor = System.Drawing.Color.Black;
-            this.label37.Location = new System.Drawing.Point(27, 58);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(47, 19);
-            this.label37.TabIndex = 46;
-            this.label37.Text = "ORP:";
+            this.txtOrp.AutoSize = true;
+            this.txtOrp.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOrp.ForeColor = System.Drawing.Color.Black;
+            this.txtOrp.Location = new System.Drawing.Point(27, 58);
+            this.txtOrp.Name = "txtOrp";
+            this.txtOrp.Size = new System.Drawing.Size(47, 19);
+            this.txtOrp.TabIndex = 46;
+            this.txtOrp.Text = "ORP:";
             // 
-            // label36
+            // txtpH
             // 
-            this.label36.AutoSize = true;
-            this.label36.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label36.ForeColor = System.Drawing.Color.Black;
-            this.label36.Location = new System.Drawing.Point(40, 28);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(34, 19);
-            this.label36.TabIndex = 45;
-            this.label36.Text = "pH:";
+            this.txtpH.AutoSize = true;
+            this.txtpH.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtpH.ForeColor = System.Drawing.Color.Black;
+            this.txtpH.Location = new System.Drawing.Point(40, 28);
+            this.txtpH.Name = "txtpH";
+            this.txtpH.Size = new System.Drawing.Size(34, 19);
+            this.txtpH.TabIndex = 45;
+            this.txtpH.Text = "pH:";
             // 
             // panel22
             // 
@@ -1306,11 +1306,11 @@
             this.panel30.Controls.Add(this.lblDrainValve);
             this.panel30.Controls.Add(this.picDrainValue);
             this.panel30.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel30.Location = new System.Drawing.Point(82, 63);
+            this.panel30.Location = new System.Drawing.Point(84, 63);
             this.panel30.Margin = new System.Windows.Forms.Padding(10);
             this.panel30.Name = "panel30";
             this.tableLayoutPanel1.SetRowSpan(this.panel30, 2);
-            this.panel30.Size = new System.Drawing.Size(759, 545);
+            this.panel30.Size = new System.Drawing.Size(777, 543);
             this.panel30.TabIndex = 65;
             this.panel30.Paint += new System.Windows.Forms.PaintEventHandler(this.panel30_Paint);
             // 
@@ -1647,10 +1647,10 @@
             this.flowLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel1, 2);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(82, 628);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(84, 626);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(10);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1262, 89);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1260, 91);
             this.flowLayoutPanel1.TabIndex = 62;
             // 
             // backgroundWorkerMain
@@ -1662,7 +1662,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8.534489F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 91.46551F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 502F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 482F));
             this.tableLayoutPanel1.Controls.Add(this.panel24, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.pnHeader, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel21, 2, 2);
@@ -1685,9 +1685,9 @@
             this.panel24.Controls.Add(this.panel25);
             this.panel24.Controls.Add(this.pnStationStatus);
             this.panel24.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel24.Location = new System.Drawing.Point(854, 56);
+            this.panel24.Location = new System.Drawing.Point(874, 56);
             this.panel24.Name = "panel24";
-            this.panel24.Size = new System.Drawing.Size(497, 322);
+            this.panel24.Size = new System.Drawing.Size(477, 320);
             this.panel24.TabIndex = 72;
             this.panel24.Paint += new System.Windows.Forms.PaintEventHandler(this.panel24_Paint);
             // 
@@ -1745,9 +1745,9 @@
             this.panel21.Controls.Add(this.panel16);
             this.panel21.Controls.Add(this.panel29);
             this.panel21.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel21.Location = new System.Drawing.Point(854, 384);
+            this.panel21.Location = new System.Drawing.Point(874, 382);
             this.panel21.Name = "panel21";
-            this.panel21.Size = new System.Drawing.Size(497, 231);
+            this.panel21.Size = new System.Drawing.Size(477, 231);
             this.panel21.TabIndex = 71;
             // 
             // panel16
@@ -2221,12 +2221,12 @@
         public System.Windows.Forms.TextBox txtMPSTempValue;
         public System.Windows.Forms.TextBox txtMPSORPValue;
         public System.Windows.Forms.TextBox txtMPSpHValue;
-        public System.Windows.Forms.Label label40;
-        public System.Windows.Forms.Label label41;
-        public System.Windows.Forms.Label label38;
-        public System.Windows.Forms.Label label39;
-        public System.Windows.Forms.Label label37;
-        public System.Windows.Forms.Label label36;
+        public System.Windows.Forms.Label txtEc;
+        public System.Windows.Forms.Label txtTss;
+        public System.Windows.Forms.Label txtDo;
+        public System.Windows.Forms.Label txtTemp;
+        public System.Windows.Forms.Label txtOrp;
+        public System.Windows.Forms.Label txtpH;
         public System.Windows.Forms.Panel panel22;
         public System.Windows.Forms.Label lblSamplerTank;
         public System.Windows.Forms.Label lblPumpingSystem;

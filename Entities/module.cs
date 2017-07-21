@@ -17,6 +17,8 @@ namespace DataLogger.Entities
         public int input_max { get; set; }
         public int output_min { get; set; }
         public int output_max { get; set; }
+        public int error_min { get; set; }
+        public int error_max { get; set; }
         public double off_set { get; set; }
         public module()
         {
@@ -30,7 +32,9 @@ namespace DataLogger.Entities
             input_max = 0;
             output_max = 0;
             output_min = 0;
-            off_set = 0;            
+            off_set = 0;
+            error_min = 0;
+            error_max = 1000;
         }
     }
 }
