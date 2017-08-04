@@ -1183,9 +1183,9 @@ namespace WinformProtocol
                         {
                             int min_value = Convert.ToInt32(row2["min_value"]);
                             // dk loai bo gia tri loi
-                            //if (Convert.ToDouble(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])])) >= min_value && Convert.ToDouble(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])])) != -1)
+                            if (Convert.ToDouble(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])])) >= min_value && Convert.ToDouble(String.Format("{0:0.00}", row1[Convert.ToString(row2["clnnamevalue"])])) != -1)
                             //------------------------------------------------------------------------------------------------------
-                            if (true)
+                            //if (true)
                             {
                                 byte[] _code = _encoder.GetBytes(Convert.ToString(row2["code"]));
                                 byte[] _clnnamevalue;
@@ -2817,6 +2817,42 @@ namespace WinformProtocol
         /* Construct Object */
         public ftp(string hostIP, string userName, string password) { host = hostIP; user = userName; pass = password; }
 
+        public bool CreateFTPDirectory(string directory)
+        {
+
+            try
+            {
+                //create the directory
+                //FtpWebRequest requestDir = (FtpWebRequest)FtpWebRequest.Create(new Uri(directory));
+                FtpWebRequest requestDir = (FtpWebRequest)WebRequest.Create(host + "/" + directory);
+                requestDir.Method = WebRequestMethods.Ftp.MakeDirectory;
+                requestDir.Credentials = new NetworkCredential(user, pass);
+                requestDir.UsePassive = true;
+                requestDir.UseBinary = true;
+                requestDir.KeepAlive = false;
+                FtpWebResponse response = (FtpWebResponse)requestDir.GetResponse();
+                Stream ftpStream = response.GetResponseStream();
+
+                ftpStream.Close();
+                response.Close();
+
+                return true;
+            }
+            catch (WebException ex)
+            {
+                FtpWebResponse response = (FtpWebResponse)ex.Response;
+                if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable)
+                {
+                    response.Close();
+                    return true;
+                }
+                else
+                {
+                    response.Close();
+                    return false;
+                }
+            }
+        }
         /* Download File */
         public void download(string remoteFile, string localFile)
         {

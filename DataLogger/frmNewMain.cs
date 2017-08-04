@@ -2754,9 +2754,9 @@ namespace DataLogger
         {
             try
             {
-                setting_repository s = new setting_repository();
-                int id = s.get_id_by_key("lasted_push");
-                DateTime lastedPush = s.get_datetime_by_id(id);
+                push_server_repository s = new push_server_repository();
+                List<push_server> listUser = s.get_all();
+                //DateTime lastedPush = s.get_datetime_by_id(id);
                 GlobalVar.stationSettings = new station_repository().get_info();
 
                 /// Send File ftp	
@@ -2768,11 +2768,14 @@ namespace DataLogger
                         {
                             //Application.Exit(Application.OpenForms.OfType<Form1>().First());
                             //Application.OpenForms.OfType<Form1>().First().;
+                            Form1.control1.ClearTextBox(Form1.control1.getForm1fromControl, 1);
                         }
-                        Form1.control1.ClearTextBox(Form1.control1.getForm1fromControl, 1);
                         //protocol = new Form1(frmConfiguration.newMain);
-                        if (ManualFTP(lastedPush, DateTime.Now))
+                        foreach (push_server push_server in listUser)
                         {
+                            if (ManualFTP(push_server, push_server.ftp_lasted, DateTime.Now))
+                            {
+                            }
                         }
                         //protocol.Show();
                     }
@@ -2790,7 +2793,8 @@ namespace DataLogger
                 }
             }
             catch (Exception e)
-            { }
+            {
+            }
         }
         private static void requestInfor(SerialPort com)
         {
@@ -3140,7 +3144,145 @@ namespace DataLogger
             return ret;
         }
         #endregion
-
+        public Boolean iSAllMinValue(data_value data)
+        {
+            using (NpgsqlDBConnection db = new NpgsqlDBConnection())
+            {
+                try
+                {
+                    if (db.open_connection())
+                    {
+                        string sql_command1 = "SELECT * from " + "databinding";
+                        using (NpgsqlCommand cmd = db._conn.CreateCommand())
+                        {
+                            cmd.CommandText = sql_command1;
+                            NpgsqlDataReader dr;
+                            dr = cmd.ExecuteReader();
+                            DataTable tbcode = new DataTable();
+                            tbcode.Load(dr); // Load bang chua mapping cac truong
+                            int countNull = 0;
+                            foreach (DataRow row2 in tbcode.Rows)
+                            {
+                                string code = Convert.ToString(row2["code"]);
+                                int min_value = Convert.ToInt32(row2["min_value"]);
+                                switch (code)
+                                {
+                                    case "ph":
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_pH)) >= min_value && Convert.ToDouble(String.Format("{0:0.00}", data.MPS_pH)) != -1)
+                                        {
+                                        }
+                                        else
+                                        {
+                                            countNull++;
+                                        }
+                                        break;
+                                    case "ec":
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_EC)) >= min_value && Convert.ToDouble(String.Format("{0:0.00}", data.MPS_pH)) != -1)
+                                        {
+                                        }
+                                        else
+                                        {
+                                            countNull++;
+                                        }
+                                        break;
+                                    case "do":
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_DO)) >= min_value && Convert.ToDouble(String.Format("{0:0.00}", data.MPS_pH)) != -1)
+                                        {
+                                        }
+                                        else
+                                        {
+                                            countNull++;
+                                        }
+                                        break;
+                                    case "tss":
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_Turbidity)) >= min_value && Convert.ToDouble(String.Format("{0:0.00}", data.MPS_pH)) != -1)
+                                        {
+                                        }
+                                        else
+                                        {
+                                            countNull++;
+                                        }
+                                        break;
+                                    case "orp":
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_ORP)) >= min_value && Convert.ToDouble(String.Format("{0:0.00}", data.MPS_pH)) != -1)
+                                        {
+                                        }
+                                        else
+                                        {
+                                            countNull++;
+                                        }
+                                        break;
+                                    case "temp":
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_Temp)) >= min_value && Convert.ToDouble(String.Format("{0:0.00}", data.MPS_pH)) != -1)
+                                        {
+                                        }
+                                        else
+                                        {
+                                            countNull++;
+                                        }
+                                        break;
+                                    case "turbi":
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_Turbidity)) >= min_value && Convert.ToDouble(String.Format("{0:0.00}", data.MPS_pH)) != -1)
+                                        {
+                                        }
+                                        else
+                                        {
+                                            countNull++;
+                                        }
+                                        break;
+                                    case "tn":
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.TN)) >= min_value && Convert.ToDouble(String.Format("{0:0.00}", data.MPS_pH)) != -1)
+                                        {
+                                        }
+                                        else
+                                        {
+                                            countNull++;
+                                        }
+                                        break;
+                                    case "tp":
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.TP)) >= min_value && Convert.ToDouble(String.Format("{0:0.00}", data.MPS_pH)) != -1)
+                                        {
+                                        }
+                                        else
+                                        {
+                                            countNull++;
+                                        }
+                                        break;
+                                    case "toc":
+                                        if (Convert.ToDouble(String.Format("{0:0.00}", data.TOC)) >= min_value && Convert.ToDouble(String.Format("{0:0.00}", data.MPS_pH)) != -1)
+                                        {
+                                        }
+                                        else
+                                        {
+                                            countNull++;
+                                        }
+                                        break;
+                                }
+                            }
+                            if (countNull >= tbcode.Rows.Count)
+                            {
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                            db.close_connection();
+                        }
+                    }
+                    else
+                    {
+                        db.close_connection();
+                        return false;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                    return false;
+                }
+            }
+        }
         public void dataCSV(string firts, data_value data, string path, string date)
         {
             using (NpgsqlDBConnection db = new NpgsqlDBConnection())
@@ -3162,6 +3304,7 @@ namespace DataLogger
                             dr = cmd.ExecuteReader();
                             DataTable tbcode = new DataTable();
                             tbcode.Load(dr); // Load bang chua mapping cac truong
+                            int countNull = 0;
                             foreach (DataRow row2 in tbcode.Rows)
                             {
                                 string code = Convert.ToString(row2["code"]);
@@ -3174,6 +3317,7 @@ namespace DataLogger
                                             csv.Append(date + "\t" + "ph" + "\t" + String.Format("{0:0.00}", data.MPS_pH) + "\t" + "");
                                             csv.AppendLine();
                                         }
+                                        countNull++;
                                         break;
                                     case "ec":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_EC)) >= min_value)
@@ -3182,6 +3326,7 @@ namespace DataLogger
 
                                             csv.AppendLine();
                                         }
+                                        countNull++;
                                         break;
                                     case "do":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_DO)) >= min_value)
@@ -3190,6 +3335,7 @@ namespace DataLogger
 
                                             csv.AppendLine();
                                         }
+                                        countNull++;
                                         break;
                                     case "tss":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_Turbidity)) >= min_value)
@@ -3198,6 +3344,7 @@ namespace DataLogger
 
                                             csv.AppendLine();
                                         }
+                                        countNull++;
                                         break;
                                     case "orp":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_ORP)) >= min_value)
@@ -3206,6 +3353,7 @@ namespace DataLogger
 
                                             csv.AppendLine();
                                         }
+                                        countNull++;
                                         break;
                                     case "temp":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_Temp)) >= min_value)
@@ -3214,6 +3362,7 @@ namespace DataLogger
 
                                             csv.AppendLine();
                                         }
+                                        countNull++;
                                         break;
                                     case "turbi":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_Turbidity)) >= min_value)
@@ -3222,6 +3371,7 @@ namespace DataLogger
 
                                             csv.AppendLine();
                                         }
+                                        countNull++;
                                         break;
                                     case "tn":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.TN)) >= min_value)
@@ -3230,6 +3380,7 @@ namespace DataLogger
 
                                             csv.AppendLine();
                                         }
+                                        countNull++;
                                         break;
                                     case "tp":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.TP)) >= min_value)
@@ -3238,6 +3389,7 @@ namespace DataLogger
 
                                             csv.AppendLine();
                                         }
+                                        countNull++;
                                         break;
                                     case "toc":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.TOC)) >= min_value)
@@ -3246,8 +3398,13 @@ namespace DataLogger
 
                                             csv.AppendLine();
                                         }
+                                        countNull++;
                                         break;
                                 }
+                            }
+                            if (countNull >= tbcode.Rows.Count)
+                            {
+
                             }
                             using (StreamWriter swriter = new StreamWriter(path))
                             {
@@ -3268,17 +3425,20 @@ namespace DataLogger
                 }
             }
         }
-        public Boolean FTP(data_value data, DateTime datetime)
+        //update lasted value
+        public Boolean FTP(push_server push_server, data_value data, DateTime datetime)
         {
             try
             {
                 GlobalVar.stationSettings = new station_repository().get_info();
                 string stationID = GlobalVar.stationSettings.station_id;
                 string stationName = GlobalVar.stationSettings.station_name;
-                string server = GlobalVar.stationSettings.ftpserver;
-                string username = GlobalVar.stationSettings.ftpusername;
-                string password = GlobalVar.stationSettings.ftppassword;
-                string folder = GlobalVar.stationSettings.ftpfolder;
+
+                string server = push_server.ftp_ip;
+                string username = push_server.ftp_username;
+                string password = push_server.ftp_pwd;
+                string folder = push_server.ftp_folder;
+
                 String datetimeS = datetime.ToString("yyyyMMddHHmmss");
                 string date = datetimeS.Substring(0, 4) + datetimeS.Substring(4, 2) + datetimeS.Substring(6, 2) + datetimeS.Substring(8, 2) + datetimeS.Substring(10, 2) + datetimeS.Substring(12, 2);
                 //server = " \@" " + server + "\"" ;
@@ -3314,7 +3474,7 @@ namespace DataLogger
                 if (hasFolderY == false)
                 {
                     folderPathY = Path.Combine(folder, yearFolder);
-                    ftpClient.createDirectory(folderPathY);
+                    ftpClient.CreateFTPDirectory(folderPathY);
                 }
                 else
                 {
@@ -3336,7 +3496,7 @@ namespace DataLogger
                 if (hasFolderM == false)
                 {
                     folderPathM = Path.Combine(folderPathY, monthFolder);
-                    ftpClient.createDirectory(folderPathM);
+                    ftpClient.CreateFTPDirectory(folderPathM);
                 }
                 else
                 {
@@ -3358,7 +3518,7 @@ namespace DataLogger
                 if (hasFolderD == false)
                 {
                     folderPathD = Path.Combine(folderPathM, dayFolder);
-                    ftpClient.createDirectory(folderPathD);
+                    ftpClient.CreateFTPDirectory(folderPathD);
                 }
                 else
                 {
@@ -3385,26 +3545,29 @@ namespace DataLogger
                 //ftpClient.upload("/test/2017/data_report.csv", @"C:\Users\Admin\Desktop\data_report.csv");
                 string filePath = Path.Combine(folderPathD, newFileName);
                 ftpClient.upload(filePath, newFilePath);
-                Form1.control1.AppendTextBox("Manual/Success " + newFileName + Environment.NewLine, Form1.control1.getForm1fromControl,1);
+                Form1.control1.AppendTextBox("Manual/Success " + newFileName + push_server.ftp_ip + Environment.NewLine, Form1.control1.getForm1fromControl, 1);
                 return true;
             }
             catch (Exception e)
             {
-                Form1.control1.AppendTextBox("Manual/Error " + Environment.NewLine, Form1.control1.getForm1fromControl,1);
+                Form1.control1.AppendTextBox("Manual/Error " + push_server.ftp_ip + Environment.NewLine, Form1.control1.getForm1fromControl, 1);
                 return false;
             }
         }
-        public Boolean FTP(data_value data)
+        public Boolean FTP5Min(push_server push_server, data_value data)
         {
+            string newFileName = null;
             try
             {
                 GlobalVar.stationSettings = new station_repository().get_info();
                 string stationID = GlobalVar.stationSettings.station_id;
                 string stationName = GlobalVar.stationSettings.station_name;
-                string server = GlobalVar.stationSettings.ftpserver;
-                string username = GlobalVar.stationSettings.ftpusername;
-                string password = GlobalVar.stationSettings.ftppassword;
-                string folder = GlobalVar.stationSettings.ftpfolder;
+
+                string server = push_server.ftp_ip;
+                string username = push_server.ftp_username;
+                string password = push_server.ftp_pwd;
+                string folder = push_server.ftp_folder;
+
                 DateTime s = DateTime.Now;
                 String datetimeS = s.ToString("yyyyMMddHHmmss");
                 string date = datetimeS.Substring(0, 4) + datetimeS.Substring(4, 2) + datetimeS.Substring(6, 2) + datetimeS.Substring(8, 2) + datetimeS.Substring(10, 2) + datetimeS.Substring(12, 2);
@@ -3416,7 +3579,7 @@ namespace DataLogger
                 string csv = "push";
 
                 //string tempFileName = "push.txt";
-                string newFileName = stationID + "_" + stationName + "_" + date + ".txt";
+                newFileName = stationID + "_" + stationName + "_" + date + ".txt";
 
                 string yearFolder = datetimeS.Substring(0, 4);
                 string monthFolder = datetimeS.Substring(4, 2);
@@ -3441,7 +3604,7 @@ namespace DataLogger
                 if (hasFolderY == false)
                 {
                     folderPathY = Path.Combine(folder, yearFolder);
-                    ftpClient.createDirectory(folderPathY);
+                    ftpClient.CreateFTPDirectory(folderPathY);
                 }
                 else
                 {
@@ -3463,7 +3626,7 @@ namespace DataLogger
                 if (hasFolderM == false)
                 {
                     folderPathM = Path.Combine(folderPathY, monthFolder);
-                    ftpClient.createDirectory(folderPathM);
+                    ftpClient.CreateFTPDirectory(folderPathM);
                 }
                 else
                 {
@@ -3485,7 +3648,7 @@ namespace DataLogger
                 if (hasFolderD == false)
                 {
                     folderPathD = Path.Combine(folderPathM, dayFolder);
-                    ftpClient.createDirectory(folderPathD);
+                    ftpClient.CreateFTPDirectory(folderPathD);
                 }
                 else
                 {
@@ -3512,17 +3675,18 @@ namespace DataLogger
                 //ftpClient.upload("/test/2017/data_report.csv", @"C:\Users\Admin\Desktop\data_report.csv");
                 string filePath = Path.Combine(folderPathD, newFileName);
                 ftpClient.upload(filePath, newFilePath);
-                Form1.control1.AppendTextBox("Auto/Success " + newFileName + Environment.NewLine, Form1.control1.getForm1fromControl,1);
+                Form1.control1.AppendTextBox("Auto/Success " + newFileName + push_server.ftp_ip + Environment.NewLine, Form1.control1.getForm1fromControl, 1);
                 return true;
             }
             catch (Exception e)
             {
-                Form1.control1.AppendTextBox("Auto/Error" + Environment.NewLine, Form1.control1.getForm1fromControl,1);
+                Form1.control1.AppendTextBox("Auto/Error" + newFileName + push_server.ftp_ip + Environment.NewLine, Form1.control1.getForm1fromControl, 1);
                 return false;
             }
         }
-        public Boolean ManualFTP(DateTime dtpDateFrom, DateTime dtpDateTo)
+        public Boolean ManualFTP(push_server push_server, DateTime dtpDateFrom, DateTime dtpDateTo)
         {
+            WinformProtocol.Control control = new WinformProtocol.Control();
             using (NpgsqlDBConnection db = new NpgsqlDBConnection())
             {
                 try
@@ -3554,8 +3718,19 @@ namespace DataLogger
 
                             _codeListForQuery.ToArray();
                             _paramListForQuery.ToArray();
+                            //get data from db 
                             DataTable dt_source = null;
                             dt_source = db5m.get_all_custom(dtpDateFrom, dtpDateTo, _paramListForQuery);
+                            ////---------------------------------------------------------------------------------------
+                            //foreach (DataRow delRow in dt_source.Rows)
+                            //{
+                            //    if (WinformProtocol.Control.getNullNo(delRow, tbcode) == 0)
+                            //    {
+                            //        delRow.Delete();
+                            //    }
+                            //}
+                            //dt_source.AcceptChanges();
+                            ////-----------------------------------------------------------------------------------------
                             foreach (DataRow row3 in dt_source.Rows)
                             {
                                 frmNewMain newmain = new frmNewMain();
@@ -3564,8 +3739,10 @@ namespace DataLogger
                                 //Type listType = typeof(string).MakeGenericType(new Type[] { elementType });
                                 //object list = Activator.CreateInstance(listType);
                                 int id = Int32.Parse(Convert.ToString(row3["id"]));
+                                int countNullParam = 0;
                                 DateTime created = (DateTime)row3["created"];
                                 data.created = created;
+
                                 for (int i = 0; i < _paramListForQuery.Count; i++)
                                 {
                                     var variable = Convert.ToDouble(String.Format("{0:0.00}", row3[_paramListForQuery[i]]));
@@ -3573,60 +3750,158 @@ namespace DataLogger
                                     switch (_codeListForQuery[i])
                                     {
                                         case "ph":
-                                            data.MPS_pH = variable;
+                                            int ph = getMinValueFromDatabinding("ph");
+                                            if (variable >= ph && variable != -1)
+                                            {
+                                                data.MPS_pH = variable;
+                                            }
+                                            else
+                                            {
+                                                countNullParam++;
+                                            }
                                             break;
                                         case "ec":
-                                            data.MPS_EC = variable;
+                                            int ec = getMinValueFromDatabinding("ec");
+                                            if (variable >= ec && variable != -1)
+                                            {
+                                                data.MPS_EC = variable;
+                                            }
+                                            else
+                                            {
+                                                countNullParam++;
+                                            }
                                             break;
                                         case "do":
-                                            data.MPS_DO = variable;
+                                            int DO = getMinValueFromDatabinding("do");
+                                            if (variable >= DO && variable != -1)
+                                            {
+                                                data.MPS_DO = variable;
+                                            }
+                                            else
+                                            {
+                                                countNullParam++;
+                                            }
                                             break;
                                         case "turbi":
-                                            data.MPS_Turbidity = variable;
+                                            int tur = getMinValueFromDatabinding("tss");
+                                            if (variable >= tur && variable != -1)
+                                            {
+                                                data.MPS_Turbidity = variable;
+                                            }
+                                            else
+                                            {
+                                                countNullParam++;
+                                            }
                                             break;
                                         case "tss":
-                                            data.MPS_Turbidity = variable;
+                                            int tss = getMinValueFromDatabinding("tss");
+                                            if (variable >= tss && variable != -1)
+                                            {
+                                                data.MPS_Turbidity = variable;
+                                            }
+                                            else
+                                            {
+                                                countNullParam++;
+                                            }
                                             break;
                                         case "orp":
-                                            data.MPS_ORP = variable;
+                                            int orp = getMinValueFromDatabinding("orp");
+                                            if (variable >= orp && variable != -1)
+                                            {
+                                                data.MPS_ORP = variable;
+                                            }
+                                            else
+                                            {
+                                                countNullParam++;
+                                            }
                                             break;
                                         case "temp":
-                                            data.MPS_Temp = variable;
+                                            int temp = getMinValueFromDatabinding("temp");
+                                            if (variable >= temp && variable != -1)
+                                            {
+                                                data.MPS_Temp = variable;
+                                            }
+                                            else
+                                            {
+                                                countNullParam++;
+                                            }
                                             break;
                                         case "tn":
-                                            data.TN = variable;
+                                            int tn = getMinValueFromDatabinding("tn");
+                                            if (variable >= tn && variable != -1)
+                                            {
+                                                data.TN = variable;
+                                            }
+                                            else
+                                            {
+                                                countNullParam++;
+                                            }
                                             break;
                                         case "tp":
-                                            data.TP = variable;
+                                            int tp = getMinValueFromDatabinding("tp");
+                                            if (variable >= tp && variable != -1)
+                                            {
+                                                data.TP = variable;
+                                            }
+                                            else
+                                            {
+                                                countNullParam++;
+                                            }
                                             break;
                                         case "toc":
-                                            data.TOC = variable;
+                                            int toc = getMinValueFromDatabinding("toc");
+                                            if (variable >= toc && variable != -1)
+                                            {
+                                                data.TOC = variable;
+                                            }
+                                            else
+                                            {
+                                                countNullParam++;
+                                            }
                                             break;
                                     }
                                 }
-                                if (FTP(data, created))
+                                if (countNullParam >= _paramListForQuery.Count)
                                 {
-                                    db5m.updatePush(id, 1, DateTime.Now);
-                                    //control1.AppendTextLog1Box();
-                                    setting_repository s = new setting_repository();
-                                    int idLasted = s.get_id_by_key("lasted_push");
-                                    setting set = new setting();
-                                    set.setting_key = "lasted_push";
-                                    set.setting_type = "";
-                                    set.setting_value = "";
-                                    set.note = "";
-                                    set.setting_datetime = data.created;
-                                    //int id = setre.get_id_by_key("lasted_push");			
+                                    db5m.updatePush(id, 2, DateTime.Now);
+                                    push_server_repository s = new push_server_repository();
+                                    int idLasted = push_server.id;
+                                    push_server set = new push_server();
+                                    set.ftp_ip = push_server.ftp_ip;
+                                    set.ftp_username = push_server.ftp_username;
+                                    set.ftp_pwd = push_server.ftp_pwd;
+                                    set.ftp_folder = push_server.ftp_folder;
+                                    set.ftp_flag = push_server.ftp_flag;
+                                    set.ftp_lasted = data.created;
+                                    //int id = setre.get_id_by_key("lasted_push");
                                     s.update_with_id(ref set, idLasted);
                                 }
                                 else
                                 {
-                                    db5m.updatePush(id, 0, DateTime.Now);
+                                    if (FTP(push_server, data, created))
+                                    {
+                                        db5m.updatePush(id, 1, DateTime.Now);
+                                        //control1.AppendTextLog1Box();
+                                        push_server_repository s = new push_server_repository();
+                                        int idLasted = push_server.id;
+                                        push_server set = new push_server();
+                                        set.ftp_ip = push_server.ftp_ip;
+                                        set.ftp_username = push_server.ftp_username;
+                                        set.ftp_pwd = push_server.ftp_pwd;
+                                        set.ftp_folder = push_server.ftp_folder;
+                                        set.ftp_flag = push_server.ftp_flag;
+                                        set.ftp_lasted = data.created;
+                                        //int id = setre.get_id_by_key("lasted_push");
+                                        s.update_with_id(ref set, idLasted);
+                                    }
+                                    else
+                                    {
+                                        db5m.updatePush(id, 0, DateTime.Now);
+                                    }
                                 }
-
                             }
                         }
-                        Form1.control1.AppendTextBox("Lasted/Success " + "END" + Environment.NewLine, Form1.control1.getForm1fromControl,1);
+                        Form1.control1.AppendTextBox("Lasted/Success " + "END" + Environment.NewLine, Form1.control1.getForm1fromControl, 1);
                     }
                     return true;
                 }
@@ -6183,40 +6458,44 @@ namespace DataLogger
 
                                 }
                                 ///
-                                setting_repository s = new setting_repository();
-                                int id = s.get_id_by_key("lasted_push");
-                                DateTime lastedPush = s.get_datetime_by_id(id);
-                                GlobalVar.stationSettings = new station_repository().get_info();
-                                /// Send File ftp	
+                                push_server_repository s = new push_server_repository();
+                                List<push_server> listUser = s.get_all();
+                                /// Send File ftp			
                                 /// 
-                                if (GlobalVar.stationSettings.ftpflag == 1)
+                                //iSAllMinValue(objLatest);
+                                /// 
+                                /// 
+                                foreach (push_server push_server in listUser)
                                 {
-                                    if (
-                                        //main.ManualFTP(lastedPush, DateTime.Now) && 
-                                        main.FTP(objLatest))
+                                    if (push_server.ftp_flag == 1)
                                     {
-                                        objLatest.push = 1;
-                                        objLatest.push_time = DateTime.Now;
-                                        ////setting_repository setre = new setting_repository();
-                                        //setting set = new setting();
-                                        //set.setting_key = "lasted_push";
-                                        //set.setting_type = "";
-                                        //set.setting_value = "";
-                                        //set.note = "";
-                                        //set.setting_datetime = objLatest.created;
-                                        ////int id = setre.get_id_by_key("lasted_push");
-                                        //s.update_with_id(ref set, id);
+                                        if (main.iSAllMinValue(objLatest))
+                                        {
+                                            if (
+                                                //main.ManualFTP(lastedPush, DateTime.Now) && 
+                                                main.FTP5Min(push_server, objLatest))
+                                            {
+                                                objLatest.push = 1;
+                                                objLatest.push_time = DateTime.Now;
+                                            }
+                                            else
+                                            {
+                                                objLatest.push = 0;
+                                                objLatest.push_time = DateTime.Now;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            objLatest.push = 2;
+                                            objLatest.push_time = DateTime.Now;
+                                            Form1.control1.AppendTextBox("Auto/Success : Error value " + Environment.NewLine, Form1.control1.getForm1fromControl, 1);
+                                        }
                                     }
-                                    else
+                                    else if (GlobalVar.stationSettings.ftpflag == 0)
                                     {
                                         objLatest.push = 0;
-                                        objLatest.push_time = DateTime.Now;
+                                        objLatest.push_time = new DateTime();
                                     }
-                                }
-                                else
-                                {
-                                    objLatest.push = 0;
-                                    objLatest.push_time = new DateTime();
                                 }
                                 ///
                                 //// save to data value table
@@ -6238,38 +6517,37 @@ namespace DataLogger
                                     //objDataValue.station_status = CommonInfo.INT_STATUS_MAINTENANCE;
                                 }
                                 ///
-                                setting_repository s = new setting_repository();
-                                int id = s.get_id_by_key("lasted_push");
-                                DateTime lastedPush = s.get_datetime_by_id(id);
-                                GlobalVar.stationSettings = new station_repository().get_info();
-                                /// Send File ftp		
+                                push_server_repository s = new push_server_repository();
+                                List<push_server> listUser = s.get_all();
+                                /// Send File ftp	
                                 /// 
-                                if (GlobalVar.stationSettings.ftpflag == 1)
+                                foreach (push_server push_server in listUser)
                                 {
-                                    if (
-                                        //main.ManualFTP(lastedPush, DateTime.Now) && 
-                                        main.FTP(objDataValue))
+                                    if (GlobalVar.stationSettings.ftpflag == 1)
                                     {
-                                        objDataValue.push = 1;
-                                        objDataValue.push_time = DateTime.Now;
-                                        ////setting_repository setre = new setting_repository();
-                                        //setting set = new setting();
-                                        //set.setting_key = "lasted_push";
-                                        //set.setting_type = "";
-                                        //set.setting_value = "";
-                                        //set.note = "";
-                                        //set.setting_datetime = objDataValue.created;
-                                        ////int id = setre.get_id_by_key("lasted_push");
-                                        //s.update_with_id(ref set, id);
+                                        if (main.iSAllMinValue(objDataValue))
+                                        {
+                                            if (
+                                            //main.ManualFTP(lastedPush, DateTime.Now) && 
+                                            main.FTP5Min(push_server, objDataValue))
+                                            {
+                                                objDataValue.push = 1;
+                                                objDataValue.push_time = DateTime.Now;
+                                            }
+                                            else
+                                            {
+                                                objDataValue.push = 0;
+                                                objDataValue.push_time = DateTime.Now;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            objDataValue.push = 2;
+                                            objDataValue.push_time = DateTime.Now;
+                                            Form1.control1.AppendTextBox("Auto/Success : Error value " + Environment.NewLine, Form1.control1.getForm1fromControl, 1);
+                                        }
                                     }
-                                    else
-                                    {
-                                        objDataValue.push = 0;
-                                        objDataValue.push_time = DateTime.Now;
-                                    }
-                                }
-                                else
-                                {
+                                    else if (GlobalVar.stationSettings.ftpflag == 0)
                                     {
                                         objDataValue.push = 0;
                                         objDataValue.push_time = new DateTime();
