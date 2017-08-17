@@ -217,7 +217,7 @@ namespace DataLogger
             //tmrThreadingTimerFor60Minute.Change(0, 3000);
             tmrThreadingTimerFor60Minute.Change(0, 240000);
             tmrThreadingTimerForFTP = new System.Threading.Timer(new TimerCallback(tmrThreadingTimerForFTP_TimerCallback), null, 1000*60, Timeout.Infinite);
-            tmrThreadingTimerForFTP.Change(0, 1000*60*60*2);
+            tmrThreadingTimerForFTP.Change(0, 1000*60*60*24);
             //tmrThreadingTimerForFTP.Change(0, 1000);
             initConfig(true);
 
@@ -2762,7 +2762,7 @@ namespace DataLogger
                 /// Send File ftp	
                 if (GlobalVar.stationSettings != null)
                 {
-                    if (GlobalVar.stationSettings.ftpflag == 1)
+                    if (true)
                     {
                         if (Application.OpenForms.OfType<Form1>().Count() == 1)
                         {
@@ -2773,23 +2773,26 @@ namespace DataLogger
                         //protocol = new Form1(frmConfiguration.newMain);
                         foreach (push_server push_server in listUser)
                         {
-                            if (ManualFTP(push_server, push_server.ftp_lasted, DateTime.Now))
+                            if (push_server.ftp_flag == 1)
                             {
+                                if (ManualFTP(push_server, push_server.ftp_lasted, DateTime.Now))
+                                {
+                                }
                             }
                         }
                         //protocol.Show();
                     }
-                    else
-                    {
-                        Form1.control1.ClearTextBox(Form1.control1.getForm1fromControl, 1);
-                        //if (Application.OpenForms.OfType<Form1>().Count() == 1)
-                        //{
-                        //    Application.OpenForms.OfType<Form1>().First().Close();
-                        //}
+                    //else
+                    //{
+                    //    Form1.control1.ClearTextBox(Form1.control1.getForm1fromControl, 1);
+                    //    //if (Application.OpenForms.OfType<Form1>().Count() == 1)
+                    //    //{
+                    //    //    Application.OpenForms.OfType<Form1>().First().Close();
+                    //    //}
 
-                        //protocol = new Form1(frmConfiguration.newMain);
-                        //protocol.Show();
-                    }
+                    //    //protocol = new Form1(frmConfiguration.newMain);
+                    //    //protocol.Show();
+                    //}
                 }
             }
             catch (Exception e)
@@ -3018,27 +3021,38 @@ namespace DataLogger
         {
             try
             {
-                String connstring = "Server = localhost;Port = 5432; User Id = postgres;Password = 123;Database = DataLoggerDB";
-                NpgsqlConnection conn = new NpgsqlConnection(connstring);
-                conn.Open();
-                using (NpgsqlCommand cmd = conn.CreateCommand())
+                //String connstring = "Server = localhost;Port = 5432; User Id = postgres;Password = 123;Database = DataLoggerDB";
+                //NpgsqlConnection conn = new NpgsqlConnection(connstring);
+                //conn.Open();
+                using (NpgsqlDBConnection db = new NpgsqlDBConnection())
                 {
-                    string sql_command1 = "SELECT * from " + "databinding";
-                    cmd.CommandText = sql_command1;
-                    NpgsqlDataReader dr = cmd.ExecuteReader();
-                    DataTable tbcode = new DataTable();
-                    tbcode.Load(dr); // Load bang chua mapping cac truong
-                    int min_value = -1;
-                    foreach (DataRow row2 in tbcode.Rows)
+                    if (db.open_connection())
                     {
-                        if (Convert.ToString(row2["code"]).Equals(code))
+                        using (NpgsqlCommand cmd = db._conn.CreateCommand())
                         {
-                            min_value = Convert.ToInt32(row2["min_value"]);
-                            break;
+                            string sql_command1 = "SELECT * from " + "databinding";
+                            cmd.CommandText = sql_command1;
+                            NpgsqlDataReader dr = cmd.ExecuteReader();
+                            DataTable tbcode = new DataTable();
+                            tbcode.Load(dr); // Load bang chua mapping cac truong
+                            int min_value = -1;
+                            foreach (DataRow row2 in tbcode.Rows)
+                            {
+                                if (Convert.ToString(row2["code"]).Equals(code))
+                                {
+                                    min_value = Convert.ToInt32(row2["min_value"]);
+                                    break;
+                                }
+                            }
+                            db.close_connection();
+                            return min_value;
                         }
                     }
-                    conn.Close();
-                    return min_value;
+                    else
+                    {
+                        db.close_connection();
+                        return -1;
+                    }
                 }
             }
             catch (Exception e)
@@ -3290,7 +3304,16 @@ namespace DataLogger
                 try
                 {
                     var csv = new StringBuilder();
-                    csv.Append(firts + "\t" + "");
+                    GlobalVar.stationSettings = new station_repository().get_info();
+                    int type = GlobalVar.stationSettings.ftpflag;
+                    if (type == 1)
+                    {
+                        csv.Append(firts + "\t" + "Nuoc Mat");
+                    }
+                    else if (type == 2)
+                    {
+                        csv.Append(firts + "\t" + "Khi Thai");
+                    }
                     csv.AppendLine();
                     //String connstring = "Server = localhost;Port = 5432; User Id = postgres;Password = 123;Database = DataLoggerDB";
 
@@ -3431,7 +3454,7 @@ namespace DataLogger
             try
             {
                 GlobalVar.stationSettings = new station_repository().get_info();
-                string stationID = GlobalVar.stationSettings.station_id;
+                string stationID = GlobalVar.stationSettings.ftpserver;
                 string stationName = GlobalVar.stationSettings.station_name;
 
                 string server = push_server.ftp_ip;
@@ -3474,7 +3497,7 @@ namespace DataLogger
                 if (hasFolderY == false)
                 {
                     folderPathY = Path.Combine(folder, yearFolder);
-                    ftpClient.CreateFTPDirectory(folderPathY);
+                    ftpClient.createDirectory(folderPathY);
                 }
                 else
                 {
@@ -3496,7 +3519,7 @@ namespace DataLogger
                 if (hasFolderM == false)
                 {
                     folderPathM = Path.Combine(folderPathY, monthFolder);
-                    ftpClient.CreateFTPDirectory(folderPathM);
+                    ftpClient.createDirectory(folderPathM);
                 }
                 else
                 {
@@ -3518,7 +3541,7 @@ namespace DataLogger
                 if (hasFolderD == false)
                 {
                     folderPathD = Path.Combine(folderPathM, dayFolder);
-                    ftpClient.CreateFTPDirectory(folderPathD);
+                    ftpClient.createDirectory(folderPathD);
                 }
                 else
                 {
@@ -3551,6 +3574,9 @@ namespace DataLogger
             catch (Exception e)
             {
                 Form1.control1.AppendTextBox("Manual/Error " + push_server.ftp_ip + Environment.NewLine, Form1.control1.getForm1fromControl, 1);
+
+                Form1.control1.AppendTextBox("Manual/Error " + e.StackTrace + Environment.NewLine, Form1.control1.getForm1fromControl, 1);
+                Form1.control1.AppendTextBox("Manual/Error " + e.Message + Environment.NewLine, Form1.control1.getForm1fromControl, 1);
                 return false;
             }
         }
@@ -3560,7 +3586,7 @@ namespace DataLogger
             try
             {
                 GlobalVar.stationSettings = new station_repository().get_info();
-                string stationID = GlobalVar.stationSettings.station_id;
+                string stationID = GlobalVar.stationSettings.ftpserver;
                 string stationName = GlobalVar.stationSettings.station_name;
 
                 string server = push_server.ftp_ip;
@@ -3604,7 +3630,7 @@ namespace DataLogger
                 if (hasFolderY == false)
                 {
                     folderPathY = Path.Combine(folder, yearFolder);
-                    ftpClient.CreateFTPDirectory(folderPathY);
+                    ftpClient.createDirectory(folderPathY);
                 }
                 else
                 {
@@ -3626,7 +3652,7 @@ namespace DataLogger
                 if (hasFolderM == false)
                 {
                     folderPathM = Path.Combine(folderPathY, monthFolder);
-                    ftpClient.CreateFTPDirectory(folderPathM);
+                    ftpClient.createDirectory(folderPathM);
                 }
                 else
                 {
@@ -3648,7 +3674,7 @@ namespace DataLogger
                 if (hasFolderD == false)
                 {
                     folderPathD = Path.Combine(folderPathM, dayFolder);
-                    ftpClient.CreateFTPDirectory(folderPathD);
+                    ftpClient.createDirectory(folderPathD);
                 }
                 else
                 {
@@ -3720,7 +3746,7 @@ namespace DataLogger
                             _paramListForQuery.ToArray();
                             //get data from db 
                             DataTable dt_source = null;
-                            dt_source = db5m.get_all_custom(dtpDateFrom, dtpDateTo, _paramListForQuery);
+                            dt_source = db5m.get_all_custom_FTP(dtpDateFrom, dtpDateTo, _paramListForQuery);
                             ////---------------------------------------------------------------------------------------
                             //foreach (DataRow delRow in dt_source.Rows)
                             //{
@@ -6491,7 +6517,7 @@ namespace DataLogger
                                             Form1.control1.AppendTextBox("Auto/Success : Error value " + Environment.NewLine, Form1.control1.getForm1fromControl, 1);
                                         }
                                     }
-                                    else if (GlobalVar.stationSettings.ftpflag == 0)
+                                    else if (push_server.ftp_flag == 0)
                                     {
                                         objLatest.push = 0;
                                         objLatest.push_time = new DateTime();
@@ -6547,7 +6573,7 @@ namespace DataLogger
                                             Form1.control1.AppendTextBox("Auto/Success : Error value " + Environment.NewLine, Form1.control1.getForm1fromControl, 1);
                                         }
                                     }
-                                    else if (GlobalVar.stationSettings.ftpflag == 0)
+                                    else if (push_server.ftp_flag == 0)
                                     {
                                         objDataValue.push = 0;
                                         objDataValue.push_time = new DateTime();

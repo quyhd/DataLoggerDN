@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLogger", "DataLogger\DataLogger.csproj", "{35C4E477-4350-4800-8A21-3D4E87322BC4}"
 EndProject
@@ -27,6 +27,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCPClientTest", "TCPClientTest\TCPClientTest.csproj", "{32F2A1DD-AAD9-4B53-8FAF-975FD90B1809}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinformProtocol", "WinformProtocol\WinformProtocol.csproj", "{A1123B9F-A6B2-4425-935D-C30F3B3D8DF5}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "setup", "setup\setup.vdproj", "{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -323,6 +325,21 @@ Global
 		{A1123B9F-A6B2-4425-935D-C30F3B3D8DF5}.SingleImage|Mixed Platforms.Build.0 = Release|Any CPU
 		{A1123B9F-A6B2-4425-935D-C30F3B3D8DF5}.SingleImage|x86.ActiveCfg = Release|Any CPU
 		{A1123B9F-A6B2-4425-935D-C30F3B3D8DF5}.SingleImage|x86.Build.0 = Release|Any CPU
+		{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}.CD_ROM|Any CPU.ActiveCfg = Release
+		{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}.CD_ROM|Mixed Platforms.ActiveCfg = Release
+		{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}.CD_ROM|x86.ActiveCfg = Release
+		{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}.Debug|Any CPU.ActiveCfg = Debug
+		{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}.Debug|x86.ActiveCfg = Debug
+		{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}.DVD-5|Any CPU.ActiveCfg = Debug
+		{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}.DVD-5|Mixed Platforms.ActiveCfg = Debug
+		{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}.DVD-5|x86.ActiveCfg = Debug
+		{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}.Release|Any CPU.ActiveCfg = Release
+		{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}.Release|Mixed Platforms.ActiveCfg = Release
+		{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}.Release|x86.ActiveCfg = Release
+		{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}.SingleImage|Any CPU.ActiveCfg = Release
+		{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}.SingleImage|Mixed Platforms.ActiveCfg = Release
+		{795891A6-B485-4C8F-8332-CA2A7BEAE2DE}.SingleImage|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
