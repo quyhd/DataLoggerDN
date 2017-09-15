@@ -3337,7 +3337,7 @@ namespace DataLogger
                                     case "ph":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_pH)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "ph" + "\t" + String.Format("{0:0.00}", data.MPS_pH) + "\t" + "");
+                                            csv.Append(date + "\t" + "pH" + "\t" + String.Format("{0:0.00}", data.MPS_pH) + "\t" + "");
                                             csv.AppendLine();
                                         }
                                         countNull++;
@@ -3345,7 +3345,7 @@ namespace DataLogger
                                     case "ec":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_EC)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "ec" + "\t" + String.Format("{0:0.00}", data.MPS_EC) + "\t" + "uS/cm");
+                                            csv.Append(date + "\t" + "EC" + "\t" + String.Format("{0:0.00}", data.MPS_EC) + "\t" + "uS/cm");
 
                                             csv.AppendLine();
                                         }
@@ -3354,7 +3354,7 @@ namespace DataLogger
                                     case "do":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_DO)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "do" + "\t" + String.Format("{0:0.00}", data.MPS_DO) + "\t" + "mg/L");
+                                            csv.Append(date + "\t" + "DO" + "\t" + String.Format("{0:0.00}", data.MPS_DO) + "\t" + "mg/L");
 
                                             csv.AppendLine();
                                         }
@@ -3363,7 +3363,7 @@ namespace DataLogger
                                     case "tss":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_Turbidity)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "tss" + "\t" + String.Format("{0:0.00}", data.MPS_Turbidity) + "\t" + "mg/L");
+                                            csv.Append(date + "\t" + "TSS" + "\t" + String.Format("{0:0.00}", data.MPS_Turbidity) + "\t" + "mg/L");
 
                                             csv.AppendLine();
                                         }
@@ -3372,7 +3372,7 @@ namespace DataLogger
                                     case "orp":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_ORP)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "orp" + "\t" + String.Format("{0:0.00}", data.MPS_ORP) + "\t" + "mV");
+                                            csv.Append(date + "\t" + "ORP" + "\t" + String.Format("{0:0.00}", data.MPS_ORP) + "\t" + "mV");
 
                                             csv.AppendLine();
                                         }
@@ -3381,7 +3381,7 @@ namespace DataLogger
                                     case "temp":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_Temp)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "temp" + "\t" + String.Format("{0:0.00}", data.MPS_Temp) + "\t" + "oC");
+                                            csv.Append(date + "\t" + "Temp" + "\t" + String.Format("{0:0.00}", data.MPS_Temp) + "\t" + "oC");
 
                                             csv.AppendLine();
                                         }
@@ -3399,7 +3399,7 @@ namespace DataLogger
                                     case "tn":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.TN)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "tn" + "\t" + String.Format("{0:0.00}", data.TN) + "\t" + "mg/L");
+                                            csv.Append(date + "\t" + "TN" + "\t" + String.Format("{0:0.00}", data.TN) + "\t" + "mg/L");
 
                                             csv.AppendLine();
                                         }
@@ -3408,7 +3408,7 @@ namespace DataLogger
                                     case "tp":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.TP)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "tp" + "\t" + String.Format("{0:0.00}", data.TP) + "\t" + "mg/L");
+                                            csv.Append(date + "\t" + "TP" + "\t" + String.Format("{0:0.00}", data.TP) + "\t" + "mg/L");
 
                                             csv.AppendLine();
                                         }
@@ -3417,7 +3417,7 @@ namespace DataLogger
                                     case "toc":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.TOC)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "toc" + "\t" + String.Format("{0:0.00}", data.TOC) + "\t" + "mg/L");
+                                            csv.Append(date + "\t" + "TOC" + "\t" + String.Format("{0:0.00}", data.TOC) + "\t" + "mg/L");
 
                                             csv.AppendLine();
                                         }
@@ -3496,12 +3496,12 @@ namespace DataLogger
                 string folderPathY;
                 if (hasFolderY == false)
                 {
-                    folderPathY = Path.Combine(folder, yearFolder);
+                    folderPathY = folder + "//" + yearFolder;
                     ftpClient.createDirectory(folderPathY);
                 }
                 else
                 {
-                    folderPathY = Path.Combine(folder, yearFolder);
+                    folderPathY = folder + "//" + yearFolder;
                 }
                 ///
                 /// Month Folder
@@ -3518,12 +3518,12 @@ namespace DataLogger
                 string folderPathM;
                 if (hasFolderM == false)
                 {
-                    folderPathM = Path.Combine(folderPathY, monthFolder);
+                    folderPathM = folderPathY + "//" + monthFolder;
                     ftpClient.createDirectory(folderPathM);
                 }
                 else
                 {
-                    folderPathM = Path.Combine(folderPathY, monthFolder);
+                    folderPathM = folderPathY + "//" + monthFolder;
                 }
                 /// 
                 /// Day Folder
@@ -3540,12 +3540,12 @@ namespace DataLogger
                 string folderPathD;
                 if (hasFolderD == false)
                 {
-                    folderPathD = Path.Combine(folderPathM, dayFolder);
+                    folderPathD = folderPathM + "//" + dayFolder;
                     ftpClient.createDirectory(folderPathD);
                 }
                 else
                 {
-                    folderPathD = Path.Combine(folderPathM, dayFolder);
+                    folderPathD = folderPathM + "//" + dayFolder;
                 }
                 /// 
                 if (!Directory.Exists(newFolderPath))
@@ -3629,12 +3629,12 @@ namespace DataLogger
                 string folderPathY;
                 if (hasFolderY == false)
                 {
-                    folderPathY = Path.Combine(folder, yearFolder);
+                    folderPathY = folder + "//" + yearFolder;
                     ftpClient.createDirectory(folderPathY);
                 }
                 else
                 {
-                    folderPathY = Path.Combine(folder, yearFolder);
+                    folderPathY = folder + "//" + yearFolder;
                 }
                 ///
                 /// Month Folder
@@ -3651,12 +3651,12 @@ namespace DataLogger
                 string folderPathM;
                 if (hasFolderM == false)
                 {
-                    folderPathM = Path.Combine(folderPathY, monthFolder);
+                    folderPathM = folderPathY + "//" + monthFolder;
                     ftpClient.createDirectory(folderPathM);
                 }
                 else
                 {
-                    folderPathM = Path.Combine(folderPathY, monthFolder);
+                    folderPathM = folderPathY + "//" + monthFolder;
                 }
                 /// 
                 /// Day Folder
@@ -3673,12 +3673,12 @@ namespace DataLogger
                 string folderPathD;
                 if (hasFolderD == false)
                 {
-                    folderPathD = Path.Combine(folderPathM, dayFolder);
+                    folderPathD = folderPathM + "//" + dayFolder;
                     ftpClient.createDirectory(folderPathD);
                 }
                 else
                 {
-                    folderPathD = Path.Combine(folderPathM, dayFolder);
+                    folderPathD = folderPathM + "//" + dayFolder;
                 }
                 /// 
                 if (!Directory.Exists(newFolderPath))
@@ -3765,9 +3765,11 @@ namespace DataLogger
                                 //Type listType = typeof(string).MakeGenericType(new Type[] { elementType });
                                 //object list = Activator.CreateInstance(listType);
                                 int id = Int32.Parse(Convert.ToString(row3["id"]));
+                                int push = Int32.Parse(Convert.ToString(row3["push"]));
                                 int countNullParam = 0;
                                 DateTime created = (DateTime)row3["created"];
                                 data.created = created;
+                                data.push = push;
 
                                 for (int i = 0; i < _paramListForQuery.Count; i++)
                                 {
@@ -3900,7 +3902,10 @@ namespace DataLogger
                                     set.ftp_flag = push_server.ftp_flag;
                                     set.ftp_lasted = data.created;
                                     //int id = setre.get_id_by_key("lasted_push");
-                                    s.update_with_id(ref set, idLasted);
+                                    if (dtpDateFrom < created && created < dtpDateTo)
+                                    {
+                                        s.update_with_id(ref set, idLasted);
+                                    }
                                 }
                                 else
                                 {
@@ -3918,7 +3923,10 @@ namespace DataLogger
                                         set.ftp_flag = push_server.ftp_flag;
                                         set.ftp_lasted = data.created;
                                         //int id = setre.get_id_by_key("lasted_push");
-                                        s.update_with_id(ref set, idLasted);
+                                        if (dtpDateFrom < created && created < dtpDateTo)
+                                        {
+                                            s.update_with_id(ref set, idLasted);
+                                        }
                                     }
                                     else
                                     {
@@ -6549,7 +6557,7 @@ namespace DataLogger
                                 /// 
                                 foreach (push_server push_server in listUser)
                                 {
-                                    if (GlobalVar.stationSettings.ftpflag == 1)
+                                    if (push_server.ftp_flag == 1)
                                     {
                                         if (main.iSAllMinValue(objDataValue))
                                         {

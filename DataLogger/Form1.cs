@@ -542,14 +542,14 @@ namespace WinformProtocol
                                     case "ph":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_pH)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "ph" + "\t" + String.Format("{0:0.00}", data.MPS_pH) + "\t" + "");
+                                            csv.Append(date + "\t" + "pH" + "\t" + String.Format("{0:0.00}", data.MPS_pH) + "\t" + "");
                                             csv.AppendLine();
                                         }
                                         break;
                                     case "ec":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_EC)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "ec" + "\t" + String.Format("{0:0.00}", data.MPS_EC) + "\t" + "uS/cm");
+                                            csv.Append(date + "\t" + "EC" + "\t" + String.Format("{0:0.00}", data.MPS_EC) + "\t" + "uS/cm");
 
                                             csv.AppendLine();
                                         }
@@ -557,7 +557,7 @@ namespace WinformProtocol
                                     case "do":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_DO)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "do" + "\t" + String.Format("{0:0.00}", data.MPS_DO) + "\t" + "mg/L");
+                                            csv.Append(date + "\t" + "DO" + "\t" + String.Format("{0:0.00}", data.MPS_DO) + "\t" + "mg/L");
 
                                             csv.AppendLine();
                                         }
@@ -565,7 +565,7 @@ namespace WinformProtocol
                                     case "tss":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_Turbidity)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "tss" + "\t" + String.Format("{0:0.00}", data.MPS_Turbidity) + "\t" + "mg/L");
+                                            csv.Append(date + "\t" + "TSS" + "\t" + String.Format("{0:0.00}", data.MPS_Turbidity) + "\t" + "mg/L");
 
                                             csv.AppendLine();
                                         }
@@ -573,7 +573,7 @@ namespace WinformProtocol
                                     case "orp":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_ORP)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "orp" + "\t" + String.Format("{0:0.00}", data.MPS_ORP) + "\t" + "mV");
+                                            csv.Append(date + "\t" + "ORP" + "\t" + String.Format("{0:0.00}", data.MPS_ORP) + "\t" + "mV");
 
                                             csv.AppendLine();
                                         }
@@ -581,7 +581,7 @@ namespace WinformProtocol
                                     case "temp":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.MPS_Temp)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "temp" + "\t" + String.Format("{0:0.00}", data.MPS_Temp) + "\t" + "oC");
+                                            csv.Append(date + "\t" + "Temp" + "\t" + String.Format("{0:0.00}", data.MPS_Temp) + "\t" + "oC");
 
                                             csv.AppendLine();
                                         }
@@ -597,7 +597,7 @@ namespace WinformProtocol
                                     case "tn":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.TN)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "tn" + "\t" + String.Format("{0:0.00}", data.TN) + "\t" + "mg/L");
+                                            csv.Append(date + "\t" + "TN" + "\t" + String.Format("{0:0.00}", data.TN) + "\t" + "mg/L");
 
                                             csv.AppendLine();
                                         }
@@ -605,7 +605,7 @@ namespace WinformProtocol
                                     case "tp":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.TP)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "tp" + "\t" + String.Format("{0:0.00}", data.TP) + "\t" + "mg/L");
+                                            csv.Append(date + "\t" + "TP" + "\t" + String.Format("{0:0.00}", data.TP) + "\t" + "mg/L");
 
                                             csv.AppendLine();
                                         }
@@ -613,7 +613,7 @@ namespace WinformProtocol
                                     case "toc":
                                         if (Convert.ToDouble(String.Format("{0:0.00}", data.TOC)) >= min_value)
                                         {
-                                            csv.Append(date + "\t" + "toc" + "\t" + String.Format("{0:0.00}", data.TOC) + "\t" + "mg/L");
+                                            csv.Append(date + "\t" + "TOC" + "\t" + String.Format("{0:0.00}", data.TOC) + "\t" + "mg/L");
 
                                             csv.AppendLine();
                                         }
@@ -3178,33 +3178,36 @@ namespace WinformProtocol
                 ftpRequest.KeepAlive = true;
                 /* Specify the Type of FTP Request */
                 ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
-                ftpRequest.UsePassive = false;
+                //ftpRequest.UsePassive = false;
                 /* Establish Return Communication with the FTP Server */
-                ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
-                /* Establish Return Communication with the FTP Server */
-                ftpStream = ftpResponse.GetResponseStream();
-                /* Get the FTP Server's Response Stream */
-                StreamReader ftpReader = new StreamReader(ftpStream);
-                /* Store the Raw Response */
-                string directoryRaw = null;
-                /* Read Each Line of the Response and Append a Pipe to Each Line for Easy Parsing */
-                try { while (ftpReader.Peek() != -1) { directoryRaw += ftpReader.ReadLine() + "|"; } }
-                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
-                if (directoryRaw != null)
+                using (ftpResponse = (FtpWebResponse)ftpRequest.GetResponse())
                 {
-                    directoryRaw = directoryRaw.Remove(directoryRaw.ToString().LastIndexOf('|'), 1);
+                    /* Establish Return Communication with the FTP Server */
+                    ftpStream = ftpResponse.GetResponseStream();
+                    /* Get the FTP Server's Response Stream */
+                    StreamReader ftpReader = new StreamReader(ftpStream);
+                    /* Store the Raw Response */
+                    string directoryRaw = null;
+                    /* Read Each Line of the Response and Append a Pipe to Each Line for Easy Parsing */
+                    try { while (ftpReader.Peek() != -1) { directoryRaw += ftpReader.ReadLine() + "|"; } }
+                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+                    if (directoryRaw != null)
+                    {
+                        directoryRaw = directoryRaw.Remove(directoryRaw.ToString().LastIndexOf('|'), 1);
+                    }
+                    else
+                    {
+                        directoryRaw = "";
+                    }
+                    /* Resource Cleanup */
+                    ftpReader.Close();
+                    ftpStream.Close();
+                    ftpResponse.Close();
+                    ftpRequest = null;
+                    /* Return the Directory Listing as a string Array by Parsing 'directoryRaw' with the Delimiter you Append (I use | in This Example) */
+                    try { string[] directoryList = directoryRaw.Split("|".ToCharArray()); return directoryList; }
+                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
                 }
-                else {
-                    directoryRaw = "";
-                }
-                /* Resource Cleanup */
-                ftpReader.Close();
-                ftpStream.Close();
-                ftpResponse.Close();
-                ftpRequest = null;
-                /* Return the Directory Listing as a string Array by Parsing 'directoryRaw' with the Delimiter you Append (I use | in This Example) */
-                try { string[] directoryList = directoryRaw.Split("|".ToCharArray()); return directoryList; }
-                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
 
             }
            catch (Exception ex) {
