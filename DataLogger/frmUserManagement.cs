@@ -134,6 +134,13 @@ namespace DataLogger
                 txtIDNumber.Text = Convert.ToString(dgvData.CurrentRow.Cells[3].Value);
                 cbUserGroup.SelectedIndex = Convert.ToInt32(dgvData.CurrentRow.Cells[5].Value);
 
+                //dt.Columns.Add("id", typeof(int));
+                //dt.Columns.Add("user_name", typeof(string));
+                //dt.Columns.Add("name", typeof(string));
+                //dt.Columns.Add("id_number", typeof(string));
+                //dt.Columns.Add("user_group_name", typeof(string));
+                //dt.Columns.Add("user_group_id", typeof(int));
+
                 btnSave.Enabled = true;
                 btnDelete.Enabled = true;
                 btnSetDefaultPassword.Enabled = true;

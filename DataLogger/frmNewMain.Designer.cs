@@ -452,7 +452,7 @@
             this.picStationStatusAir2.BackColor = System.Drawing.Color.White;
             this.picStationStatusAir2.BackgroundImage = global::DataLogger.Properties.Resources.on_icon_68x68;
             this.picStationStatusAir2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.picStationStatusAir2.Location = new System.Drawing.Point(189, 166);
+            this.picStationStatusAir2.Location = new System.Drawing.Point(189, 149);
             this.picStationStatusAir2.Name = "picStationStatusAir2";
             this.picStationStatusAir2.Size = new System.Drawing.Size(92, 92);
             this.picStationStatusAir2.TabIndex = 72;
@@ -463,7 +463,7 @@
             this.picStationStatusAir1.BackColor = System.Drawing.Color.White;
             this.picStationStatusAir1.BackgroundImage = global::DataLogger.Properties.Resources.off_icon_68x68;
             this.picStationStatusAir1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.picStationStatusAir1.Location = new System.Drawing.Point(49, 166);
+            this.picStationStatusAir1.Location = new System.Drawing.Point(49, 149);
             this.picStationStatusAir1.Name = "picStationStatusAir1";
             this.picStationStatusAir1.Size = new System.Drawing.Size(92, 92);
             this.picStationStatusAir1.TabIndex = 71;
@@ -474,7 +474,7 @@
             this.picStationStatusFireDetector.BackColor = System.Drawing.Color.White;
             this.picStationStatusFireDetector.BackgroundImage = global::DataLogger.Properties.Resources.house_fire_68x68;
             this.picStationStatusFireDetector.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.picStationStatusFireDetector.Location = new System.Drawing.Point(325, 166);
+            this.picStationStatusFireDetector.Location = new System.Drawing.Point(325, 149);
             this.picStationStatusFireDetector.Name = "picStationStatusFireDetector";
             this.picStationStatusFireDetector.Size = new System.Drawing.Size(91, 91);
             this.picStationStatusFireDetector.TabIndex = 40;
@@ -485,7 +485,7 @@
             this.picStationStatusMainDoor.BackColor = System.Drawing.Color.White;
             this.picStationStatusMainDoor.BackgroundImage = global::DataLogger.Properties.Resources.door_close_68x68;
             this.picStationStatusMainDoor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.picStationStatusMainDoor.Location = new System.Drawing.Point(325, 46);
+            this.picStationStatusMainDoor.Location = new System.Drawing.Point(325, 29);
             this.picStationStatusMainDoor.Name = "picStationStatusMainDoor";
             this.picStationStatusMainDoor.Size = new System.Drawing.Size(92, 92);
             this.picStationStatusMainDoor.TabIndex = 39;
@@ -496,7 +496,7 @@
             this.picStationStatusUPS.BackColor = System.Drawing.Color.White;
             this.picStationStatusUPS.BackgroundImage = global::DataLogger.Properties.Resources.on_icon_68x68;
             this.picStationStatusUPS.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.picStationStatusUPS.Location = new System.Drawing.Point(189, 46);
+            this.picStationStatusUPS.Location = new System.Drawing.Point(189, 29);
             this.picStationStatusUPS.Name = "picStationStatusUPS";
             this.picStationStatusUPS.Size = new System.Drawing.Size(92, 92);
             this.picStationStatusUPS.TabIndex = 37;
@@ -507,7 +507,7 @@
             this.picStationStatusMainPower.BackColor = System.Drawing.Color.White;
             this.picStationStatusMainPower.BackgroundImage = global::DataLogger.Properties.Resources.off_icon_68x68;
             this.picStationStatusMainPower.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.picStationStatusMainPower.Location = new System.Drawing.Point(49, 46);
+            this.picStationStatusMainPower.Location = new System.Drawing.Point(49, 29);
             this.picStationStatusMainPower.Name = "picStationStatusMainPower";
             this.picStationStatusMainPower.Size = new System.Drawing.Size(92, 92);
             this.picStationStatusMainPower.TabIndex = 32;
@@ -517,7 +517,7 @@
             // lblair1
             // 
             this.lblair1.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblair1.Location = new System.Drawing.Point(44, 260);
+            this.lblair1.Location = new System.Drawing.Point(44, 243);
             this.lblair1.Name = "lblair1";
             this.lblair1.Size = new System.Drawing.Size(100, 20);
             this.lblair1.TabIndex = 36;
@@ -528,7 +528,7 @@
             // lblFireDetector
             // 
             this.lblFireDetector.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFireDetector.Location = new System.Drawing.Point(320, 260);
+            this.lblFireDetector.Location = new System.Drawing.Point(320, 243);
             this.lblFireDetector.Name = "lblFireDetector";
             this.lblFireDetector.Size = new System.Drawing.Size(100, 20);
             this.lblFireDetector.TabIndex = 35;
@@ -538,7 +538,7 @@
             // lblMainDoor
             // 
             this.lblMainDoor.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMainDoor.Location = new System.Drawing.Point(328, 139);
+            this.lblMainDoor.Location = new System.Drawing.Point(328, 122);
             this.lblMainDoor.Name = "lblMainDoor";
             this.lblMainDoor.Size = new System.Drawing.Size(87, 20);
             this.lblMainDoor.TabIndex = 34;
@@ -548,7 +548,7 @@
             // lblair2
             // 
             this.lblair2.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblair2.Location = new System.Drawing.Point(186, 259);
+            this.lblair2.Location = new System.Drawing.Point(186, 242);
             this.lblair2.Name = "lblair2";
             this.lblair2.Size = new System.Drawing.Size(100, 20);
             this.lblair2.TabIndex = 33;
@@ -558,7 +558,7 @@
             // label20
             // 
             this.label20.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(180, 140);
+            this.label20.Location = new System.Drawing.Point(180, 123);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(100, 20);
             this.label20.TabIndex = 32;
@@ -568,7 +568,7 @@
             // lblMainPower
             // 
             this.lblMainPower.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMainPower.Location = new System.Drawing.Point(44, 140);
+            this.lblMainPower.Location = new System.Drawing.Point(44, 123);
             this.lblMainPower.Name = "lblMainPower";
             this.lblMainPower.Size = new System.Drawing.Size(100, 20);
             this.lblMainPower.TabIndex = 31;
@@ -617,7 +617,7 @@
             this.panel3.Controls.Add(this.picAutoSamplerStatus);
             this.panel3.Controls.Add(this.pnbottlePosition);
             this.panel3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.panel3.Location = new System.Drawing.Point(264, 128);
+            this.panel3.Location = new System.Drawing.Point(263, 127);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(209, 283);
             this.panel3.TabIndex = 0;
@@ -1310,7 +1310,7 @@
             this.panel30.Margin = new System.Windows.Forms.Padding(10);
             this.panel30.Name = "panel30";
             this.tableLayoutPanel1.SetRowSpan(this.panel30, 2);
-            this.panel30.Size = new System.Drawing.Size(767, 534);
+            this.panel30.Size = new System.Drawing.Size(765, 532);
             this.panel30.TabIndex = 65;
             this.panel30.Paint += new System.Windows.Forms.PaintEventHandler(this.panel30_Paint);
             // 
@@ -1647,10 +1647,10 @@
             this.flowLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel1, 2);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(83, 615);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(83, 613);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(10);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1261, 102);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1261, 104);
             this.flowLayoutPanel1.TabIndex = 62;
             // 
             // backgroundWorkerMain
@@ -1662,7 +1662,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8.534489F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 91.46551F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 493F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 495F));
             this.tableLayoutPanel1.Controls.Add(this.panel24, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.pnHeader, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel21, 2, 2);
@@ -1685,9 +1685,9 @@
             this.panel24.Controls.Add(this.panel25);
             this.panel24.Controls.Add(this.pnStationStatus);
             this.panel24.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel24.Location = new System.Drawing.Point(863, 54);
+            this.panel24.Location = new System.Drawing.Point(861, 54);
             this.panel24.Name = "panel24";
-            this.panel24.Size = new System.Drawing.Size(488, 311);
+            this.panel24.Size = new System.Drawing.Size(490, 309);
             this.panel24.TabIndex = 72;
             this.panel24.Paint += new System.Windows.Forms.PaintEventHandler(this.panel24_Paint);
             // 
@@ -1736,7 +1736,7 @@
             this.pnStationStatus.Location = new System.Drawing.Point(6, 35);
             this.pnStationStatus.Margin = new System.Windows.Forms.Padding(10);
             this.pnStationStatus.Name = "pnStationStatus";
-            this.pnStationStatus.Size = new System.Drawing.Size(456, 278);
+            this.pnStationStatus.Size = new System.Drawing.Size(456, 275);
             this.pnStationStatus.TabIndex = 0;
             this.pnStationStatus.Paint += new System.Windows.Forms.PaintEventHandler(this.panel8_Paint);
             // 
@@ -1745,9 +1745,9 @@
             this.panel21.Controls.Add(this.panel16);
             this.panel21.Controls.Add(this.panel29);
             this.panel21.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel21.Location = new System.Drawing.Point(863, 371);
+            this.panel21.Location = new System.Drawing.Point(861, 369);
             this.panel21.Name = "panel21";
-            this.panel21.Size = new System.Drawing.Size(488, 231);
+            this.panel21.Size = new System.Drawing.Size(490, 231);
             this.panel21.TabIndex = 71;
             // 
             // panel16
